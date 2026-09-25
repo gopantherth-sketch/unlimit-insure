@@ -2,12 +2,31 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, UserRound, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
 import { buttonClass } from "@/components/ui/button";
 import { cx } from "@/lib/cx";
-import { primaryNav } from "@/lib/nav";
+
+// Customer navigation, labelled as in the selected mockup.
+const siteNav = [
+  { href: "/insurance", label: "ประกันรถยนต์" },
+  { href: "/quote", label: "เช็กเบี้ย" },
+  { href: "/lab", label: "บทความ" },
+  { href: "/garage", label: "บริการหลังการขาย" },
+  { href: "/#why", label: "เกี่ยวกับเรา" },
+] as const;
+
+/** Customer accounts are not live yet: shown as in the mockup, but not interactive. */
+function SignInSoon({ className }: { className?: string }) {
+  return (
+    <span aria-disabled="true" className={cx("inline-flex items-center gap-1.5 text-[15px] font-medium text-navy-400", className)}>
+      <UserRound aria-hidden className="h-[18px] w-[18px]" />
+      เข้าสู่ระบบ
+      <span className="rounded-full bg-navy-50 px-1.5 py-0.5 text-[11px] font-medium text-navy-500">เร็ว ๆ นี้</span>
+    </span>
+  );
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -15,69 +34,76 @@ export function Header() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-navy-100/70 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75">
-      <div className="container-page flex h-16 items-center justify-between gap-6 lg:h-[72px]">
-        <Logo size="sm" />
+    <header className="sticky top-0 z-40 px-2 pt-2 sm:px-4 sm:pt-3">
+      <div className="mx-auto max-w-[1280px] rounded-2xl border border-navy-100/80 bg-white/95 shadow-float backdrop-blur supports-[backdrop-filter]:bg-white/85">
+        <div className="flex h-16 items-center justify-between gap-4 px-4 sm:px-6 lg:h-[76px] lg:px-7">
+          <Logo size="sm" />
 
-        <nav aria-label="เมนูหลัก" className="hidden lg:block">
-          <ul className="flex items-center gap-1">
-            {primaryNav.map((item) => (
+          <nav aria-label="เมนูหลัก" className="hidden lg:block">
+            <ul className="flex items-center gap-1 xl:gap-3">
+              {siteNav.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className={cx(
+                      "relative rounded-lg px-3 py-2 text-[15px] transition-colors",
+                      isActive(item.href) ? "font-semibold text-brand-700" : "text-navy-700 hover:text-brand-700",
+                    )}
+                  >
+                    {item.label}
+                    {isActive(item.href) && <span aria-hidden className="absolute inset-x-3 -bottom-0.5 h-0.5 rounded-full bg-brand-600" />}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="flex items-center gap-4">
+            <SignInSoon className="hidden xl:inline-flex" />
+            <Link href="/advisor" className={buttonClass("primary", "md", "hidden rounded-xl px-6 sm:inline-flex")}>
+              ปรึกษาฟรี
+            </Link>
+            <button
+              type="button"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-navy-700 hover:bg-navy-50 lg:hidden"
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              aria-label={open ? "ปิดเมนู" : "เปิดเมนู"}
+              onClick={() => setOpen((v) => !v)}
+            >
+              {open ? <X aria-hidden className="h-5 w-5" /> : <Menu aria-hidden className="h-5 w-5" />}
+            </button>
+          </div>
+        </div>
+
+        <nav id="mobile-nav" aria-label="เมนูหลัก (มือถือ)" hidden={!open} className="border-t border-navy-100 lg:hidden">
+          <ul className="flex flex-col px-3 py-3">
+            {siteNav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   aria-current={isActive(item.href) ? "page" : undefined}
-                  className={cx(
-                    "rounded-full px-4 py-2 text-[15px] font-medium transition-colors",
-                    isActive(item.href) ? "bg-brand-50 text-brand-700" : "text-navy-600 hover:text-brand-700",
-                  )}
+                  className={cx("block rounded-xl px-3 py-3 text-base font-medium", isActive(item.href) ? "bg-brand-50 text-brand-700" : "text-navy-700")}
                 >
                   {item.label}
                 </Link>
               </li>
             ))}
-          </ul>
-        </nav>
-
-        <div className="flex items-center gap-2">
-          <Link href="/advisor" className={buttonClass("primary", "sm", "hidden sm:inline-flex")}>
-            ปรึกษาฟรี
-          </Link>
-          <button
-            type="button"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-navy-700 hover:bg-navy-50 lg:hidden"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            aria-label={open ? "ปิดเมนู" : "เปิดเมนู"}
-            onClick={() => setOpen((v) => !v)}
-          >
-            {open ? <X aria-hidden className="h-5 w-5" /> : <Menu aria-hidden className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-
-      <nav id="mobile-nav" aria-label="เมนูหลัก" hidden={!open} className="border-t border-navy-100 bg-white lg:hidden">
-        <ul className="container-page flex flex-col py-3">
-          {primaryNav.map((item) => (
-            <li key={item.href}>
-              <Link
-                href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-                className={cx("block rounded-xl px-3 py-3 text-base font-medium", isActive(item.href) ? "bg-brand-50 text-brand-700" : "text-navy-700")}
-              >
-                {item.label}
+            <li className="px-3 py-3">
+              <SignInSoon />
+            </li>
+            <li className="pt-1">
+              <Link href="/advisor" className={buttonClass("primary", "md", "w-full rounded-xl")}>
+                ปรึกษาฟรี
               </Link>
             </li>
-          ))}
-          <li className="pt-2">
-            <Link href="/advisor" className={buttonClass("primary", "md", "w-full")}>
-              ปรึกษาผู้เชี่ยวชาญฟรี
-            </Link>
-          </li>
-        </ul>
-      </nav>
+          </ul>
+        </nav>
+      </div>
     </header>
   );
 }

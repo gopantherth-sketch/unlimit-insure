@@ -31,7 +31,7 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
   const copy = scenarioCopy[active];
 
   return (
-    <div className="card p-5 sm:p-6">
+    <div className="rounded-2xl border border-navy-100 bg-white p-5 shadow-card sm:p-7">
       <fieldset>
         <legend className="text-sm font-semibold text-navy-700">เลือกเหตุการณ์</legend>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -58,7 +58,7 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
         </div>
       </fieldset>
 
-      <p className="mt-5 rounded-2xl bg-canvas p-4 text-[15px] leading-relaxed text-navy-700">{copy.situation}</p>
+      <p className="mt-5 rounded-2xl bg-wash p-4 text-[15px] leading-relaxed text-navy-700">{copy.situation}</p>
 
       <ul className="mt-4 grid gap-3 md:grid-cols-3" aria-live="polite">
         {quotes.map((q, i) => {

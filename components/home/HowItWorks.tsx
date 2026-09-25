@@ -1,22 +1,29 @@
 import { homeCopy } from "@/content/home";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 
+/** Light five-step strip: numbered dots on a line, titles with one short line each. */
 export function HowItWorks() {
   return (
-    <section aria-labelledby="how-title" className="py-16 sm:py-20">
+    <section aria-labelledby="how-title" className="bg-wash pb-14 sm:pb-16">
       <div className="container-page">
-        <SectionHeading id="how-title" eyebrow="How Unlimit works" title="เริ่มจากรถของคุณ ไม่ใช่ศัพท์ประกัน" />
-        <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-          {homeCopy.howItWorks.map((step, i) => (
-            <li key={step.title} className="relative rounded-card border border-navy-100 bg-white p-5">
-              <span className="tabular inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">
-                {i + 1}
-              </span>
-              <h3 className="mt-4 text-base font-bold text-navy-900">{step.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-navy-500">{step.body}</p>
-            </li>
-          ))}
-        </ol>
+        <div className="rounded-2xl border border-white bg-white/70 px-5 py-7 sm:px-8">
+          <h2 id="how-title" className="text-lg font-semibold text-navy-900 sm:text-xl">
+            {homeCopy.howTitle}
+          </h2>
+          <ol className="relative mt-6 grid gap-5 sm:grid-cols-5 sm:gap-4">
+            <span aria-hidden className="absolute left-[15px] top-4 hidden h-px w-[80%] bg-brand-100 sm:block" />
+            {homeCopy.howItWorks.map((step, i) => (
+              <li key={step.title} className="relative flex gap-3 sm:block">
+                <span className="tabular relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 font-display text-sm font-semibold text-white ring-4 ring-white">
+                  {i + 1}
+                </span>
+                <div className="sm:mt-3">
+                  <h3 className="text-base font-semibold text-navy-900">{step.title}</h3>
+                  <p className="mt-0.5 text-sm leading-relaxed text-navy-500">{step.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );

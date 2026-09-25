@@ -1,23 +1,36 @@
 import Link from "next/link";
-import { ArrowRight, Quote } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Photo, ScriptAccent } from "@/components/brand/Photo";
 import { buttonClass } from "@/components/ui/button";
 import { homeCopy } from "@/content/home";
 
-/** Lifestyle band. The left panel is reserved for licensed lifestyle photography. */
+/** Full-bleed lifestyle band: photo left fading into a pale-blue quote panel (mockup §7). */
 export function LifestyleBanner() {
   return (
-    <section aria-label="Unlimit Insure" className="relative overflow-hidden bg-gradient-to-r from-brand-700 via-brand-600 to-brand-500 text-white">
-      <div aria-hidden className="absolute -left-24 top-1/2 h-[480px] w-[480px] -translate-y-1/2 rounded-full border-[48px] border-white/10" />
-      <div aria-hidden className="absolute -right-10 -top-24 h-72 w-72 rounded-full bg-white/10 blur-2xl" />
-      <div className="container-page relative grid gap-8 py-16 sm:py-20 lg:grid-cols-[1fr_1.4fr] lg:items-center">
-        <p className="text-sm font-semibold uppercase tracking-[0.2em] text-brand-100">More than insurance</p>
-        <div>
-          <Quote aria-hidden className="h-8 w-8 text-brand-200" />
-          <p className="mt-3 text-2xl font-bold leading-snug sm:text-3xl">{homeCopy.lifestyleQuote}</p>
-          <Link href="/quote" className={buttonClass("white", "md", "mt-7")}>
-            หาประกันที่ใช่สำหรับคุณ
-            <ArrowRight aria-hidden className="h-4 w-4" />
-          </Link>
+    <section aria-labelledby="lifestyle-quote" className="relative overflow-hidden bg-wash">
+      <div className="grid lg:min-h-[440px] lg:grid-cols-[1.05fr_1fr]">
+        <div className="relative h-[260px] sm:h-[360px] lg:h-auto">
+          <Photo slot="lifestyle" sizes="(min-width: 1024px) 52vw, 100vw" className="object-[40%_40%]" />
+          <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-wash to-transparent lg:inset-y-0 lg:left-auto lg:right-0 lg:h-auto lg:w-2/5 lg:bg-gradient-to-l" />
+          <ScriptAccent
+            lines={["More", "Than Insurance"]}
+            className="absolute bottom-5 right-4 -rotate-[10deg] text-[38px] text-white drop-shadow-[0_2px_8px_rgba(11,19,48,0.45)] sm:text-[52px] lg:bottom-[18%] lg:right-[3%] lg:text-[60px]"
+          />
+        </div>
+        <div className="flex items-center">
+          <div className="w-full px-5 pb-12 pt-4 sm:px-10 lg:max-w-[600px] lg:px-12 lg:py-16">
+            <blockquote>
+              <p id="lifestyle-quote" className="font-display text-[24px] font-semibold leading-[1.5] text-navy-900 sm:text-[30px]">
+                <span aria-hidden className="mr-1 text-brand-600">“</span>
+                {homeCopy.lifestyleQuote}
+                <span aria-hidden className="ml-1 text-brand-600">”</span>
+              </p>
+            </blockquote>
+            <Link href="/quote" className={buttonClass("primary", "lg", "mt-8")}>
+              {homeCopy.lifestyleCta}
+              <ArrowRight aria-hidden className="h-5 w-5" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

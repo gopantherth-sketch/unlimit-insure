@@ -22,7 +22,7 @@ export function SectionHeading({ eyebrow, title, body, action, align = "left", i
         {body && <p className="mt-3 text-base leading-relaxed text-navy-500 sm:text-lg">{body}</p>}
       </div>
       {action && (
-        <Link href={action.href} className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700">
+        <Link href={action.href} className="link-arrow">
           {action.label}
           <ArrowRight aria-hidden className="h-4 w-4" />
         </Link>

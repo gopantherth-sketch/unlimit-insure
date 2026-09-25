@@ -14,6 +14,11 @@
   :focus-visible {
     @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
   }
+  h1,
+  h2,
+  h3 {
+    @apply font-display;
+  }
   ::selection {
     @apply bg-brand-100 text-navy-900;
   }
@@ -27,10 +32,17 @@
     @apply relative rounded-card border border-navy-100 bg-white shadow-card;
   }
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.18em] text-brand-600;
+    @apply text-xs font-semibold uppercase tracking-[0.24em] text-brand-600;
   }
   .h-section {
-    @apply text-2xl font-bold leading-tight text-navy-900 sm:text-3xl;
+    @apply font-display text-[26px] font-bold leading-[1.25] text-navy-900 sm:text-[32px];
+  }
+  /* Handwritten English accent (3–4 uses on the homepage). Decorative: always aria-hidden. */
+  .script-accent {
+    @apply pointer-events-none select-none font-script font-normal leading-[0.9] text-brand-600;
+  }
+  .link-arrow {
+    @apply inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-800;
   }
   .field-label {
     @apply mb-1.5 block text-sm font-medium text-navy-700;

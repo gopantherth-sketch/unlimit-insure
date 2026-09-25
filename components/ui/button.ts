@@ -4,7 +4,7 @@ export type ButtonVariant = "primary" | "secondary" | "ghost" | "white";
 export type ButtonSize = "sm" | "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50";
 
 const variants: Record<ButtonVariant, string> = {
   primary: "bg-brand-600 text-white shadow-lift hover:bg-brand-700 active:bg-brand-800",
@@ -19,6 +19,8 @@ const sizes: Record<ButtonSize, string> = {
   lg: "h-12 px-6 text-base sm:h-14 sm:px-7",
 };
 
+/** Pills by default; pass a `rounded-*` class in `extra` for the mockup's rounded-rectangle buttons. */
 export function buttonClass(variant: ButtonVariant = "primary", size: ButtonSize = "md", extra?: string): string {
-  return cx(base, variants[variant], sizes[size], extra);
+  const shape = extra && /(^|\s)rounded-/.test(extra) ? undefined : "rounded-full";
+  return cx(base, shape, variants[variant], sizes[size], extra);
 }

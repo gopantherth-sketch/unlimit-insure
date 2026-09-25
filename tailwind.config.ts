@@ -30,12 +30,16 @@ const config: Config = {
           900: "#0B1330",
         },
         canvas: "#F7F8FC",
-        success: { 50: "#ECFDF3", 600: "#12805C", 700: "#0B6446" },
+        /** Very soft blue-grey section wash from the selected mockup. */
+        wash: "#F3F6FD",
+        success: { 50: "#ECFDF3", 500: "#16A34A", 600: "#12805C", 700: "#0B6446" },
         warning: { 50: "#FFF7E6", 600: "#B45309", 700: "#92400E" },
-        danger: { 50: "#FEF1F2", 600: "#C0263A" },
+        danger: { 50: "#FEF1F2", 500: "#DC2626", 600: "#C0263A" },
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],
+        script: ["var(--font-script)", "cursive"],
       },
       borderRadius: {
         card: "20px",
@@ -44,6 +48,7 @@ const config: Config = {
       boxShadow: {
         card: "0 1px 2px rgba(11,19,48,0.04), 0 8px 24px -12px rgba(11,19,48,0.12)",
         lift: "0 2px 4px rgba(11,19,48,0.04), 0 20px 40px -20px rgba(16,22,209,0.28)",
+        float: "0 1px 2px rgba(11,19,48,0.04), 0 24px 48px -24px rgba(11,19,48,0.22)",
       },
       maxWidth: { page: "1200px" },
     },

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Thai } from "next/font/google";
+import { Allura, IBM_Plex_Sans_Thai, Prompt } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -8,6 +8,22 @@ const sans = IBM_Plex_Sans_Thai({
   weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-sans",
+});
+
+// Heavy rounded-geometric Thai display face for headings (design/mockup-spec.md, typography cues).
+const display = Prompt({
+  subsets: ["thai", "latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
+  variable: "--font-display",
+});
+
+// Handwritten English script, only for the 3–4 decorative accents.
+const script = Allura({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+  variable: "--font-script",
 });
 
 export const metadata: Metadata = {
@@ -31,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="th" className={sans.variable}>
+    <html lang="th" className={`${sans.variable} ${display.variable} ${script.variable}`}>
       <body className="font-sans">{children}</body>
     </html>
   );
