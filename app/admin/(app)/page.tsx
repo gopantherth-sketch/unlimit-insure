@@ -5,7 +5,8 @@ import { countLeadsByStatus, leadStatuses, listLeads } from "@/lib/db/leads";
 import { listProductsWithVersions } from "@/lib/db/products-admin";
 import { cx } from "@/lib/cx";
 
-export default async function AdminDashboard() {
+export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ denied?: string; ok?: string }> }) {
+  const { denied, ok } = await searchParams;
   const db = await getDb();
   const [counts, recent, products] = await Promise.all([countLeadsByStatus(db), listLeads(db, { limit: 8 }), listProductsWithVersions(db)]);
   const versions = products.flatMap((p) => p.versions);
@@ -20,6 +21,12 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-bold">ภาพรวม</h1>
+      {denied === "owner" && (
+        <p role="alert" className="rounded-xl bg-warning-50 p-3 text-sm font-medium text-warning-700">หน้านั้นสำหรับเจ้าของเท่านั้น</p>
+      )}
+      {ok === "password" && (
+        <p role="status" className="rounded-xl bg-success-50 p-3 text-sm font-medium text-success-700">เปลี่ยนรหัสผ่านแล้ว</p>
+      )}
       <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {tiles.map((t) => (
           <li key={t.label}>

@@ -7,6 +7,7 @@ import { formatDateTime, sourceStatusLabel, sourceStatusTone, versionStatusLabel
 import { buttonClass } from "@/components/ui/button";
 import { getDb } from "@/lib/db/client";
 import { getProductWithVersions } from "@/lib/db/products-admin";
+import { requireAdmin } from "@/lib/server/admin-auth";
 import type { VersionStatus } from "@/lib/db/schema";
 import { formatDate } from "@/lib/format";
 import { cx } from "@/lib/cx";
@@ -19,7 +20,8 @@ const errors: Record<string, string> = {
 };
 
 export default async function ProductAdminPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> }) {
-  const [{ id }, { error }] = await Promise.all([params, searchParams]);
+  const [{ id }, { error }, who] = await Promise.all([params, searchParams, requireAdmin()]);
+  const isOwner = who.role === "owner";
   const product = await getProductWithVersions(await getDb(), id);
   if (!product) notFound();
 
@@ -66,6 +68,10 @@ export default async function ProductAdminPage({ params, searchParams }: { param
             </pre>
           </details>
 
+          {!isOwner && (
+            <p className="mt-5 rounded-xl bg-navy-50 p-3 text-sm text-navy-600">การตรวจสอบแหล่งข้อมูลและการเผยแพร่ทำได้โดยเจ้าของเท่านั้น</p>
+          )}
+          {isOwner && (
           <div className="mt-5 grid gap-4 lg:grid-cols-2">
             <form action={verifyVersion} className="space-y-3 rounded-2xl border border-navy-100 p-4">
               <p className="text-sm font-semibold">บันทึกการตรวจสอบกับเอกสาร</p>
@@ -100,6 +106,7 @@ export default async function ProductAdminPage({ params, searchParams }: { param
               <p className="text-xs text-navy-400">เวอร์ชันที่เผยแพร่แล้วไม่ควรแก้ไข ให้สร้างเวอร์ชันใหม่แทน</p>
             </div>
           </div>
+          )}
         </section>
       ))}
     </div>

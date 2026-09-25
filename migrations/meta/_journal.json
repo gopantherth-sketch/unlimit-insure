@@ -15,6 +15,13 @@
       "when": 1790361024158,
       "tag": "0001_event_counts",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1790363559913,
+      "tag": "0002_admin_users",
+      "breakpoints": true
     }
   ]
 }

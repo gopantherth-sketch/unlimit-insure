@@ -71,8 +71,8 @@ describe("leads", () => {
 
   it("tracks status changes and notes", async () => {
     const { id } = await createLead(db, input);
-    await updateLeadStatus(db, id, "contacted", "admin");
-    await addLeadNote(db, id, "โทรแล้ว", "admin");
+    await updateLeadStatus(db, id, "contacted", { name: "admin", userId: null });
+    await addLeadNote(db, id, "โทรแล้ว", { name: "admin", userId: null });
     const got = await getLead(db, id);
     expect(got?.lead.status).toBe("contacted");
     expect(got?.activities.map((a) => a.type).sort()).toEqual(["created", "note", "status_changed"]);

@@ -21,6 +21,7 @@ Leads and consent are stored in D1; the admin manages leads and product versions
 | Coverage simulator | Done (rule-based, mock rules) |
 | Insurance Lab (5 articles + tools) | Done |
 | Admin: leads, product versions, source verification | Done (V1) |
+| Multi-user admin (owner/staff), lead assignment, per-user activity log | Done |
 | Privacy policy / terms | Draft, pending legal review |
 | My Garage | Static preview only (V2) |
 

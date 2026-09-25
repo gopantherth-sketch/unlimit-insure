@@ -8,6 +8,13 @@ Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare
 - D1 `unlimit-insure`: `10bc6601-2379-4a44-b8ee-8ff48d897fcb` (APAC), migration `0000_init` applied, MOCK catalogue seeded
 - Admin secrets: set with `wrangler secret put` (see step 4 below)
 
+## Admin accounts
+
+- **Break-glass owner**: `ADMIN_USERNAME` / `ADMIN_PASSWORD` secrets. Always an owner, not stored in D1, so the team can't be locked out. Use it to create personal accounts, then keep it for emergencies. Rotating `ADMIN_PASSWORD` ends its sessions.
+- **Personal accounts**: `/admin/users` (owners only). Roles: **owner** (manage users, verify and publish products) and **staff** (leads, import drafts). New and reset passwords are temporary; the user must set their own at next login. Disabling a user or resetting their password ends their sessions immediately.
+- **Signing key**: sessions are signed with `SESSION_SECRET` (optional secret, 32+ characters) or, if unset, `ADMIN_PASSWORD`. Setting `SESSION_SECRET` means rotating the break-glass password no longer signs out personal accounts. `npx wrangler secret put SESSION_SECRET`.
+- **Passwords** are PBKDF2-SHA256, 100,000 iterations (the Workers maximum), per-user salt. On the Workers Free plan (10 ms CPU per request) a personal-account login can exceed the CPU limit; if logins fail with "exceeded CPU", move to Workers Paid or ask the PM to lower the iteration count (stored per hash, so existing passwords keep working). The break-glass login doesn't hash and is unaffected.
+
 ## Automatic deploys from GitHub
 
 The Worker is connected to `gopantherth-sketch/unlimit-insure`. In the dashboard (Workers & Pages → unlimit-insure → Settings → Build) set:
@@ -16,7 +23,7 @@ The Worker is connected to `gopantherth-sketch/unlimit-insure`. In the dashboard
 - Deploy command: `npx opennextjs-cloudflare deploy`
 - Production branch: `main`
 
-Git builds do **not** apply D1 migrations. When a change adds a file under `migrations/`, run `npm run db:migrate:remote` before (or right after) the push that needs it.
+Git builds do **not** apply D1 migrations. Pending as of this commit: `0001_event_counts`, `0002_admin_users` — run `npm run db:migrate:remote` (applies whatever is pending). When a change adds a file under `migrations/`, run `npm run db:migrate:remote` before (or right after) the push that needs it.
 
 ## Local
 

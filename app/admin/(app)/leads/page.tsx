@@ -2,26 +2,58 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { formatDateTime, leadStatusLabel, leadStatusTone } from "@/components/admin/labels";
 import { getDb } from "@/lib/db/client";
+import { listAdminUsers } from "@/lib/db/admin-users";
 import { leadStatuses, listLeads } from "@/lib/db/leads";
+import { requireAdmin } from "@/lib/server/admin-auth";
 import type { LeadStatus } from "@/lib/db/schema";
 import { cx } from "@/lib/cx";
 
 export const metadata: Metadata = { title: "ลีด" };
 
-export default async function LeadsPage({ searchParams }: { searchParams: Promise<{ status?: string }> }) {
-  const { status: raw } = await searchParams;
+type Scope = "all" | "mine" | "unassigned";
+
+export default async function LeadsPage({ searchParams }: { searchParams: Promise<{ status?: string; scope?: string }> }) {
+  const who = await requireAdmin();
+  const { status: raw, scope: rawScope } = await searchParams;
   const status = leadStatuses.find((s) => s === raw) as LeadStatus | undefined;
-  const leads = await listLeads(await getDb(), { status });
+  const scope: Scope = rawScope === "mine" && who.userId ? "mine" : rawScope === "unassigned" ? "unassigned" : "all";
+  const db = await getDb();
+  const [leads, users] = await Promise.all([
+    listLeads(db, { status, assignedTo: scope === "mine" ? (who.userId ?? undefined) : scope === "unassigned" ? "unassigned" : undefined }),
+    listAdminUsers(db),
+  ]);
+  const userName = (id: string | null) => (id ? (users.find((u) => u.id === id)?.name ?? "—") : "—");
+  const href = (next: { status?: LeadStatus; scope?: Scope }) => {
+    const sp = new URLSearchParams();
+    const st = "status" in next ? next.status : status;
+    const sc = next.scope ?? scope;
+    if (st) sp.set("status", st);
+    if (sc !== "all") sp.set("scope", sc);
+    const q = sp.toString();
+    return `/admin/leads${q ? `?${q}` : ""}`;
+  };
+  const scopes: { id: Scope; label: string }[] = [
+    { id: "all", label: "ทุกคน" },
+    ...(who.userId ? [{ id: "mine" as Scope, label: "ของฉัน" }] : []),
+    { id: "unassigned", label: "ยังไม่มอบหมาย" },
+  ];
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">ลีด</h1>
+      <nav aria-label="กรองตามผู้รับผิดชอบ" className="flex flex-wrap gap-2 text-sm">
+        {scopes.map((sc) => (
+          <Link key={sc.id} href={href({ scope: sc.id })} aria-current={scope === sc.id ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", scope === sc.id ? "border-brand-600 bg-brand-600 text-white" : "border-navy-200 bg-white")}>
+            {sc.label}
+          </Link>
+        ))}
+      </nav>
       <nav aria-label="กรองตามสถานะ" className="flex flex-wrap gap-2 text-sm">
-        <Link href="/admin/leads" aria-current={!status ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", !status ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
+        <Link href={href({ status: undefined })} aria-current={!status ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", !status ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
           ทั้งหมด
         </Link>
         {leadStatuses.map((s) => (
-          <Link key={s} href={`/admin/leads?status=${s}`} aria-current={status === s ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", status === s ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
+          <Link key={s} href={href({ status: s })} aria-current={status === s ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", status === s ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
             {leadStatusLabel[s]}
           </Link>
         ))}
@@ -34,6 +66,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
               <th scope="col" className="px-4 py-3 font-medium">ชื่อ</th>
               <th scope="col" className="px-4 py-3 font-medium">ติดต่อทาง</th>
               <th scope="col" className="px-4 py-3 font-medium">แผนที่สนใจ</th>
+              <th scope="col" className="px-4 py-3 font-medium">ผู้รับผิดชอบ</th>
               <th scope="col" className="px-4 py-3 font-medium">สถานะ</th>
               <th scope="col" className="px-4 py-3 font-medium">รับเมื่อ</th>
             </tr>
@@ -41,7 +74,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           <tbody className="divide-y divide-navy-100">
             {leads.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-navy-500">ไม่มีลีดในสถานะนี้</td>
+                <td colSpan={7} className="px-4 py-8 text-center text-navy-500">ไม่มีลีดตามตัวกรองนี้</td>
               </tr>
             )}
             {leads.map((l) => (
@@ -52,6 +85,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
                 <td className="px-4 py-3 font-medium">{l.name}</td>
                 <td className="px-4 py-3">{l.preferredChannel === "line" ? `LINE ${l.lineId ?? ""}` : "โทรศัพท์"}</td>
                 <td className="px-4 py-3 text-navy-600">{l.context.selectedPlanIds.length || "—"}</td>
+                <td className="px-4 py-3 text-navy-600">{userName(l.assignedTo)}</td>
                 <td className="px-4 py-3">
                   <span className={cx("rounded-full px-2.5 py-0.5 text-xs font-semibold", leadStatusTone[l.status])}>{leadStatusLabel[l.status]}</span>
                 </td>

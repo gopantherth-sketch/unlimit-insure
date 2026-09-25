@@ -92,6 +92,30 @@ export const productVersions = sqliteTable(
   ],
 );
 
+export type AdminRole = "owner" | "staff";
+
+/**
+ * Admin accounts. The ADMIN_USERNAME / ADMIN_PASSWORD secret login is a separate break-glass owner
+ * and is not stored here. `session_version` is bumped on password reset or disable, which ends
+ * every existing session for that user.
+ */
+export const adminUsers = sqliteTable("admin_users", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  /** Lower-case. */
+  username: text("username").notNull().unique(),
+  /** pbkdf2-sha256$<iterations>$<salt b64>$<hash b64> */
+  passwordHash: text("password_hash").notNull(),
+  role: text("role").$type<AdminRole>().notNull().default("staff"),
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
+  mustChangePassword: integer("must_change_password", { mode: "boolean" }).notNull().default(false),
+  sessionVersion: integer("session_version").notNull().default(1),
+  lastLoginAt: text("last_login_at"),
+  createdBy: text("created_by"),
+  createdAt: createdAt(),
+  updatedAt: text("updated_at").notNull().default(now),
+});
+
 export type LeadStatus = "new" | "contacted" | "quoted" | "won" | "lost";
 
 export interface LeadContextJson {
@@ -115,11 +139,12 @@ export const leads = sqliteTable(
     question: text("question"),
     status: text("status").$type<LeadStatus>().notNull().default("new"),
     context: text("context", { mode: "json" }).$type<LeadContextJson>().notNull(),
+    /** admin_users.id of the person responsible, or null. */
     assignedTo: text("assigned_to"),
     createdAt: createdAt(),
     updatedAt: text("updated_at").notNull().default(now),
   },
-  (t) => [index("leads_status_idx").on(t.status), index("leads_created_idx").on(t.createdAt)],
+  (t) => [index("leads_status_idx").on(t.status), index("leads_created_idx").on(t.createdAt), index("leads_assigned_idx").on(t.assignedTo)],
 );
 
 export type ConsentPurpose = "contact" | "marketing";
@@ -144,9 +169,12 @@ export const leadActivities = sqliteTable(
   {
     id: text("id").primaryKey(),
     leadId: text("lead_id").notNull().references(() => leads.id),
-    type: text("type").$type<"created" | "status_changed" | "note">().notNull(),
+    type: text("type").$type<"created" | "status_changed" | "note" | "assigned">().notNull(),
     note: text("note"),
+    /** Display name at the time of the action ("customer" for the lead form). */
     actor: text("actor").notNull(),
+    /** admin_users.id, or null for the customer and the break-glass owner login. */
+    actorUserId: text("actor_user_id"),
     createdAt: createdAt(),
   },
   (t) => [index("lead_activities_lead_idx").on(t.leadId)],

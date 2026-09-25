@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { addNote, changeLeadStatus } from "@/app/admin/(app)/actions";
+import { addNote, changeAssignee, changeLeadStatus } from "@/app/admin/(app)/actions";
 import { formatDateTime, leadStatusLabel, leadStatusTone } from "@/components/admin/labels";
 import { buttonClass } from "@/components/ui/button";
 import { getDb } from "@/lib/db/client";
+import { listAdminUsers } from "@/lib/db/admin-users";
 import { getLead, leadStatuses } from "@/lib/db/leads";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 import { getCatalog } from "@/lib/server/catalog";
@@ -15,13 +16,16 @@ import { cx } from "@/lib/cx";
 
 export const metadata: Metadata = { title: "รายละเอียดลีด" };
 
-export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const [data, catalog] = await Promise.all([getLead(await getDb(), id), getCatalog()]);
+export default async function LeadDetailPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> }) {
+  const [{ id }, { error }] = await Promise.all([params, searchParams]);
+  const db = await getDb();
+  const [data, catalog, users] = await Promise.all([getLead(db, id), getCatalog(), listAdminUsers(db)]);
   if (!data) notFound();
   const { lead, consents, activities } = data;
   const ctx = lead.context;
   const vehicle = ctx.vehicle ? resolveVehicle(catalog, ctx.vehicle) : null;
+  const assignee = users.find((u) => u.id === lead.assignedTo) ?? null;
+  const assignable = users.filter((u) => u.active || u.id === lead.assignedTo);
   const plan = (pid: string) => catalog.products.find((p) => p.id === pid)?.name ?? pid;
   const planList = (ids: string[]) => (ids.length ? ids.map(plan).join(", ") : "—");
 
@@ -43,7 +47,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <h1 className="text-2xl font-bold">{lead.name}</h1>
         <span className={cx("rounded-full px-3 py-1 text-xs font-semibold", leadStatusTone[lead.status])}>{leadStatusLabel[lead.status]}</span>
         <span className="font-mono text-xs text-navy-400">{lead.reference}</span>
+        <span className="text-sm text-navy-500">ผู้รับผิดชอบ: {assignee ? assignee.name : "ยังไม่มี"}</span>
       </div>
+      {error === "assignee" && (
+        <p role="alert" className="rounded-xl bg-danger-50 p-3 text-sm font-medium text-danger-600">มอบหมายไม่ได้: ผู้ใช้นี้ถูกปิดการใช้งาน</p>
+      )}
 
       <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div className="space-y-6">
@@ -102,6 +110,21 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </select>
             <button type="submit" className={buttonClass("primary", "sm")}>บันทึกสถานะ</button>
           </form>
+          <form action={changeAssignee} className="card space-y-3 p-5">
+            <input type="hidden" name="id" value={lead.id} />
+            <label htmlFor="assignee" className="field-label">ผู้รับผิดชอบ</label>
+            <select id="assignee" name="assignee" defaultValue={lead.assignedTo ?? ""} className="field-select">
+              <option value="">— ยังไม่มอบหมาย —</option>
+              {assignable.map((u) => (
+                <option key={u.id} value={u.id} disabled={!u.active}>
+                  {u.name}
+                  {!u.active ? " (ปิดใช้งาน)" : ""}
+                </option>
+              ))}
+            </select>
+            {users.length === 0 && <p className="text-xs text-navy-400">ยังไม่มีผู้ใช้ในระบบ เพิ่มได้ที่หน้า ผู้ใช้</p>}
+            <button type="submit" className={buttonClass("secondary", "sm")}>บันทึกผู้รับผิดชอบ</button>
+          </form>
           <form action={addNote} className="card space-y-3 p-5">
             <input type="hidden" name="id" value={lead.id} />
             <label htmlFor="note" className="field-label">เพิ่มบันทึก</label>
@@ -113,7 +136,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <ol className="mt-3 space-y-3 text-sm">
               {activities.map((a) => (
                 <li key={a.id} className="border-l-2 border-navy-100 pl-3">
-                  <p className="font-medium">{a.type === "created" ? "รับลีด" : a.type === "status_changed" ? `สถานะ: ${a.note}` : a.note}</p>
+                  <p className="font-medium">
+                    {a.type === "created" ? "รับลีด" : a.type === "status_changed" ? `สถานะ: ${a.note}` : a.type === "assigned" ? `มอบหมายให้: ${a.note}` : a.note}
+                  </p>
                   <p className="text-xs text-navy-400">
                     {a.actor} · {formatDateTime(a.createdAt)}
                   </p>

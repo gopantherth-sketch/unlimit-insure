@@ -1,6 +1,6 @@
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, isNull, sql } from "drizzle-orm";
 import type { Database } from "@/lib/db/client";
-import { consents, leadActivities, leads, type LeadContextJson, type LeadStatus } from "@/lib/db/schema";
+import { adminUsers, consents, leadActivities, leads, type LeadContextJson, type LeadStatus } from "@/lib/db/schema";
 
 // Consent wording is versioned: the exact text shown is stored with each consent row.
 export const CONSENT_WORDING = {
@@ -10,6 +10,12 @@ export const CONSENT_WORDING = {
 } as const;
 
 export const leadStatuses: LeadStatus[] = ["new", "contacted", "quoted", "won", "lost"];
+
+/** Who did something to a lead. `userId` is null for the break-glass env owner. */
+export interface Actor {
+  name: string;
+  userId: string | null;
+}
 
 export interface NewLead {
   name: string;
@@ -51,14 +57,20 @@ export async function createLead(db: Database, input: NewLead): Promise<{ id: st
       wordingVersion: CONSENT_WORDING.version,
     },
   ]);
-  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "created", actor: "customer" });
+  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "created", actor: "customer", actorUserId: null });
   return { id, reference };
 }
 
-export async function listLeads(db: Database, opts: { status?: LeadStatus; limit?: number } = {}) {
+export async function listLeads(
+  db: Database,
+  opts: { status?: LeadStatus; assignedTo?: string | "unassigned"; limit?: number } = {},
+) {
+  const conds = [
+    opts.status ? eq(leads.status, opts.status) : undefined,
+    opts.assignedTo === "unassigned" ? isNull(leads.assignedTo) : opts.assignedTo ? eq(leads.assignedTo, opts.assignedTo) : undefined,
+  ].filter((c) => c !== undefined);
   const q = db.select().from(leads);
-  const filtered = opts.status ? q.where(eq(leads.status, opts.status)) : q;
-  return filtered.orderBy(desc(leads.createdAt)).limit(opts.limit ?? 200);
+  return (conds.length ? q.where(and(...conds)) : q).orderBy(desc(leads.createdAt)).limit(opts.limit ?? 200);
 }
 
 export async function countLeadsByStatus(db: Database): Promise<Record<LeadStatus, number>> {
@@ -78,16 +90,41 @@ export async function getLead(db: Database, id: string) {
   return { lead, consents: consentRows, activities: activityRows };
 }
 
-export async function updateLeadStatus(db: Database, id: string, status: LeadStatus, actor: string): Promise<boolean> {
+export async function updateLeadStatus(db: Database, id: string, status: LeadStatus, actor: Actor): Promise<boolean> {
   const [current] = await db.select({ status: leads.status }).from(leads).where(eq(leads.id, id)).limit(1);
   if (!current) return false;
   if (current.status === status) return true;
-  await db.update(leads).set({ status, updatedAt: new Date().toISOString() }).where(and(eq(leads.id, id)));
-  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "status_changed", note: `${current.status} → ${status}`, actor });
+  await db.update(leads).set({ status, updatedAt: new Date().toISOString() }).where(eq(leads.id, id));
+  await db.insert(leadActivities).values({
+    id: crypto.randomUUID(),
+    leadId: id,
+    type: "status_changed",
+    note: `${current.status} → ${status}`,
+    actor: actor.name,
+    actorUserId: actor.userId,
+  });
   return true;
 }
 
-export async function addLeadNote(db: Database, id: string, note: string, actor: string): Promise<void> {
-  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "note", note, actor });
+export async function addLeadNote(db: Database, id: string, note: string, actor: Actor): Promise<void> {
+  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "note", note, actor: actor.name, actorUserId: actor.userId });
   await db.update(leads).set({ updatedAt: new Date().toISOString() }).where(eq(leads.id, id));
+}
+
+export type AssignResult = "ok" | "unchanged" | "lead_not_found" | "user_not_found";
+
+/** Assign a lead to an active admin user, or unassign with null. Logged as an activity. */
+export async function assignLead(db: Database, id: string, userId: string | null, actor: Actor): Promise<AssignResult> {
+  const [lead] = await db.select({ assignedTo: leads.assignedTo }).from(leads).where(eq(leads.id, id)).limit(1);
+  if (!lead) return "lead_not_found";
+  if ((lead.assignedTo ?? null) === userId) return "unchanged";
+  let label = "ไม่มีผู้รับผิดชอบ";
+  if (userId) {
+    const [u] = await db.select({ name: adminUsers.name, active: adminUsers.active }).from(adminUsers).where(eq(adminUsers.id, userId)).limit(1);
+    if (!u || !u.active) return "user_not_found";
+    label = u.name;
+  }
+  await db.update(leads).set({ assignedTo: userId, updatedAt: new Date().toISOString() }).where(eq(leads.id, id));
+  await db.insert(leadActivities).values({ id: crypto.randomUUID(), leadId: id, type: "assigned", note: label, actor: actor.name, actorUserId: actor.userId });
+  return "ok";
 }
