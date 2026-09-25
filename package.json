@@ -18,7 +18,8 @@
     "db:seed:build": "tsx scripts/build-seed.ts",
     "db:seed:local": "wrangler d1 execute unlimit-insure --local --file seed/mock-catalog.sql",
     "db:seed:remote": "wrangler d1 execute unlimit-insure --remote --file seed/mock-catalog.sql",
-    "import:template": "tsx scripts/build-import-template.ts"
+    "import:template": "tsx scripts/build-import-template.ts",
+    "content:verify": "tsx scripts/build-verify-list.ts"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20",
