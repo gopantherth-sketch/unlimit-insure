@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowUpRight, Minus, Plus } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight, Minus, Plus, Scale } from "lucide-react";
 import { summarizeDifference } from "@/lib/compare";
 import { formatBaht } from "@/lib/format";
 import type { Quote } from "@/lib/types";
@@ -15,22 +15,29 @@ export function DifferenceSummary({ quotes, labels }: Props) {
   const baseLabel = labels[0] ?? base.product.name;
 
   return (
-    <section aria-labelledby="diff-title" className="card p-5 sm:p-6">
-      <h2 id="diff-title" className="text-xl font-bold">
-        ต่างกันตรงไหน?
-      </h2>
-      <p className="mt-1 text-sm text-navy-500">
-        เทียบกับ {baseLabel} ({base.product.name}) — สรุปจากข้อมูลความคุ้มครองของแต่ละแพ็กเกจ
-      </p>
-      <div className="mt-5 grid gap-4 md:grid-cols-2">
+    <section aria-labelledby="diff-title" className="rounded-xl2 border border-brand-100 bg-gradient-to-br from-brand-50 via-white to-white p-5 shadow-card sm:p-8">
+      <div className="flex items-start gap-3">
+        <span aria-hidden className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-brand-600 shadow-card sm:inline-flex">
+          <Scale className="h-6 w-6" strokeWidth={1.5} />
+        </span>
+        <div>
+          <h2 id="diff-title" className="text-[24px] font-bold leading-tight text-navy-900 sm:text-[28px]">
+            ต่างกันตรงไหน?
+          </h2>
+          <p className="mt-1.5 text-[15px] text-navy-500">
+            เทียบกับ {baseLabel} ({base.product.name}) สรุปจากข้อมูลความคุ้มครองของแต่ละแพ็กเกจ
+          </p>
+        </div>
+      </div>
+      <div className="mt-6 grid gap-4 md:grid-cols-2">
         {others.map((other, i) => {
           const d = summarizeDifference(base, other);
           const label = labels[i + 1] ?? other.product.name;
           const cheaper = d.premiumDelta < 0;
           const same = d.premiumDelta === 0;
           return (
-            <div key={other.id} className="rounded-2xl border border-navy-100 bg-canvas p-4 sm:p-5">
-              <h3 className="flex items-start gap-2 text-base font-bold leading-snug">
+            <div key={other.id} className="rounded-2xl border border-navy-100 bg-white p-4 shadow-card sm:p-5">
+              <h3 className="flex items-start gap-2.5 text-[17px] font-semibold leading-snug text-navy-900">
                 {same ? (
                   <Minus aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-navy-400" />
                 ) : cheaper ? (

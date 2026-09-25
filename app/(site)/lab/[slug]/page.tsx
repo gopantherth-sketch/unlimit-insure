@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { LabTool } from "@/components/lab/LabTool";
 import { TrackView } from "@/components/TrackView";
 import { buttonClass } from "@/components/ui/button";
+import { PageHero } from "@/components/ui/PageHero";
 import { glossary } from "@/content/glossary";
 import { labArticles } from "@/content/lab";
 
@@ -25,25 +26,35 @@ export default async function LabArticlePage({ params }: { params: Params }) {
   if (!article) notFound();
 
   return (
-    <div className="bg-canvas pb-16">
+    <article aria-labelledby="article-title" className="bg-canvas pb-16">
       <TrackView name="lab_viewed" dim={article.slug} />
-      <article className="container-page max-w-4xl py-10 sm:py-14">
-        <Link href="/lab" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700">
-          <ArrowLeft aria-hidden className="h-4 w-4" />
-          Insurance Lab
-        </Link>
-        <h1 className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">{article.title}</h1>
-        <p className="mt-3 text-lg text-navy-500">{article.summary}</p>
-        <p className="mt-2 text-sm text-navy-400">อ่าน {article.readMinutes} นาที</p>
-
-        <div className="mt-8">
+      <PageHero
+        id="article-title"
+        narrow
+        before={
+          <Link href="/lab" className="link-arrow min-h-[44px]">
+            <ArrowLeft aria-hidden className="h-4 w-4" />
+            Insurance Lab
+          </Link>
+        }
+        eyebrow="Insurance Lab"
+        title={article.title}
+        body={article.summary}
+      >
+        <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-navy-400">
+          <Clock aria-hidden className="h-4 w-4" />
+          อ่าน {article.readMinutes} นาที
+        </p>
+      </PageHero>
+      <div className="container-page max-w-4xl">
+        <div>
           <LabTool tool={article.tool} />
         </div>
 
         <div className="mt-10 space-y-8">
           {article.sections.map((s) => (
             <section key={s.heading}>
-              <h2 className="text-xl font-bold sm:text-2xl">{s.heading}</h2>
+              <h2 className="text-[22px] font-bold leading-snug text-navy-900 sm:text-[26px]">{s.heading}</h2>
               {s.body.map((p) => (
                 <p key={p} className="mt-3 text-[17px] leading-[1.85] text-navy-700">
                   {p}
@@ -62,7 +73,7 @@ export default async function LabArticlePage({ params }: { params: Params }) {
 
         {article.relatedTerms.length > 0 && (
           <section aria-labelledby="terms" className="mt-10">
-            <h2 id="terms" className="text-lg font-bold">
+            <h2 id="terms" className="text-lg font-bold text-navy-900">
               คำที่เกี่ยวข้อง
             </h2>
             <ul className="mt-3 flex flex-wrap gap-2">
@@ -76,14 +87,17 @@ export default async function LabArticlePage({ params }: { params: Params }) {
           </section>
         )}
 
-        <div className="card mt-10 flex flex-col items-start gap-4 bg-navy-900 p-6 text-white sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <p className="text-lg font-semibold">ดูความต่างนี้กับรถของคุณเอง</p>
-          <Link href="/quote" className={buttonClass("white", "md")}>
+        <div className="mt-12 flex flex-col items-start gap-4 rounded-xl2 border border-brand-100 bg-gradient-to-r from-brand-50 to-wash p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
+          <div>
+            <p className="font-display text-xl font-semibold text-navy-900">ดูความต่างนี้กับรถของคุณเอง</p>
+            <p className="mt-1 text-navy-600">เลือกรถแล้วลองเปรียบเทียบแผนสำหรับรถคันนั้น ยังไม่ต้องให้เบอร์โทร</p>
+          </div>
+          <Link href="/quote" className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>
             เพิ่มรถของคุณ
             <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>
         </div>
-      </article>
-    </div>
+      </div>
+    </article>
   );
 }

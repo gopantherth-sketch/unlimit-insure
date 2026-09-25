@@ -12,7 +12,7 @@ export interface PriorityDefinition {
 
 export const priorityDefinitions: PriorityDefinition[] = [
   { id: "dealer", label: "ซ่อมศูนย์", hint: "ซ่อมที่ศูนย์บริการของยี่ห้อรถ", glossaryKey: "dealerRepair" },
-  { id: "lowPremium", label: "ค่าเบี้ยประหยัด", hint: "เบี้ยใกล้เคียงแพ็กเกจที่ถูกที่สุดในประเภทเดียวกัน", glossaryKey: "premium" },
+  { id: "lowPremium", label: "ค่าเบี้ยประหยัด", hint: "เบี้ยต่ำเมื่อเทียบกับแผนประเภทเดียวกัน", glossaryKey: "premium" },
   { id: "noExcess", label: "ไม่มีค่าเสียหายส่วนแรก", hint: "ไม่ต้องจ่ายเองก่อนเมื่อเคลม", glossaryKey: "excess" },
   { id: "flood", label: "คุ้มครองน้ำท่วม", hint: "รถเสียหายจากน้ำท่วม", glossaryKey: "flood" },
   { id: "replacementCar", label: "รถใช้ระหว่างซ่อม", hint: "มีรถให้ใช้ระหว่างรถเข้าซ่อม", glossaryKey: "replacementCar" },

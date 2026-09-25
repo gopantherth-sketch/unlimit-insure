@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CarFront, ChevronRight } from "lucide-react";
+import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
 import { getCatalog } from "@/lib/server/catalog";
 
@@ -15,20 +17,33 @@ export default async function InsuranceIndexPage() {
   const withCopy = new Set(modelPages.map((m) => m.modelId));
   return (
     <div className="bg-canvas pb-16">
-      <div className="container-page py-10 sm:py-14">
-        <h1 className="text-3xl font-bold sm:text-4xl">ประกันรถยนต์ตามรุ่นรถ</h1>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <PageHero
+        id="models-title"
+        eyebrow="Car models"
+        title="ประกันรถยนต์ตามรุ่นรถ"
+        body="เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณา และตัวอย่างแพ็กเกจสำหรับรถรุ่นนั้น"
+      />
+      <div className="container-page">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {catalog.brands.map((b) => {
             const models = catalog.models.filter((m) => m.brandId === b.id && withCopy.has(m.id));
             if (models.length === 0) return null;
             return (
-              <section key={b.id} className="card p-5">
-                <h2 className="text-lg font-bold">{b.name} <span className="text-sm font-normal text-navy-400">{b.nameTh}</span></h2>
-                <ul className="mt-3 space-y-1.5">
+              <section key={b.id} className="card rounded-xl2 p-5 sm:p-6">
+                <h2 className="flex items-center gap-3 text-lg font-bold text-navy-900">
+                  <span aria-hidden className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-wash text-brand-600">
+                    <CarFront className="h-5 w-5" strokeWidth={1.5} />
+                  </span>
+                  <span>
+                    {b.name} <span className="font-sans text-sm font-normal text-navy-400">{b.nameTh}</span>
+                  </span>
+                </h2>
+                <ul className="mt-3 divide-y divide-navy-100">
                   {models.map((m) => (
                     <li key={m.id}>
-                      <Link href={`/insurance/${b.id}/${m.id}`} className="font-medium text-brand-700 hover:underline">
+                      <Link href={`/insurance/${b.id}/${m.id}`} className="group flex min-h-[44px] items-center justify-between gap-2 py-2 font-medium text-navy-800 hover:text-brand-700">
                         ประกันรถ {b.name} {m.name}
+                        <ChevronRight aria-hidden className="h-4 w-4 shrink-0 text-brand-600 transition-transform group-hover:translate-x-0.5" />
                       </Link>
                     </li>
                   ))}

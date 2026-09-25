@@ -18,8 +18,8 @@ export function ExcessCalculator() {
   const share = damage > 0 ? (youPayEach / damage) * 100 : 0;
 
   return (
-    <div className="card p-5 sm:p-7">
-      <h2 className="text-xl font-bold">ลองคำนวณค่าเสียหายส่วนแรก</h2>
+    <div className="card rounded-xl2 p-5 sm:p-7">
+      <h2 className="text-[22px] font-bold text-navy-900">ลองคำนวณค่าเสียหายส่วนแรก</h2>
       <p className="mt-1 text-sm text-navy-500">ตัวเลขตัวอย่าง เพื่อให้เห็นภาพว่าใครจ่ายเท่าไร</p>
 
       <div className="mt-6 space-y-6">
@@ -34,7 +34,7 @@ export function ExcessCalculator() {
           <legend className="field-label">ค่าเสียหายส่วนแรกของแผน</legend>
           <div className="flex flex-wrap gap-2">
             {excessOptions.map((x) => (
-              <label key={x} className={cx("cursor-pointer rounded-full border px-4 py-2 text-sm font-medium has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-500", excess === x ? "border-brand-600 bg-brand-600 text-white" : "border-navy-200 text-navy-700")}>
+              <label key={x} className={cx("inline-flex min-h-[44px] cursor-pointer items-center rounded-full border px-4 text-sm font-medium has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-500", excess === x ? "border-brand-600 bg-brand-600 text-white" : "border-navy-200 text-navy-700")}>
                 <input type="radio" name={`${id}-excess`} className="sr-only" checked={excess === x} onChange={() => setExcess(x)} />
                 {x === 0 ? "ไม่มี" : formatBaht(x)}
               </label>

@@ -61,9 +61,15 @@ Numbers use `.tabular` (tabular figures).
 - **Comparison marks** (`components/ui/CoverMark.tsx`): filled green check circle / red ✕, with `role="img"` labels.
 - **Footer**: white, logo + tagline, 3 link columns + ติดต่อเรา (placeholders "[รอข้อมูล]") and non-interactive social circles; navy bottom bar with © line, legal links and the prototype disclaimer.
 - **Forms**: `.field-label`, `.field-select`, `.field-input` — 48 px height, 16 px text (prevents iOS zoom), visible focus ring `brand-500`.
-- **Option cards**: radio/checkbox visually replaced by cards; native input kept (`sr-only`) for keyboard and screen readers.
+- **Option cards** (quote wizard): radio/checkbox visually replaced by cards; native input kept (`sr-only`) for keyboard and screen readers. 2 px border, 48 px icon tile (`bg-wash` → solid `brand-600` when checked), Prompt label + hint. Mobile: horizontal row with the indicator at the end; `sm`+: vertical card, indicator top-right, ExplainButton beside it (outside the `<label>`). Icons per usage/priority are mapped in `QuoteWizard.tsx` (`usageIcon`, `priorityIcon`).
+- **Inner-page hero** (`components/ui/PageHero.tsx`): `wash → canvas` gradient band, optional back link, eyebrow (short English), Prompt H1 30 / 40 px, body 17–18 px. Used by Lab, Lab article, My Garage, claims, car-model pages and legal pages. Journey pages (results, compare, plan, advisor) use the same wash band inline.
+- **Journey steps** (`JourneySteps`): numbered circles joined by lines that fill blue as steps complete; labels from `md`; below `sm` a "label · ขั้นที่ n จาก 5" line (decorative, `aria-hidden`; the list keeps `aria-current="step"`).
+- **My Car chip**: `brand-50` rounded-2xl chip with car icon tile, "My Car" micro-label, vehicle + estimated value and a "เปลี่ยนรถ" link (≥ 44 px). Shown on wizard steps 2–3.
+- **Sticky action bar**: wizard actions stick to the bottom of the viewport on mobile (white/95 + blur, safe-area padding; back button icon-only with sr-only text) and sit as a normal card footer from `sm`. The results compare bar floats as a rounded-2xl `shadow-float` panel inset 8–16 px from the viewport edge.
+- **Plan card** (`InsuranceCard`): rounded-xl2; insurer mark + insurer/product name + type chip; premium in a `wash` panel (Prompt 32 px); four key rows at ≥ 44 px (booleans show the CoverMark next to the text); match badge + list in an outlined panel; source badge; primary "เลือกแพ็กเกจ" + secondary "ดูรายละเอียด" (rounded-xl) and the compare toggle (dashed outline → brand-50 when selected). The recommended card gets a blue ring and a "แนะนำสำหรับคุณ" pill on its top edge.
+- **Highlight panels** ("แนะนำสำหรับคุณ", "ต่างกันตรงไหน?", advisor context): rounded-xl2, `brand-100` border, `brand-50 → white` diagonal wash, white inner panels. Closing CTAs on inner pages use a `brand-50 → wash` horizontal wash instead of the old navy card.
 - **Cards**: `.card` — white, 1 px `navy-100` border, `shadow-card`.
-- **Tables**: horizontal scroll inside the card on mobile; sticky first column; group header rows; differing rows marked with a blue dot; best value in `success-700`.
+- **Tables**: horizontal scroll inside the card on mobile; sticky first column; `wash` header and group rows; boolean rows use CoverMark (compare table, Lab type matrix, plan detail); differing rows marked with a blue dot; best value in `success-700`.
 - **Explain button**: ⓘ icon (or icon + "อธิบายให้เข้าใจง่าย"), opens native `<dialog>`.
 - **Source badge**: mock (amber), pending (grey), verified (green).
 

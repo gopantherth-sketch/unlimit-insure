@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { Sparkles } from "lucide-react";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
 import { MatchBadge, MatchList } from "@/components/insurance/MatchSummary";
 import { VerifiedSource } from "@/components/insurance/VerifiedSource";
 import { buttonClass } from "@/components/ui/button";
+import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldByKey, insuranceTypeLabel } from "@/lib/coverageFields";
 import { formatNumber } from "@/lib/format";
 import type { Quote, RankedQuote } from "@/lib/types";
@@ -25,64 +27,83 @@ export function InsuranceCard({ quote, detailHref, selectHref, compareControl, h
   return (
     <article
       aria-labelledby={`plan-${quote.id}`}
-      className={cx("card flex flex-col p-5 sm:p-6", highlight && "ring-2 ring-brand-500")}
+      className={cx(
+        "card flex h-full flex-col rounded-xl2 p-5 transition-shadow hover:shadow-float sm:p-6",
+        highlight ? "border-brand-600 ring-1 ring-brand-600" : "border-navy-100",
+      )}
     >
+      {highlight && (
+        <p className="absolute -top-3 left-5 inline-flex items-center gap-1.5 rounded-full bg-brand-600 px-3 py-1 text-xs font-semibold text-white shadow-lift sm:left-6">
+          <Sparkles aria-hidden className="h-3.5 w-3.5" />
+          {highlight}
+        </p>
+      )}
+
       <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3">
+        <div className="flex min-w-0 items-center gap-3">
           <InsurerMark insurer={quote.insurer} />
-          <div>
-            <p className="text-sm text-navy-500">{quote.insurer.name}</p>
-            <h3 id={`plan-${quote.id}`} className="text-lg font-bold leading-snug">
+          <div className="min-w-0">
+            <p className="truncate text-[13px] text-navy-500">{quote.insurer.name}</p>
+            <h3 id={`plan-${quote.id}`} className="text-lg font-bold leading-snug text-navy-900">
               {quote.product.name}
             </h3>
           </div>
         </div>
-        <span className="shrink-0 rounded-full bg-navy-50 px-2.5 py-1 text-xs font-semibold text-navy-700">
+        <span className="shrink-0 rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700">
           {insuranceTypeLabel[quote.coverage.insuranceType]}
         </span>
       </div>
 
-      {highlight && <p className="mt-3 text-sm font-semibold text-brand-700">{highlight}</p>}
-
-      <div className="mt-5 flex items-baseline gap-1.5">
-        <span className="tabular text-3xl font-bold text-navy-900">{formatNumber(quote.premium)}</span>
-        <span className="text-sm text-navy-500">บาท / ปี</span>
+      <div className="mt-5 rounded-2xl bg-wash px-4 py-3.5">
+        <p className="text-xs font-medium text-navy-500">เบี้ยโดยประมาณ</p>
+        <p className="mt-0.5 flex items-baseline gap-1.5">
+          <span className="tabular font-display text-[32px] font-bold leading-none text-navy-900">{formatNumber(quote.premium)}</span>
+          <span className="text-sm text-navy-500">บาท / ปี</span>
+        </p>
+        <p className="mt-1.5 text-xs leading-snug text-navy-400">ราคาจริงขึ้นอยู่กับการพิจารณาของบริษัทประกัน</p>
       </div>
-      <p className="mt-0.5 text-xs text-navy-400">เบี้ยโดยประมาณ ราคาจริงขึ้นอยู่กับการพิจารณาของบริษัทประกัน</p>
 
-      <dl className="mt-5 divide-y divide-navy-100 border-y border-navy-100 text-[15px]">
+      <dl className="mt-4 divide-y divide-navy-100 text-[15px]">
         {CARD_FIELDS.map((key) => {
           const f = fieldByKey(key);
           if (!f) return null;
+          const v = f.value(quote);
           return (
-            <div key={key} className="flex items-center justify-between gap-3 py-2.5">
+            <div key={key} className="flex min-h-[44px] items-center justify-between gap-3 py-1.5">
               <dt className="flex items-center gap-0.5 text-navy-500">
                 {f.label}
                 {f.glossaryKey && <ExplainButton term={f.glossaryKey} />}
               </dt>
-              <dd className="tabular text-right font-semibold text-navy-800">{f.display(quote)}</dd>
+              <dd className="tabular flex items-center gap-1.5 text-right font-semibold text-navy-800">
+                {typeof v === "boolean" && (
+                  <span aria-hidden>
+                    <CoverMark covered={v} />
+                  </span>
+                )}
+                {f.display(quote)}
+              </dd>
             </div>
           );
         })}
       </dl>
 
       {match && match.total > 0 && (
-        <div className="mt-4 space-y-3">
+        <div className="mt-3 space-y-2.5 rounded-2xl border border-navy-100 p-3.5">
           <MatchBadge match={match} />
           <MatchList match={match} compact />
         </div>
       )}
 
-      <div className="mt-4">
+      <div className="mt-3">
         <VerifiedSource version={quote.version} />
       </div>
 
       <div className="mt-auto grid grid-cols-2 gap-2 pt-5">
-        <Link href={selectHref} className={buttonClass("primary", "md", "px-3")}>
+        <Link href={selectHref} className={buttonClass("primary", "md", "rounded-xl px-3")}>
           เลือกแพ็กเกจ
         </Link>
-        <Link href={detailHref} className={buttonClass("secondary", "md", "px-3")}>
-          รายละเอียด
+        <Link href={detailHref} className={buttonClass("secondary", "md", "rounded-xl px-3")}>
+          ดูรายละเอียด
         </Link>
         {compareControl && <div className="col-span-2 [&>*]:w-full">{compareControl}</div>}
       </div>

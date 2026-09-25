@@ -1,8 +1,8 @@
-import { CircleCheck, CircleX } from "lucide-react";
 import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
 import { CompareTable } from "@/components/insurance/CompareTable";
 import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { ExcessCalculator } from "@/components/lab/ExcessCalculator";
+import { CoverMark } from "@/components/ui/CoverMark";
 import { scenarioCopy } from "@/content/scenarios";
 import type { LabToolId } from "@/content/types";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
@@ -28,14 +28,14 @@ function TypeMatrix({ catalog }: { catalog: Catalog }) {
   const reps = pick(data.quotes, ["a-type1-dealer", "a-type2plus", "b-type3plus"]);
   const scenarios = scenarioRules.filter((r) => !r.evOnly);
   return (
-    <div className="card overflow-x-auto">
-      <table className="w-full min-w-[480px] text-[15px]">
+    <div className="card overflow-x-auto rounded-xl2">
+      <table className="w-full min-w-[420px] text-[15px]">
         <caption className="px-5 pt-5 text-left text-sm text-navy-500">ตัวอย่างจากแผนตัวอย่างสำหรับ {vehicleLabel(data.vehicle)}</caption>
         <thead>
-          <tr className="border-b border-navy-100">
-            <th scope="col" className="px-5 py-3 text-left text-sm font-medium text-navy-400">เหตุการณ์</th>
+          <tr className="bg-wash">
+            <th scope="col" className="px-5 py-3 text-left text-sm font-semibold text-navy-800">เหตุการณ์</th>
             {reps.map((q) => (
-              <th key={q.id} scope="col" className="px-4 py-3 text-center font-bold">
+              <th key={q.id} scope="col" className="px-4 py-3 text-center font-sans font-semibold text-navy-800">
                 {insuranceTypeLabel[q.coverage.insuranceType]}
               </th>
             ))}
@@ -49,11 +49,7 @@ function TypeMatrix({ catalog }: { catalog: Catalog }) {
                 const covered = simulate(s.id, q).covered;
                 return (
                   <td key={q.id} className="px-4 py-3 text-center">
-                    {covered ? (
-                      <CircleCheck aria-label="คุ้มครอง" className="mx-auto h-5 w-5 text-success-600" />
-                    ) : (
-                      <CircleX aria-label="ไม่คุ้มครอง" className="mx-auto h-5 w-5 text-navy-300" />
-                    )}
+                    <CoverMark covered={covered} />
                   </td>
                 );
               })}

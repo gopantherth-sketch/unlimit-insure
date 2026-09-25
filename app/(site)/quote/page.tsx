@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export default async function QuotePage() {
   const catalog = await getVehicleCatalog();
   return (
-    <div className="bg-canvas">
+    <div className="bg-gradient-to-b from-wash via-wash to-white">
       <Suspense>
         <QuoteWizard catalog={catalog} />
       </Suspense>

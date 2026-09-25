@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Check, ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, ShieldCheck } from "lucide-react";
 import { TrackView } from "@/components/TrackView";
 import { InsuranceCard } from "@/components/insurance/InsuranceCard";
 import { buttonClass } from "@/components/ui/button";
+import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
 import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
@@ -40,25 +41,23 @@ export default async function ModelPage({ params }: { params: Params }) {
   return (
     <div className="bg-canvas pb-16">
       <TrackView name="model_page_viewed" />
-      <div className="container-page py-10 sm:py-14">
-        <p className="eyebrow">{vehicle.brand.name}</p>
-        <h1 className="mt-3 text-3xl font-bold sm:text-4xl">{copy.h1}</h1>
-        <p className="mt-4 max-w-3xl text-lg leading-relaxed text-navy-600">{copy.intro}</p>
+      <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body={copy.intro}>
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Link href={withJourney("/quote", { ...journey, step: "use" })} className={buttonClass("primary", "lg")}>
+          <Link href={withJourney("/quote", { ...journey, step: "use" })} className={buttonClass("primary", "lg", "rounded-xl")}>
             เช็กประกันสำหรับ {vehicle.model.name}
             <ArrowRight aria-hidden className="h-5 w-5" />
           </Link>
-          <span className="text-sm text-navy-500">เลือกปีรถได้ในขั้นถัดไป · ไม่ต้องให้เบอร์โทร</span>
+          <span className="text-sm text-navy-500">เปลี่ยนปีรถได้ภายหลัง · ไม่ต้องให้เบอร์โทร</span>
         </div>
-
-        <section aria-labelledby="consider" className="mt-12">
+      </PageHero>
+      <div className="container-page">
+        <section aria-labelledby="consider" className="mt-4">
           <h2 id="consider" className="h-section">สิ่งที่ควรพิจารณาสำหรับรถรุ่นนี้</h2>
           <ul className="mt-6 grid gap-4 md:grid-cols-3">
             {copy.considerations.map((c) => (
-              <li key={c.title} className="card p-5">
-                <Check aria-hidden className="h-5 w-5 text-brand-600" />
-                <h3 className="mt-3 font-bold">{c.title}</h3>
+              <li key={c.title} className="card rounded-xl2 p-6">
+                <ShieldCheck aria-hidden className="h-10 w-10 text-brand-600" strokeWidth={1.5} />
+                <h3 className="mt-4 text-lg font-bold text-navy-900">{c.title}</h3>
                 <p className="mt-1.5 text-[15px] leading-relaxed text-navy-600">{c.body}</p>
               </li>
             ))}
@@ -69,7 +68,7 @@ export default async function ModelPage({ params }: { params: Params }) {
           <section aria-labelledby="examples" className="mt-12">
             <h2 id="examples" className="h-section">ตัวอย่างแพ็กเกจสำหรับ {vehicleLabel(vehicle)}</h2>
             <p className="mt-2 text-navy-500">
-              มูลค่ารถโดยประมาณ {formatBaht(vehicle.estimatedValue)} · เรียงตามเบี้ย เลือกสิ่งที่สำคัญกับคุณเพื่อดูว่าแผนไหนตรงที่สุด
+              มูลค่ารถโดยประมาณ {formatBaht(vehicle.estimatedValue)} · เรียงตามเบี้ย เลือกสิ่งที่สำคัญกับคุณ เพื่อดูว่าแผนไหนตรงกับคุณ
             </p>
             <ul className="mt-6 grid gap-5 md:grid-cols-3">
               {quotes.map((q) => (
@@ -89,7 +88,7 @@ export default async function ModelPage({ params }: { params: Params }) {
           <h2 id="model-faq" className="h-section">คำถามที่พบบ่อย</h2>
           <div className="mt-5 space-y-3">
             {copy.faq.map((f) => (
-              <details key={f.question} className="group card overflow-hidden">
+              <details key={f.question} className="group card overflow-hidden rounded-2xl">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
                   {f.question}
                   <ChevronDown aria-hidden className="h-5 w-5 shrink-0 text-navy-400 transition-transform group-open:rotate-180" />

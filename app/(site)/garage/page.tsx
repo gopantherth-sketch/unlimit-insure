@@ -1,8 +1,9 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CalendarClock, FileText, Headset, LifeBuoy, RefreshCw, ShieldCheck, TriangleAlert } from "lucide-react";
+import { CalendarClock, CarFront, FileText, Headset, LifeBuoy, RefreshCw, ShieldCheck, TriangleAlert } from "lucide-react";
 import { buttonClass } from "@/components/ui/button";
+import { PageHero } from "@/components/ui/PageHero";
 
 export const metadata: Metadata = seo("/garage");
 
@@ -37,15 +38,19 @@ const timeline = [
 export default function GaragePage() {
   return (
     <div className="bg-canvas pb-16">
-      <div className="container-page py-10 sm:py-14">
-        <div className="flex flex-wrap items-center gap-3">
-          <p className="eyebrow">My Garage</p>
-          <span className="rounded-full bg-warning-50 px-2.5 py-1 text-xs font-medium text-warning-700">ตัวอย่างหน้าจอ — เปิดใช้ในระยะถัดไป</span>
-        </div>
-        <h1 className="mt-3 text-3xl font-bold sm:text-4xl">รถและกรมธรรม์ของคุณ ในที่เดียว</h1>
-        <p className="mt-3 max-w-2xl text-lg text-navy-500">ก่อนซื้อเราอธิบาย หลังซื้อเรายังดูแล — ดูสถานะ เอกสาร ขั้นตอนเคลม และการต่ออายุได้ตลอด</p>
-
-        <div className="mt-10 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <PageHero
+        id="garage-title"
+        eyebrow={
+          <span className="flex flex-wrap items-center gap-3">
+            My Garage
+            <span className="rounded-full bg-warning-50 px-2.5 py-1 text-xs font-medium normal-case tracking-normal text-warning-700">ตัวอย่างหน้าจอ เปิดใช้ในระยะถัดไป</span>
+          </span>
+        }
+        title="รถและกรมธรรม์ของคุณ ในที่เดียว"
+        body="ก่อนซื้อเราอธิบาย หลังซื้อเรายังดูแล ดูสถานะ เอกสาร ขั้นตอนเคลม และการต่ออายุได้ในที่เดียว"
+      />
+      <div className="container-page">
+        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <section aria-labelledby="cars" className="space-y-4">
             <h2 id="cars" className="sr-only">
               รถของคุณ
@@ -54,10 +59,15 @@ export default function GaragePage() {
               const m = statusMeta[v.status];
               const Icon = m.icon;
               return (
-                <div key={v.name} className="card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
-                  <div>
-                    <p className="text-lg font-bold">{v.name}</p>
-                    <p className="text-sm text-navy-500">{v.plate}</p>
+                <div key={v.name} className="card flex flex-col gap-4 rounded-xl2 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+                  <div className="flex items-center gap-4">
+                    <span aria-hidden className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-wash text-brand-600">
+                      <CarFront className="h-6 w-6" strokeWidth={1.5} />
+                    </span>
+                    <div>
+                      <p className="font-display text-lg font-semibold text-navy-900">{v.name}</p>
+                      <p className="text-sm text-navy-500">{v.plate}</p>
+                    </div>
                   </div>
                   <div className="flex flex-col items-start gap-1 sm:items-end">
                     <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold ${m.tone}`}>
@@ -74,16 +84,16 @@ export default function GaragePage() {
                 const href = "href" in rest ? rest.href : undefined;
                 const inner = (
                   <>
-                    <Icon aria-hidden className="h-5 w-5 text-brand-600" />
+                    <Icon aria-hidden className="h-6 w-6 shrink-0 text-brand-600" strokeWidth={1.5} />
                     {label}
                   </>
                 );
                 return (
                   <li key={label}>
                     {href ? (
-                      <Link href={href} className="card flex h-full items-center gap-2.5 p-4 text-sm font-medium text-brand-700 hover:shadow-lift">{inner}</Link>
+                      <Link href={href} className="card flex h-full min-h-[64px] items-center gap-2.5 p-4 text-sm font-medium text-brand-700 hover:shadow-lift">{inner}</Link>
                     ) : (
-                      <span className="card flex h-full items-center gap-2.5 p-4 text-sm font-medium text-navy-700">{inner}</span>
+                      <span className="card flex h-full min-h-[64px] items-center gap-2.5 p-4 text-sm font-medium text-navy-700">{inner}</span>
                     )}
                   </li>
                 );
@@ -91,8 +101,8 @@ export default function GaragePage() {
             </ul>
           </section>
 
-          <section aria-labelledby="timeline" className="card p-6">
-            <h2 id="timeline" className="text-lg font-bold">
+          <section aria-labelledby="timeline" className="card rounded-xl2 p-6 sm:p-7 lg:self-start">
+            <h2 id="timeline" className="text-xl font-bold text-navy-900">
               สถานะการสมัคร
             </h2>
             <p className="mt-1 text-sm text-navy-500">บอกชัดว่าตอนนี้อยู่ขั้นไหน</p>
@@ -117,7 +127,7 @@ export default function GaragePage() {
         </div>
 
         <div className="mt-10 text-center">
-          <Link href="/quote" className={buttonClass("primary", "lg")}>
+          <Link href="/quote" className={buttonClass("primary", "lg", "rounded-xl px-8")}>
             เริ่มจากรถของคุณ
           </Link>
         </div>
