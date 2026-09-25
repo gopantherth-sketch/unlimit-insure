@@ -3,7 +3,6 @@
 import { CircleCheck, Loader2, LockKeyhole } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { buttonClass } from "@/components/ui/button";
-import { products } from "@/lib/data/products";
 import { readJourney } from "@/lib/journey";
 import { validateLead, type ContactChannel, type LeadContext, type LeadErrors } from "@/lib/leads";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
@@ -12,12 +11,12 @@ import { cx } from "@/lib/cx";
 interface Props {
   context: Omit<LeadContext, "viewedPlanIds" | "comparedPlanIds">;
   vehicleText: string | null;
+  planNames: Record<string, string>;
 }
 
-const planName = (id: string) => products.find((p) => p.id === id)?.name ?? id;
-
-export function AdvisorHandoff({ context, vehicleText }: Props) {
+export function AdvisorHandoff({ context, vehicleText, planNames }: Props) {
   const id = useId();
+  const planName = (pid: string) => planNames[pid] ?? pid;
   const [memory, setMemory] = useState({ viewedPlanIds: [] as string[], comparedPlanIds: [] as string[] });
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -27,7 +26,7 @@ export function AdvisorHandoff({ context, vehicleText }: Props) {
   const [consentContact, setConsentContact] = useState(false);
   const [consentMarketing, setConsentMarketing] = useState(false);
   const [errors, setErrors] = useState<LeadErrors>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "failed">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "failed" | "limited">("idle");
   const [reference, setReference] = useState("");
 
   useEffect(() => setMemory(readJourney()), []);
@@ -58,7 +57,11 @@ export function AdvisorHandoff({ context, vehicleText }: Props) {
           context: fullContext,
         }),
       });
-      const data = (await res.json()) as { ok: boolean; reference?: string; errors?: LeadErrors };
+      const data = (await res.json()) as { ok: boolean; reference?: string; errors?: LeadErrors; error?: string };
+      if (res.status === 429) {
+        setStatus("limited");
+        return;
+      }
       if (!res.ok || !data.ok) {
         if (data.errors) setErrors(data.errors);
         setStatus("failed");
@@ -86,9 +89,7 @@ export function AdvisorHandoff({ context, vehicleText }: Props) {
         <CircleCheck aria-hidden className="mx-auto h-12 w-12 text-success-600" />
         <h2 className="mt-4 text-2xl font-bold">ได้รับคำขอแล้ว</h2>
         <p className="mt-2 text-navy-600">เลขอ้างอิง {reference}</p>
-        <p className="mx-auto mt-4 max-w-md rounded-2xl bg-warning-50 p-4 text-sm text-warning-700">
-          ต้นแบบระบบ: ข้อมูลยังไม่ถูกบันทึกหรือส่งถึงทีมที่ปรึกษาจริง
-        </p>
+        <p className="mx-auto mt-4 max-w-md text-navy-600">ที่ปรึกษาจะติดต่อกลับตามช่องทางที่คุณเลือก</p>
       </div>
     );
   }
@@ -191,6 +192,11 @@ export function AdvisorHandoff({ context, vehicleText }: Props) {
           </label>
         </div>
 
+        {status === "limited" && (
+          <p role="alert" className="mt-4 text-sm font-medium text-danger-600">
+            ส่งคำขอหลายครั้งเกินไป กรุณารอสักครู่แล้วลองใหม่
+          </p>
+        )}
         {status === "failed" && (
           <p role="alert" className="mt-4 text-sm font-medium text-danger-600">
             ส่งไม่สำเร็จ กรุณาลองใหม่อีกครั้ง

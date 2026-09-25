@@ -55,7 +55,11 @@ export function Footer() {
       </div>
       <div className="bg-navy-900 text-navy-200">
         <div className="container-page flex flex-col gap-2 py-4 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Unlimit Insure</p>
+          <p className="flex flex-wrap gap-x-4 gap-y-1">
+            <span>© {new Date().getFullYear()} Unlimit Insure</span>
+            <Link href="/privacy" className="hover:text-white">นโยบายความเป็นส่วนตัว</Link>
+            <Link href="/terms" className="hover:text-white">ข้อกำหนดการใช้งาน</Link>
+          </p>
           <p>ต้นแบบระบบ — ข้อมูลแพ็กเกจทั้งหมดเป็นข้อมูลตัวอย่าง ยังไม่ใช่ข้อเสนอประกันภัยจริง</p>
         </div>
       </div>

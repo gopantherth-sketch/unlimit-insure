@@ -1,6 +1,5 @@
-import { insurers } from "@/lib/data/insurers";
-import { products } from "@/lib/data/products";
 import type {
+  Catalog,
   Eligibility,
   Product,
   ProductVersion,
@@ -38,8 +37,8 @@ export function quoteId(versionId: string, vehicle: ResolvedVehicle): string {
   return `${versionId}__${vehicle.modelId}__${vehicle.year}`;
 }
 
-function buildQuote(product: Product, version: ProductVersion, vehicle: ResolvedVehicle, now: Date): Quote | null {
-  const insurer = insurers.find((i) => i.id === product.insurerId);
+function buildQuote(catalog: Catalog, product: Product, version: ProductVersion, vehicle: ResolvedVehicle, now: Date): Quote | null {
+  const insurer = catalog.insurers.find((i) => i.id === product.insurerId);
   if (!insurer) return null;
   const { premium, sumInsured } = price(version, vehicle);
   return {
@@ -57,12 +56,12 @@ function buildQuote(product: Product, version: ProductVersion, vehicle: Resolved
 }
 
 /** All eligible, currently effective offers for a vehicle. */
-export function generateQuotes(vehicle: ResolvedVehicle, now: Date = new Date()): Quote[] {
+export function generateQuotes(catalog: Catalog, vehicle: ResolvedVehicle, now: Date = new Date()): Quote[] {
   const quotes: Quote[] = [];
-  for (const product of products) {
+  for (const product of catalog.products) {
     const version = activeVersion(product, now);
     if (!version || !isEligible(version.eligibility, vehicle)) continue;
-    const q = buildQuote(product, version, vehicle, now);
+    const q = buildQuote(catalog, product, version, vehicle, now);
     if (q) quotes.push(q);
   }
   return quotes;
@@ -74,18 +73,18 @@ export type ProductQuoteResult =
   | { status: "noActiveVersion"; product: Product }
   | { status: "ineligible"; product: Product; version: ProductVersion };
 
-export function quoteForProduct(productId: string, vehicle: ResolvedVehicle, now: Date = new Date()): ProductQuoteResult {
-  const product = products.find((p) => p.id === productId);
+export function quoteForProduct(catalog: Catalog, productId: string, vehicle: ResolvedVehicle, now: Date = new Date()): ProductQuoteResult {
+  const product = catalog.products.find((p) => p.id === productId);
   if (!product) return { status: "notFound" };
   const version = activeVersion(product, now);
   if (!version) return { status: "noActiveVersion", product };
   if (!isEligible(version.eligibility, vehicle)) return { status: "ineligible", product, version };
-  const quote = buildQuote(product, version, vehicle, now);
+  const quote = buildQuote(catalog, product, version, vehicle, now);
   return quote ? { status: "ok", quote } : { status: "notFound" };
 }
 
-export function findProduct(productId: string): Product | undefined {
-  return products.find((p) => p.id === productId);
+export function findProduct(catalog: Catalog, productId: string): Product | undefined {
+  return catalog.products.find((p) => p.id === productId);
 }
 
 /** Freeze everything the customer saw. Stored on purchase so later product changes never alter it (§28). */

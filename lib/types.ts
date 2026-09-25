@@ -197,3 +197,15 @@ export interface QuoteSnapshot {
   capturedAt: string;
   capturedBy: "system" | "advisor";
 }
+
+/** Brands and models, the part of the catalogue the browser needs for car selection. */
+export interface VehicleCatalog {
+  brands: VehicleBrand[];
+  models: VehicleModel[];
+}
+
+/** Everything the quote engine reads. Loaded from D1 on the server; the mock seed is one instance. */
+export interface Catalog extends VehicleCatalog {
+  insurers: Insurer[];
+  products: Product[];
+}

@@ -29,5 +29,3 @@ export const models: VehicleModel[] = [
   { id: "mg-zs-ev", brandId: "mg", name: "ZS EV", bodyType: "suv", powertrain: "EV", newPrice: 900_000, yearFrom: 2020, yearTo: 2026 },
   { id: "mg-4", brandId: "mg", name: "MG4 Electric", bodyType: "hatchback", powertrain: "EV", newPrice: 850_000, yearFrom: 2022, yearTo: 2026 },
 ];
-
-export const defaultVehicle = { brandId: "toyota", modelId: "toyota-corolla-cross", year: 2025 } as const;

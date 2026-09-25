@@ -1,6 +1,6 @@
 import { FileCheck2, LockKeyhole, PhoneOff } from "lucide-react";
-import { insurers } from "@/lib/data/insurers";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
+import type { Insurer } from "@/lib/types";
 
 const credentials = [
   { icon: FileCheck2, title: "ใบอนุญาตนายหน้าประกันวินาศภัย", body: "เลขที่ใบอนุญาต: รอข้อมูลจากทีมงาน" },
@@ -8,7 +8,7 @@ const credentials = [
   { icon: PhoneOff, title: "ดูราคาได้โดยไม่ต้องให้เบอร์", body: "ไม่มีสายขายโทรตาม" },
 ];
 
-export function TrustStrip() {
+export function TrustStrip({ insurers }: { insurers: Insurer[] }) {
   return (
     <section aria-labelledby="partners-title" className="border-y border-navy-100 bg-white py-12 sm:py-14">
       <div className="container-page">

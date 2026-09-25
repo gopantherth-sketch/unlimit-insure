@@ -10,21 +10,21 @@ import { buttonClass } from "@/components/ui/button";
 import { formatBaht } from "@/lib/format";
 import { parsePriorities, parseUsage, parseVehicle, toRaw, withJourney } from "@/lib/params";
 import { priorityDefinitions, usageDefinitions } from "@/lib/priorities";
-import type { PriorityId, UsageId } from "@/lib/types";
+import type { PriorityId, UsageId, VehicleCatalog } from "@/lib/types";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 import { cx } from "@/lib/cx";
 
 type Step = "car" | "use" | "needs";
 const stepIndex: Record<Step, number> = { car: 0, use: 1, needs: 2 };
 
-export function QuoteWizard() {
+export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
   const router = useRouter();
   const sp = useSearchParams();
   const raw = useMemo(() => toRaw(sp), [sp]);
 
   const urlVehicle = parseVehicle(raw);
   const requested: Step = raw.step === "use" || raw.step === "needs" ? raw.step : "car";
-  const resolvedFromUrl = urlVehicle ? resolveVehicle(urlVehicle) : null;
+  const resolvedFromUrl = urlVehicle ? resolveVehicle(catalog, urlVehicle) : null;
   // Later steps need a valid car; fall back to step 1 otherwise.
   const step: Step = resolvedFromUrl ? requested : "car";
 
@@ -43,7 +43,7 @@ export function QuoteWizard() {
   }, [raw]);
 
   const selection = draftToSelection(draft);
-  const vehicle = selection ? resolveVehicle(selection) : null;
+  const vehicle = selection ? resolveVehicle(catalog, selection) : null;
   const ev = vehicle ? isElectric(vehicle) : false;
   const availablePriorities = priorityDefinitions.filter((p) => ev || !p.evOnly);
 
@@ -90,7 +90,7 @@ export function QuoteWizard() {
               คุณขับรถอะไร?
             </h1>
             <p className="mt-2 text-navy-500">เริ่มจากรถของคุณ ยังไม่ต้องให้ชื่อหรือเบอร์โทร</p>
-            <VehicleSelector value={draft} onChange={(d) => { setDraft(d); setError(null); }} className="mt-6" />
+            <VehicleSelector catalog={catalog} value={draft} onChange={(d) => { setDraft(d); setError(null); }} className="mt-6" />
             {vehicle && (
               <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-2xl bg-brand-50 px-4 py-3 text-sm">
                 <span className="font-semibold text-navy-800">{vehicleLabel(vehicle)}</span>

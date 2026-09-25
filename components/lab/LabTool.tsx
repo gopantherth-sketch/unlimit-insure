@@ -6,24 +6,24 @@ import { ExcessCalculator } from "@/components/lab/ExcessCalculator";
 import { scenarioCopy } from "@/content/scenarios";
 import type { LabToolId } from "@/content/types";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
-import { defaultVehicle } from "@/lib/data/vehicles";
 import { generateQuotes } from "@/lib/quote";
 import { scenarioRules, simulate } from "@/lib/scenarios";
-import type { Quote, VehicleSelection } from "@/lib/types";
-import { resolveVehicle, vehicleLabel } from "@/lib/vehicle";
+import { getCatalog } from "@/lib/server/catalog";
+import type { Catalog, Quote, VehicleSelection } from "@/lib/types";
+import { defaultEvVehicle, defaultVehicle, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
 // Every Lab tool runs on the same product engine as the quote journey.
 
 const pick = (quotes: Quote[], ids: string[]) =>
   ids.map((id) => quotes.find((q) => q.productId === id)).filter((q): q is Quote => q !== undefined);
 
-function quotesFor(selection: VehicleSelection) {
-  const vehicle = resolveVehicle(selection);
-  return vehicle ? { vehicle, quotes: generateQuotes(vehicle) } : null;
+function quotesFor(catalog: Catalog, selection: VehicleSelection) {
+  const vehicle = resolveVehicle(catalog, selection);
+  return vehicle ? { vehicle, quotes: generateQuotes(catalog, vehicle) } : null;
 }
 
-function TypeMatrix() {
-  const data = quotesFor({ ...defaultVehicle });
+function TypeMatrix({ catalog }: { catalog: Catalog }) {
+  const data = quotesFor(catalog, defaultVehicle);
   if (!data) return null;
   const reps = pick(data.quotes, ["a-type1-dealer", "a-type2plus", "b-type3plus"]);
   const scenarios = scenarioRules.filter((r) => !r.evOnly);
@@ -65,8 +65,8 @@ function TypeMatrix() {
   );
 }
 
-function PairCompare({ selection, ids }: { selection: VehicleSelection; ids: string[] }) {
-  const data = quotesFor(selection);
+function PairCompare({ catalog, selection, ids }: { catalog: Catalog; selection: VehicleSelection; ids: string[] }) {
+  const data = quotesFor(catalog, selection);
   if (!data) return null;
   const quotes = pick(data.quotes, ids);
   if (quotes.length < 2) return null;
@@ -80,24 +80,25 @@ function PairCompare({ selection, ids }: { selection: VehicleSelection; ids: str
   );
 }
 
-function FloodSimulator() {
-  const data = quotesFor({ ...defaultVehicle });
+function FloodSimulator({ catalog }: { catalog: Catalog }) {
+  const data = quotesFor(catalog, defaultVehicle);
   if (!data) return null;
   const quotes = pick(data.quotes, ["a-type1-dealer", "c-type1-garage", "a-type2plus"]);
   return <CoverageSimulator quotes={quotes} labels={quotes.map((_, i) => `แผน ${String.fromCharCode(65 + i)}`)} />;
 }
 
-export function LabTool({ tool }: { tool: LabToolId }) {
+export async function LabTool({ tool }: { tool: LabToolId }) {
+  const catalog = await getCatalog();
   switch (tool) {
     case "typeCompare":
-      return <TypeMatrix />;
+      return <TypeMatrix catalog={catalog} />;
     case "repairCompare":
-      return <PairCompare selection={{ ...defaultVehicle }} ids={["a-type1-dealer", "b-type1-garage"]} />;
+      return <PairCompare catalog={catalog} selection={defaultVehicle} ids={["a-type1-dealer", "b-type1-garage"]} />;
     case "excessCalculator":
       return <ExcessCalculator />;
     case "floodCheck":
-      return <FloodSimulator />;
+      return <FloodSimulator catalog={catalog} />;
     case "evCoverage":
-      return <PairCompare selection={{ brandId: "byd", modelId: "byd-atto-3", year: 2025 }} ids={["c-ev-type1", "a-type1-dealer"]} />;
+      return <PairCompare catalog={catalog} selection={defaultEvVehicle} ids={["c-ev-type1", "a-type1-dealer"]} />;
   }
 }

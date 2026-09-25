@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local development. Production: `npx wrangler secret put ADMIN_PASSWORD`.
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=change-me-to-12-plus-chars

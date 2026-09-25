@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Sans_Thai } from "next/font/google";
-import { Footer } from "@/components/layout/Footer";
-import { Header } from "@/components/layout/Header";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const sans = IBM_Plex_Sans_Thai({
@@ -12,6 +11,7 @@ const sans = IBM_Plex_Sans_Thai({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Unlimit Insure — ประกันรถที่เข้าใจคุณ มากกว่าแค่ราคา",
     template: "%s | Unlimit Insure",
@@ -32,19 +32,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th" className={sans.variable}>
-      <body className="flex min-h-dvh flex-col font-sans">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:shadow-card"
-        >
-          ข้ามไปยังเนื้อหา
-        </a>
-        <Header />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <Footer />
-      </body>
+      <body className="font-sans">{children}</body>
     </html>
   );
 }

@@ -2,10 +2,11 @@ import { Clock, ShieldCheck, UserRoundCheck } from "lucide-react";
 import { HeroVisual } from "@/components/home/HeroVisual";
 import { QuickQuote } from "@/components/home/QuickQuote";
 import { homeCopy } from "@/content/home";
+import type { VehicleCatalog } from "@/lib/types";
 
 const trustIcons = [ShieldCheck, Clock, UserRoundCheck];
 
-export function Hero() {
+export function Hero({ catalog }: { catalog: VehicleCatalog }) {
   const points = homeCopy.heroTrustPoints.slice(0, 3);
   return (
     <section aria-labelledby="hero-title" className="relative overflow-hidden bg-gradient-to-b from-white via-white to-canvas">
@@ -36,7 +37,7 @@ export function Hero() {
         <HeroVisual />
       </div>
       <div className="container-page relative pb-12 sm:pb-16">
-        <QuickQuote ctaLabel={homeCopy.heroCta} />
+        <QuickQuote ctaLabel={homeCopy.heroCta} catalog={catalog} />
       </div>
     </section>
   );

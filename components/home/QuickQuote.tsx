@@ -6,8 +6,9 @@ import Link from "next/link";
 import { useState } from "react";
 import { VehicleSelector, draftToSelection, type VehicleDraft } from "@/components/insurance/VehicleSelector";
 import { buttonClass } from "@/components/ui/button";
-import { defaultVehicle } from "@/lib/data/vehicles";
 import { withJourney } from "@/lib/params";
+import type { VehicleCatalog } from "@/lib/types";
+import { defaultEvVehicle, defaultVehicle } from "@/lib/vehicle";
 import { cx } from "@/lib/cx";
 
 type Tab = "motor" | "ev" | "compulsory";
@@ -18,7 +19,7 @@ const tabs: { id: Tab; label: string; icon: typeof Car; disabled?: boolean }[] =
   { id: "compulsory", label: "พ.ร.บ.", icon: FileText, disabled: true },
 ];
 
-export function QuickQuote({ ctaLabel }: { ctaLabel: string }) {
+export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: VehicleCatalog }) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("motor");
   const [draft, setDraft] = useState<VehicleDraft>({ ...defaultVehicle });
@@ -26,7 +27,7 @@ export function QuickQuote({ ctaLabel }: { ctaLabel: string }) {
 
   const switchTab = (next: Tab) => {
     setTab(next);
-    setDraft(next === "ev" ? { brandId: "byd", modelId: "byd-atto-3", year: 2025 } : { ...defaultVehicle });
+    setDraft({ ...(next === "ev" ? defaultEvVehicle : defaultVehicle) });
     setError(false);
   };
 
@@ -72,7 +73,7 @@ export function QuickQuote({ ctaLabel }: { ctaLabel: string }) {
 
       <form id="quick-quote-panel" role="tabpanel" onSubmit={submit} noValidate className="p-3 sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
-          <VehicleSelector value={draft} onChange={(d) => { setDraft(d); setError(false); }} evOnly={tab === "ev"} className="flex-1" />
+          <VehicleSelector catalog={catalog} value={draft} onChange={(d) => { setDraft(d); setError(false); }} evOnly={tab === "ev"} className="flex-1" />
           <button type="submit" className={buttonClass("primary", "lg", "lg:w-auto")}>
             {ctaLabel}
             <ArrowRight aria-hidden className="h-5 w-5" />

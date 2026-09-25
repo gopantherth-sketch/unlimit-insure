@@ -2,9 +2,8 @@
 
 import { ChevronDown } from "lucide-react";
 import { useId, useMemo } from "react";
-import { brands } from "@/lib/data/vehicles";
 import { modelsForBrand, yearsForModel } from "@/lib/vehicle";
-import type { VehicleSelection } from "@/lib/types";
+import type { VehicleCatalog, VehicleSelection } from "@/lib/types";
 import { cx } from "@/lib/cx";
 
 export interface VehicleDraft {
@@ -20,6 +19,7 @@ export function draftToSelection(d: VehicleDraft): VehicleSelection | null {
 }
 
 interface Props {
+  catalog: VehicleCatalog;
   value: VehicleDraft;
   onChange: (next: VehicleDraft) => void;
   layout?: "row" | "stack";
@@ -63,17 +63,17 @@ function SelectField(props: {
   );
 }
 
-export function VehicleSelector({ value, onChange, layout = "row", evOnly = false, className }: Props) {
+export function VehicleSelector({ catalog, value, onChange, layout = "row", evOnly = false, className }: Props) {
   const id = useId();
   const brandOptions = useMemo(
-    () => (evOnly ? brands.filter((b) => modelsForBrand(b.id).some((m) => m.powertrain === "EV")) : brands),
-    [evOnly],
+    () => (evOnly ? catalog.brands.filter((b) => modelsForBrand(catalog, b.id).some((m) => m.powertrain === "EV")) : catalog.brands),
+    [catalog, evOnly],
   );
   const modelOptions = useMemo(() => {
     if (!value.brandId) return [];
-    const all = modelsForBrand(value.brandId);
+    const all = modelsForBrand(catalog, value.brandId);
     return evOnly ? all.filter((m) => m.powertrain === "EV") : all;
-  }, [value.brandId, evOnly]);
+  }, [catalog, value.brandId, evOnly]);
   const model = modelOptions.find((m) => m.id === value.modelId);
   const yearOptions = useMemo(() => (model ? yearsForModel(model, new Date().getFullYear()) : []), [model]);
 

@@ -5,8 +5,8 @@ Source of truth: [`PROJECT_MASTER.md`](PROJECT_MASTER.md).
 
 ## Status
 
-V1 prototype on **mock data**. Every insurer, product, premium and vehicle price is a placeholder (see [`docs/data-inventory.md`](docs/data-inventory.md)).
-Nothing is persisted; the advisor form validates and acknowledges only.
+V1 on **mock data**, running on Cloudflare Workers + D1. Every insurer, product, premium and vehicle price is a placeholder (see [`docs/data-inventory.md`](docs/data-inventory.md)).
+Leads and consent are stored in D1; the admin manages leads and product versions.
 
 | V1 scope (§35) | State |
 | --- | --- |
@@ -20,24 +20,27 @@ Nothing is persisted; the advisor form validates and acknowledges only.
 | Advisor handoff with journey context | Done (no CRM yet) |
 | Coverage simulator | Done (rule-based, mock rules) |
 | Insurance Lab (5 articles + tools) | Done |
-| Admin for products / quotes / leads | Not started |
+| Admin: leads, product versions, source verification | Done (V1) |
+| Privacy policy / terms | Draft, pending legal review |
 | My Garage | Static preview only (V2) |
 
 ## Run
 
 ```bash
 npm install
+cp .dev.vars.example .dev.vars
+npm run db:migrate:local && npm run db:seed:build && npm run db:seed:local
 npm run dev        # http://localhost:3000
-npm test           # engine unit tests (vitest)
+npm test           # engine + database tests (vitest)
 npm run typecheck
-npm run build
+npm run preview    # Workers runtime
 ```
 
-Node 20+.
+Node 20+. Deployment: [`docs/deploy.md`](docs/deploy.md).
 
 ## Architecture
 
-Next.js 15 (App Router) · TypeScript strict · Tailwind CSS 3 · lucide-react · IBM Plex Sans Thai.
+Next.js 15 (App Router) on Cloudflare Workers (OpenNext) · Cloudflare D1 + Drizzle · TypeScript strict · Tailwind CSS 3 · lucide-react · IBM Plex Sans Thai.
 
 ```
 app/                 routes
@@ -47,7 +50,9 @@ app/                 routes
   compare/           compare table, difference summary, simulator
   plans/[productId]/ package detail
   advisor/           advisor handoff form
-  api/leads/         lead intake (prototype: not stored)
+  (site)/            public site (header/footer layout); privacy/, terms/
+  admin/             login + (app)/ dashboard, leads, products (signed-cookie session)
+  api/leads/         lead intake → D1 with consent log
   lab/               Insurance Lab index + articles with tools
   garage/            My Garage preview
 components/
@@ -67,6 +72,10 @@ lib/
   compare.ts         difference summary, best-value detection
   scenarios.ts       coverage simulator rules
   params.ts          journey state in URL (no personal data)
+  db/                Drizzle schema, D1 client, catalogue/leads/admin repositories, tests
+  server/            request-scoped catalogue, admin auth
+migrations/          D1 SQL migrations (drizzle-kit)
+seed/                generated MOCK catalogue SQL
   leads.ts           advisor payload + validation
 ```
 
