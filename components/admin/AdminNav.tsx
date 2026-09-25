@@ -8,6 +8,7 @@ const items = [
   { href: "/admin", label: "ภาพรวม" },
   { href: "/admin/leads", label: "ลีด" },
   { href: "/admin/products", label: "แพ็กเกจ" },
+  { href: "/admin/import", label: "นำเข้าข้อมูล" },
 ];
 
 export function AdminNav() {
