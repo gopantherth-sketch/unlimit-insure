@@ -1,6 +1,6 @@
 # Selected Mockup — Visual Spec (blue/white homepage)
 
-Written from the owner's selected mockup image (shared in chat 2026-09-25). This is the **visual target** for the homepage. The product architecture in `PROJECT_MASTER.md` still decides *what* the page contains; this file decides *how it looks*. Place the original image at `design/mockups/homepage-selected.png` when available.
+Written from the owner's selected mockup image (shared in chat 2026-09-25). This is the **visual target** for the homepage. The product architecture in `PROJECT_MASTER.md` still decides *what* the page contains; this file decides *how it looks*. Original images: `design/mockups/homepage-selected.webp` (primary target; where this spec and the image differ, the image wins) and `design/mockups/homepage-light-vs-dark.webp` (left = same light design at larger size; right = dark alternative, **not selected**; its stats "20+ / 100K+ / 98%" are unverified and must not ship).
 
 Overall feel: bright white page, electric/royal blue accent (logo blue `#1016D1`), dark navy headlines, very soft blue-grey section washes, rounded white cards with faint shadows, generous whitespace, **photographic** (real-looking car and people photos), Thai display type that is heavy and rounded-geometric, a few handwritten English script accents in blue.
 
