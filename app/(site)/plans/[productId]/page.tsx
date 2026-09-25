@@ -7,6 +7,7 @@ import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
 import { MatchBadge, MatchList } from "@/components/insurance/MatchSummary";
 import { VerifiedSource } from "@/components/insurance/VerifiedSource";
+import { TrackView } from "@/components/TrackView";
 import { buttonClass } from "@/components/ui/button";
 import { fieldGroupLabel, insuranceTypeLabel, repairTypeLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
 import { formatBaht, formatNumber } from "@/lib/format";
@@ -44,6 +45,7 @@ export default async function PlanPage({ params, searchParams }: { params: Param
 
   return (
     <div className="bg-canvas pb-16">
+      <TrackView name="plan_viewed" dim={c.insuranceType} />
       <div className="container-page py-8 sm:py-10">
         {input && (
           <Link href={withJourney("/quote/results", journey)} className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700">

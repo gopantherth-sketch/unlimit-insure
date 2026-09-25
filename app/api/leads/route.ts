@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db/client";
+import { recordEvent } from "@/lib/db/analytics";
 import { createLead } from "@/lib/db/leads";
 import { normalizePhone, validateLead, type LeadRequest } from "@/lib/leads";
 import { parsePriorities, parseUsage, parseVehicle } from "@/lib/params";
@@ -59,7 +60,8 @@ export async function POST(req: Request) {
     ? parseVehicle({ brand: ctx.vehicle.brandId, model: ctx.vehicle.modelId, year: String(ctx.vehicle.year) })
     : null;
 
-  const { reference } = await createLead(await getDb(), {
+  const db = await getDb();
+  const { reference } = await createLead(db, {
     name: fields.name,
     phone: fields.phone,
     lineId: fields.lineId,
@@ -76,5 +78,6 @@ export async function POST(req: Request) {
     },
   });
 
+  await recordEvent(db, "lead_submitted").catch(() => {});
   return NextResponse.json({ ok: true, reference }, { status: 201 });
 }

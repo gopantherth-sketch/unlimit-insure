@@ -4,6 +4,7 @@ import { CircleCheck, Loader2, LockKeyhole } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { buttonClass } from "@/components/ui/button";
 import { readJourney } from "@/lib/journey";
+import { track } from "@/lib/analytics/track";
 import { validateLead, type ContactChannel, type LeadContext, type LeadErrors } from "@/lib/leads";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 import { cx } from "@/lib/cx";
@@ -29,7 +30,10 @@ export function AdvisorHandoff({ context, vehicleText, planNames }: Props) {
   const [status, setStatus] = useState<"idle" | "sending" | "done" | "failed" | "limited">("idle");
   const [reference, setReference] = useState("");
 
-  useEffect(() => setMemory(readJourney()), []);
+  useEffect(() => {
+    setMemory(readJourney());
+    track("advisor_viewed");
+  }, []);
 
   const fullContext: LeadContext = { ...context, ...memory };
 

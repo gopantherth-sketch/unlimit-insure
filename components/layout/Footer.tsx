@@ -9,6 +9,7 @@ const columns = [
       { href: "/quote", label: "เช็กเบี้ยประกันรถ" },
       { href: "/compare", label: "เปรียบเทียบแพ็กเกจ" },
       { href: "/lab/ev-insurance", label: "ประกันรถ EV" },
+      { href: "/insurance", label: "ประกันรถตามรุ่น" },
     ],
   },
   {
@@ -23,6 +24,7 @@ const columns = [
     title: "หลังการซื้อ",
     links: [
       { href: "/garage", label: "My Garage" },
+      { href: "/claims", label: "ขั้นตอนเมื่อเกิดเหตุ" },
       { href: "/advisor", label: "ปรึกษาผู้เชี่ยวชาญ" },
     ],
   },

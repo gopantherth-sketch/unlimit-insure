@@ -80,3 +80,21 @@ describe("leads", () => {
     expect(await listLeads(db, { status: "new" })).toHaveLength(0);
   });
 });
+
+describe("analytics", () => {
+  it("aggregates anonymous counters per Bangkok day", async () => {
+    const { recordEvent, eventTotals, bangkokDay } = await import("@/lib/db/analytics");
+    const { isValidEvent } = await import("@/lib/analytics/events");
+    const t = new Date("2026-09-25T20:00:00Z"); // 03:00 next day in Bangkok
+    expect(bangkokDay(t)).toBe("2026-09-26");
+    await recordEvent(db, "quote_started", "", t);
+    await recordEvent(db, "quote_started", "", t);
+    await recordEvent(db, "explain_opened", "excess", t);
+    const r = await eventTotals(db, 7, t);
+    expect(r.byName.quote_started).toBe(2);
+    expect(r.byDim.explain_opened).toEqual({ excess: 1 });
+    expect(isValidEvent("explain_opened", "excess")).toBe(true);
+    expect(isValidEvent("explain_opened", "<script>")).toBe(false);
+    expect(isValidEvent("anything", "")).toBe(false);
+  });
+});

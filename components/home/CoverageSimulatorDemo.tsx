@@ -7,6 +7,7 @@ import type { ScenarioId } from "@/content/types";
 import { formatBaht } from "@/lib/format";
 import { scenarioRules, simulate } from "@/lib/scenarios";
 import type { Quote } from "@/lib/types";
+import { track } from "@/lib/analytics/track";
 import { cx } from "@/lib/cx";
 
 const icons: Record<ScenarioId, typeof Car> = {
@@ -45,7 +46,10 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
                   on ? "border-brand-600 bg-brand-600 text-white" : "border-navy-200 bg-white text-navy-700 hover:border-brand-300",
                 )}
               >
-                <input type="radio" name="scenario" value={s.id} checked={on} onChange={() => setActive(s.id)} className="sr-only" />
+                <input type="radio" name="scenario" value={s.id} checked={on} onChange={() => {
+                    setActive(s.id);
+                    track("simulator_used", s.id);
+                  }} className="sr-only" />
                 <Icon aria-hidden className="h-4 w-4" />
                 {scenarioCopy[s.id].label}
               </label>

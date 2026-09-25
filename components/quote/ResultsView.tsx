@@ -11,6 +11,7 @@ import { buttonClass } from "@/components/ui/button";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
 import { formatBaht } from "@/lib/format";
 import { rememberCompared, rememberViewed } from "@/lib/journey";
+import { track } from "@/lib/analytics/track";
 import { withJourney } from "@/lib/params";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 import type { PriorityId, RankedQuote, ResolvedVehicle, UsageId } from "@/lib/types";
@@ -59,6 +60,10 @@ export function ResultsView({ vehicle, usage, priorities, quotes }: Props) {
   useEffect(() => {
     rememberViewed(quotes.map((q) => q.productId));
   }, [quotes]);
+
+  useEffect(() => {
+    track("results_viewed");
+  }, []);
 
   const visible = useMemo(() => {
     const active = filterDefs.filter((f) => filters.includes(f.id));

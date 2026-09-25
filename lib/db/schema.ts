@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 import type { BodyType, Coverage, Eligibility, InsuranceType, Powertrain, PricingRule, VerificationStatus } from "@/lib/types";
 
 // Cloudflare D1 (SQLite). Timestamps are ISO-8601 text; structured product terms are JSON text.
@@ -165,3 +165,18 @@ export const quoteSnapshots = sqliteTable("quote_snapshots", {
   capturedBy: text("captured_by").$type<"system" | "advisor">().notNull(),
   capturedAt: text("captured_at").notNull().default(now),
 });
+
+/**
+ * Anonymous funnel counters: one row per day × event × dimension. No user, session, IP or device data.
+ * `dim` is an allowlisted value (a glossary term, scenario, insurance type) or "".
+ */
+export const eventCounts = sqliteTable(
+  "event_counts",
+  {
+    day: text("day").notNull(),
+    name: text("name").notNull(),
+    dim: text("dim").notNull().default(""),
+    count: integer("count").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.day, t.name, t.dim] })],
+);

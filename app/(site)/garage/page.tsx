@@ -21,7 +21,7 @@ const statusMeta = {
 const actions = [
   { icon: FileText, label: "กรมธรรม์และเอกสาร" },
   { icon: ShieldCheck, label: "ดูความคุ้มครอง" },
-  { icon: LifeBuoy, label: "ขั้นตอนเคลม" },
+  { icon: LifeBuoy, label: "ขั้นตอนเคลม", href: "/claims" },
   { icon: RefreshCw, label: "เปรียบเทียบการต่ออายุ" },
   { icon: Headset, label: "ติดต่อที่ปรึกษา" },
 ];
@@ -70,12 +70,24 @@ export default function GaragePage() {
               );
             })}
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {actions.map(({ icon: Icon, label }) => (
-                <li key={label} className="card flex items-center gap-2.5 p-4 text-sm font-medium text-navy-700">
-                  <Icon aria-hidden className="h-5 w-5 text-brand-600" />
-                  {label}
-                </li>
-              ))}
+              {actions.map(({ icon: Icon, label, ...rest }) => {
+                const href = "href" in rest ? rest.href : undefined;
+                const inner = (
+                  <>
+                    <Icon aria-hidden className="h-5 w-5 text-brand-600" />
+                    {label}
+                  </>
+                );
+                return (
+                  <li key={label}>
+                    {href ? (
+                      <Link href={href} className="card flex h-full items-center gap-2.5 p-4 text-sm font-medium text-brand-700 hover:shadow-lift">{inner}</Link>
+                    ) : (
+                      <span className="card flex h-full items-center gap-2.5 p-4 text-sm font-medium text-navy-700">{inner}</span>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </section>
 

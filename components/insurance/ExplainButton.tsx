@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Dialog } from "@/components/ui/Dialog";
 import { glossary } from "@/content/glossary";
 import type { GlossaryKey } from "@/content/types";
+import { track } from "@/lib/analytics/track";
 import { cx } from "@/lib/cx";
 
 interface Props {
@@ -22,7 +23,10 @@ export function ExplainButton({ term, withLabel = false, className }: Props) {
     <>
       <button
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setOpen(true);
+          track("explain_opened", term);
+        }}
         aria-haspopup="dialog"
         aria-label={withLabel ? undefined : `อธิบาย ${entry.term} ให้เข้าใจง่าย`}
         className={cx(

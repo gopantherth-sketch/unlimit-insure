@@ -7,6 +7,7 @@ import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { VehicleSelector, draftToSelection, emptyDraft, type VehicleDraft } from "@/components/insurance/VehicleSelector";
 import { JourneySteps } from "@/components/quote/JourneySteps";
 import { buttonClass } from "@/components/ui/button";
+import { track } from "@/lib/analytics/track";
 import { formatBaht } from "@/lib/format";
 import { parsePriorities, parseUsage, parseVehicle, toRaw, withJourney } from "@/lib/params";
 import { priorityDefinitions, usageDefinitions } from "@/lib/priorities";
@@ -32,6 +33,12 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
   const [usage, setUsage] = useState<UsageId | undefined>(parseUsage(raw));
   const [priorities, setPriorities] = useState<PriorityId[]>(parsePriorities(raw));
   const [error, setError] = useState<string | null>(null);
+
+  // "Started" = reached the usage step with a valid car, from any entry point (hero, model page, step 1).
+  const startedKey = step === "use" && resolvedFromUrl ? `${resolvedFromUrl.modelId}-${resolvedFromUrl.year}` : null;
+  useEffect(() => {
+    if (startedKey) track("quote_started");
+  }, [startedKey]);
 
   // Keep local state in sync when the URL changes (browser back/forward).
   useEffect(() => {
@@ -66,6 +73,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
   const onUseNext = () => {
     if (!usage) return setError("กรุณาเลือกลักษณะการใช้รถ");
+    track("usage_selected", usage);
     const suggested = usageDefinitions.find((u) => u.id === usage)?.suggests ?? [];
     go("needs", { priorities: priorities.length > 0 ? priorities : suggested });
   };
@@ -73,6 +81,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
   const onFinish = () => {
     if (!selection) return;
     const valid = priorities.filter((p) => availablePriorities.some((a) => a.id === p));
+    for (const p of valid) track("priority_selected", p);
     router.push(withJourney("/quote/results", { vehicle: selection, usage, priorities: valid }));
   };
 

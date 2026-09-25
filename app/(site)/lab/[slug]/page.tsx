@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { LabTool } from "@/components/lab/LabTool";
+import { TrackView } from "@/components/TrackView";
 import { buttonClass } from "@/components/ui/button";
 import { glossary } from "@/content/glossary";
 import { labArticles } from "@/content/lab";
@@ -25,6 +26,7 @@ export default async function LabArticlePage({ params }: { params: Params }) {
 
   return (
     <div className="bg-canvas pb-16">
+      <TrackView name="lab_viewed" dim={article.slug} />
       <article className="container-page max-w-4xl py-10 sm:py-14">
         <Link href="/lab" className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 hover:text-brand-700">
           <ArrowLeft aria-hidden className="h-4 w-4" />
