@@ -7,8 +7,9 @@ import { cx } from "@/lib/cx";
  * photography, overwrite the file with the same name and size ratio (≤ 250 KB, .webp) — no code
  * change needed. If the ratio changes, update width/height here.
  *
- * Original photos for every slot were generated in Canva (media ids below) and can be exported
- * from there: they could not be downloaded from this build environment.
+ * hero, lifestyle and the three article photos are owner-supplied (2026-09-26; brand emblems and a
+ * readable plate retouched out of the flood photo). advisor is still a placeholder. `canva` ids are
+ * the earlier generated alternatives.
  * Never use real insurer logos, car brand badges or readable number plates.
  */
 export const photos = {
@@ -35,22 +36,22 @@ export const photos = {
   },
   articleFlood: {
     src: "/images/article-flood.webp",
-    width: 480,
-    height: 320,
+    width: 960,
+    height: 640,
     alt: "",
     canva: "MAHWOqfOnkQ",
   },
   articleEv: {
     src: "/images/article-ev.webp",
-    width: 480,
-    height: 320,
+    width: 960,
+    height: 640,
     alt: "",
     canva: "MAHWOk_eNcc",
   },
   articleSteering: {
     src: "/images/article-steering.webp",
-    width: 480,
-    height: 320,
+    width: 960,
+    height: 640,
     alt: "",
     canva: "MAHWOgbskAk",
   },

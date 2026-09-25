@@ -10,7 +10,7 @@ const trustIcons = [ShieldCheck, Clock, UserRoundCheck];
 function HeroPhoto() {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-bl-[48px] sm:rounded-bl-[64px] lg:rounded-bl-none lg:rounded-tl-[62%_100%] lg:[mask-image:linear-gradient(to_bottom,#000_72%,transparent_100%)]">
-      <Photo slot="hero" priority sizes="(min-width: 1024px) 58vw, 100vw" className="object-[60%_70%]" />
+      <Photo slot="hero" priority sizes="(min-width: 1024px) 58vw, 100vw" className="object-[88%_70%]" />
       {/* Fade the photo into the page on its left and bottom edges (desktop). */}
       <div aria-hidden className="absolute inset-y-0 left-0 hidden w-1/4 bg-gradient-to-r from-white/70 to-transparent lg:block" />
     </div>
