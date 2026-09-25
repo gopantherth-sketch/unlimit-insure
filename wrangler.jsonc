@@ -6,12 +6,13 @@
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
+  "workers_dev": true,
+  "preview_urls": false,
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "unlimit-insure",
-      // Replace with the id printed by: npx wrangler d1 create unlimit-insure
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "10bc6601-2379-4a44-b8ee-8ff48d897fcb",
       "migrations_dir": "migrations"
     }
   ]
