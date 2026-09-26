@@ -25,7 +25,7 @@ import { getCatalog } from "@/lib/server/catalog";
 import type { Catalog, Coverage, Quote } from "@/lib/types";
 import { defaultVehicle, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
-export const dynamic = "force-dynamic";
+// Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
 
 export const metadata: Metadata = {
   title: { absolute: `${pageSeo["/"]!.title} | Unlimit Insure` },

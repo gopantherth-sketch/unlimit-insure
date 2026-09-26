@@ -7,6 +7,7 @@ import { InsuranceCard } from "@/components/insurance/InsuranceCard";
 import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
+import { models } from "@/lib/data/vehicles";
 import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
@@ -16,7 +17,13 @@ import { getCatalog } from "@/lib/server/catalog";
 import { purchaseEnabled } from "@/lib/server/features";
 import { resolveVehicle, vehicleLabel, yearsForModel } from "@/lib/vehicle";
 
-export const dynamic = "force-dynamic";
+// Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
+export function generateStaticParams() {
+  return modelPages
+    .map((p) => models.find((m) => m.id === p.modelId))
+    .filter((m) => m !== undefined)
+    .map((m) => ({ brandId: m.brandId, modelId: m.id }));
+}
 
 type Params = Promise<{ brandId: string; modelId: string }>;
 

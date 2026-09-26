@@ -5,7 +5,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
 import { getCatalog } from "@/lib/server/catalog";
 
-export const dynamic = "force-dynamic";
+// Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
 export const metadata: Metadata = {
   title: "ประกันรถยนต์ตามรุ่นรถ",
   description: "เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณาและเปรียบเทียบแพ็กเกจประกันรถยนต์สำหรับรถรุ่นนั้น",

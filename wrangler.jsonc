@@ -7,6 +7,11 @@
   "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
   "observability": { "enabled": true },
   "workers_dev": true,
+  // Custom domains (registered on this Cloudflare account). Deploys create the DNS records.
+  "routes": [
+    { "pattern": "unlimitinsure.com", "custom_domain": true },
+    { "pattern": "www.unlimitinsure.com", "custom_domain": true }
+  ],
   "preview_urls": false,
   "d1_databases": [
     {

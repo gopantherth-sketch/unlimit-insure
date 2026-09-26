@@ -12,7 +12,10 @@ import { labArticles } from "@/content/lab";
 
 type Params = Promise<{ slug: string }>;
 
-export const dynamic = "force-dynamic";
+// Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
+export function generateStaticParams() {
+  return labArticles.map((a) => ({ slug: a.slug }));
+}
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
