@@ -19,6 +19,11 @@ You are the **graphic and UI design lead** for Unlimit Insure, a Thai motor-insu
 - **Mobile-first:** 390px with no page-level horizontal scroll; tap targets ≥ 44px.
 - **Contrast:** body text AA (4.5:1). `navy-400` is the lightest colour allowed for text; `navy-300` is for icons and borders only.
 
+## Current launch mode (2026-09-26)
+- LINE-first website: no prices (`SHOW_PRICES=false`), no My Garage or partner logos (`lib/features.ts`). Every plan ends in "ขอราคาจริงทาง LINE" (`components/insurance/PriceOnRequest.tsx`).
+- Contact UI: `components/contact/ContactButtons.tsx`, `components/layout/MobileContactBar.tsx`, `components/home/LineQuoteBand.tsx`. LINE button green is `#06803b` (AA with white text); don't use the lighter brand green `#06C755` behind text.
+- Public pages are prebuilt from the code catalogue (`CATALOG_FROM_CODE`), so `npm run dev` needs no local D1 seed for them.
+
 ## Hard rules
 - **Wording:** don't change it. Where a layout needs new or shorter text, put a placeholder in the right `content/*` field or leave a `TODO(copy)` comment, and list it in your report for the copywriter.
 - **Brands:** no real insurer logos or car-brand badges, and no readable number plates in imagery.

@@ -5,12 +5,15 @@ Handed over 2026-09-26 from the cloud PM session to the local agents (Core, Desi
 ## 1. What this is
 A Thai motor-insurance decision and ownership platform: **Understand → Compare → Decide → Stay Protected**. Visitors pick their car and what matters to them, then see ranked plans with a transparent match, compare them, get jargon explained, and either talk to an advisor or (later) buy online and track the application. Product brief: [`PROJECT_MASTER.md`](PROJECT_MASTER.md). Owner: Dave (prefers minimal words, direct answers).
 
-## 2. State at handover
+## 2. State (updated 2026-09-26 evening by Core)
 | Item | State |
 |---|---|
-| Code | `main` on GitHub `gopantherth-sketch/unlimit-insure`, all work committed and pushed |
-| Live URL | https://unlimit-insure.gopanther-th.workers.dev: serves an **older deploy** from before Phase 3 (exact commit not recorded). Latest `main` is **not deployed yet**: task C1 in `docs/agents.md`, steps in `docs/tasks/deploy-go-live.md` |
-| Cloudflare | Account `94ae8d1f7781195ee6756040995a97fc`, Worker `unlimit-insure`, D1 `unlimit-insure` (`10bc6601-2379-4a44-b8ee-8ff48d897fcb`, APAC). Remote D1 has migration `0000` and the mock catalogue; `0001`–`0003` are pending. Dashboard Git build settings need fixing (C1) |
+| Code | `main` on GitHub `gopantherth-sketch/unlimit-insure`. Local folders: Core `D:\Unlimit Insure\repo`, Designer `D:\Unlimit Insure\unlimit-insure-design`, Copywriter `D:\Unlimit Insure\unlimit-insure-copy` |
+| Live | **https://unlimitinsure.com** (+ `www`, + workers.dev). Every push to `main` auto-deploys (~2 min) |
+| Launch mode | **LINE-first website** (owner decision): no prices, no lead form, no online purchase, no My Garage; contact via LINE `@unlimit.insure`, phone 091-444-5542, Facebook `Unlimit.th` (`content/contact.ts`, flags in `lib/features.ts`). Back office parked but working at `/admin` |
+| Cloudflare | Account `94ae8d1f7781195ee6756040995a97fc`, **Workers Free** (owner keeps budget low; upgrade only if 1102 errors appear), Worker `unlimit-insure`, D1 `unlimit-insure` (`10bc6601-…`, APAC) at migration `0003`. Secrets: `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `SESSION_SECRET` |
+| Next session | Polish the website: designer D5, copywriter W7 (`docs/agents.md`). Owner still owes the broker licence number |
+| Windows notes | Clear the user-level `CLOUDFLARE_API_TOKEN` per terminal before wrangler; use `npx.cmd` in PowerShell; e2e tests use installed Chrome via `CHROMIUM` |
 | Data | **All mock**: insurers, products, premiums and vehicle prices are placeholders (see `docs/data-inventory.md`). The site shows a "ต้นแบบ" (prototype) notice |
 | Online purchase | Built and tested, **switched off** (`PURCHASE_ENABLED=false` in `wrangler.jsonc`, R2 binding commented out). "Select plan" goes to the advisor form |
 | Staff alerts | Built (LINE Messaging API + Resend email), **parked** by the owner. Inactive until secrets are set |
