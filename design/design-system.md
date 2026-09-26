@@ -14,11 +14,12 @@ Blue/white fintech direction (PROJECT_MASTER.md §6, §37). Visual target: `desi
 | `navy-100` | `#E6EAF3` | Borders, dividers |
 | `canvas` | `#F7F8FC` | Page background for app screens |
 | `wash` | `#F3F6FD` | Homepage section washes (Why Unlimit, lifestyle band, After you buy), table header rows |
+| `line-600` | `#06803B` | LINE buttons and LINE accents (white text AA 5.3:1). `line-700` / `800` hover / pressed; `line-50` / `100` / `200` tinted surfaces and borders. Never put text on the lighter LINE green `#06C755` |
 | `success-*` | `#12805C` | Covered / best value; `success-500` `#16A34A` fills the table check circle |
 | `warning-*` | `#B45309` | Excess, mock-data labels, renewal due |
 | `danger-600` | `#C0263A` | Errors (sparingly); `danger-500` `#DC2626` is the red ✕ in comparison tables only |
 
-Gradients: only soft `brand-50 → wash/white` washes (Smart Compare summary, advisor panel) and photo fades into the page. No stacked gradients, no dark bands except the footer bar.
+Gradients: only soft `brand-50 → wash/white` washes (Smart Compare summary, advisor panel) and photo fades into the page. No stacked gradients, no dark bands except the LINE quote band and the footer bar.
 
 ## Typography
 
@@ -68,6 +69,11 @@ Numbers use `.tabular` (tabular figures).
 - **Sticky action bar**: wizard actions stick to the bottom of the viewport on mobile (white/95 + blur, safe-area padding; back button icon-only with sr-only text) and sit as a normal card footer from `sm`. The results compare bar floats as a rounded-2xl `shadow-float` panel inset 8–16 px from the viewport edge.
 - **Plan card** (`InsuranceCard`): rounded-xl2; insurer mark + insurer/product name + type chip; premium in a `wash` panel (Prompt 32 px); four key rows at ≥ 44 px (booleans show the CoverMark next to the text); match badge + list in an outlined panel; source badge; primary "เลือกแพ็กเกจ" + secondary "ดูรายละเอียด" (rounded-xl) and the compare toggle (dashed outline → brand-50 when selected). The recommended card gets a blue ring and a "แนะนำสำหรับคุณ" pill on its top edge.
 - **Highlight panels** ("แนะนำสำหรับคุณ", "ต่างกันตรงไหน?", advisor context): rounded-xl2, `brand-100` border, `brand-50 → white` diagonal wash, white inner panels. Closing CTAs on inner pages use a `brand-50 → wash` horizontal wash instead of the old navy card.
+- **Contact buttons** (`components/contact/ContactButtons.tsx`, LINE-first launch): `LineButton` solid `line-600` with a green-tinted lift shadow; `CallButton` `outline` / `solid` / `onDark`. Rounded-xl, sizes `sm` and `md` 44 px, `lg` 48–56 px. LINE is always the first and widest action.
+- **Mobile contact bar** (`MobileContactBar`): below `sm`, fixed bottom panel with rounded top corners and an upward shadow; LINE and call at 1.4 : 1. Hidden on `/quote*`.
+- **Price on request** (`PriceOnRequest`): replaces the premium while `SHOW_PRICES` is off. `line-100` border, `line-50 → white` wash, white icon tile with a tag icon, "สอบถามราคาจริง" in Prompt, full-width LINE button.
+- **LINE quote band** (`LineQuoteBand`, homepage): the one dark band besides the footer bar (navy → brand gradient with two blurred glows). Three steps joined by a connector (vertical on phones, horizontal from `sm`); step 1 is filled `line-600`. Buttons are full width below 420 px. QR card (desktop only) with a `line-50` LINE ID chip.
+- **Desktop QR** on the advisor page: `lg` only, inside the contact card, `line-50` panel. Phones use the buttons instead.
 - **Cards**: `.card` — white, 1 px `navy-100` border, `shadow-card`.
 - **Tables**: horizontal scroll inside the card on mobile; sticky first column; `wash` header and group rows; boolean rows use CoverMark (compare table, Lab type matrix, plan detail); differing rows marked with a blue dot; best value in `success-700`.
 - **Explain button**: ⓘ icon (or icon + "อธิบายให้เข้าใจง่าย"), opens native `<dialog>`.

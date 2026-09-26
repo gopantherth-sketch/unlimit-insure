@@ -77,7 +77,7 @@ export default async function HomePage() {
       {/* The compare demo explains price differences, so it waits for real prices. */}
       {SHOW_PRICES && demo && demo.quotes.length > 1 && <SmartCompareDemo vehicle={demo.vehicle} quotes={demo.quotes} />}
       {demo && demo.quotes.length > 0 && (
-        <section aria-labelledby="sim-title" className="bg-white pb-16 sm:pb-20">
+        <section aria-labelledby="sim-title" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16">
           <div className="container-page">
             <SectionHeading id="sim-title" eyebrow="Real-life coverage" title={homeCopy.scenarioTitle} body={homeCopy.scenarioBody} />
             <CoverageSimulator quotes={demo.quotes} labels={labels} />
