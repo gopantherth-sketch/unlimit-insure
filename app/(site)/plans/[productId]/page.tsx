@@ -13,7 +13,7 @@ import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldGroupLabel, insuranceTypeLabel, repairTypeLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
 import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
 import { contact } from "@/content/contact";
-import { SHOW_PRICES } from "@/lib/features";
+import { SHOW_PRICES, SHOW_PROTOTYPE_EXTRAS, SHOW_SELECT_PLAN } from "@/lib/features";
 import { formatBaht, formatNumber } from "@/lib/format";
 import { buildMatchContext, matchQuote } from "@/lib/match";
 import { parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
@@ -178,10 +178,12 @@ export default async function PlanPage({ params, searchParams }: { params: Param
               <p className="mt-3 text-navy-600">
                 ความคุ้มครองเป็นไปตามเงื่อนไขและข้อยกเว้นในกรมธรรม์ ก่อนชำระเงินคุณจะได้รับเอกสารเงื่อนไขฉบับเต็มเพื่ออ่านก่อนตัดสินใจ
               </p>
-              <p className="mt-4 inline-flex items-center gap-2 rounded-xl border border-dashed border-navy-200 px-4 py-3 text-sm text-navy-400">
-                <FileText aria-hidden className="h-4 w-4" />
-                เอกสารกรมธรรม์: รอไฟล์จากบริษัทประกัน
-              </p>
+              {SHOW_PROTOTYPE_EXTRAS && (
+                <p className="mt-4 inline-flex items-center gap-2 rounded-xl border border-dashed border-navy-200 px-4 py-3 text-sm text-navy-400">
+                  <FileText aria-hidden className="h-4 w-4" />
+                  เอกสารกรมธรรม์: รอไฟล์จากบริษัทประกัน
+                </p>
+              )}
             </section>
           </div>
 
@@ -215,28 +217,32 @@ export default async function PlanPage({ params, searchParams }: { params: Param
                 <p className="text-navy-600">แผนนี้ไม่รับ {vehicle ? vehicleLabel(vehicle) : "รถคันนี้"} ตามเงื่อนไขของแผน (เช่น อายุรถหรือประเภทรถ)</p>
               ) : (
                 <>
-                  <p className="text-navy-600">เพิ่มรถของคุณเพื่อดูเบี้ยของแผนนี้</p>
+                  <p className="text-navy-600">{SHOW_PRICES ? "เพิ่มรถของคุณเพื่อดูเบี้ยของแผนนี้" : "เพิ่มรถของคุณเพื่อดูว่าแผนนี้รับรถของคุณไหม"}</p>
                   <Link href="/quote" className={buttonClass("secondary", "md", "mt-4 w-full rounded-xl")}>
                     เพิ่มรถของคุณ
                   </Link>
                 </>
               )}
               <div className="mt-6 flex flex-col gap-2">
-                <Link href={selectPlanHref(product.id, journey, buyEnabled)} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
-                  เลือกแพ็กเกจนี้
-                </Link>
+                {SHOW_SELECT_PLAN && (
+                  <Link href={selectPlanHref(product.id, journey, buyEnabled)} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
+                    เลือกแพ็กเกจนี้
+                  </Link>
+                )}
                 {input && (
                   <Link href={withJourney("/compare", { ...journey, plans: [product.id] })} className={buttonClass("secondary", "md", "w-full rounded-xl")}>
                     เปรียบเทียบกับแผนอื่น
                   </Link>
                 )}
-                <Link href={withJourney("/advisor", { ...journey, plans: [product.id] })} className={buttonClass("ghost", "md", "w-full rounded-xl")}>
-                  <Headset aria-hidden className="h-4 w-4" />
-                  คุยกับที่ปรึกษา
-                </Link>
+                {SHOW_SELECT_PLAN && (
+                  <Link href={withJourney("/advisor", { ...journey, plans: [product.id] })} className={buttonClass("ghost", "md", "w-full rounded-xl")}>
+                    <Headset aria-hidden className="h-4 w-4" />
+                    คุยกับที่ปรึกษา
+                  </Link>
+                )}
               </div>
             </div>
-            <VerifiedSource version={version} variant="panel" />
+            {SHOW_PROTOTYPE_EXTRAS && <VerifiedSource version={version} variant="panel" />}
           </aside>
         </div>
       </div>

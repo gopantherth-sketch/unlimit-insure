@@ -6,7 +6,7 @@ import { MatchBadge, MatchList } from "@/components/insurance/MatchSummary";
 import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
 import { VerifiedSource } from "@/components/insurance/VerifiedSource";
 import { contact } from "@/content/contact";
-import { SHOW_PRICES } from "@/lib/features";
+import { SHOW_PRICES, SHOW_PROTOTYPE_EXTRAS, SHOW_SELECT_PLAN } from "@/lib/features";
 import { buttonClass } from "@/components/ui/button";
 import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldByKey, insuranceTypeLabel } from "@/lib/coverageFields";
@@ -106,15 +106,19 @@ export function InsuranceCard({ quote, detailHref, selectHref, compareControl, h
         </div>
       )}
 
-      <div className="mt-3">
-        <VerifiedSource version={quote.version} />
-      </div>
+      {SHOW_PROTOTYPE_EXTRAS && (
+        <div className="mt-3">
+          <VerifiedSource version={quote.version} />
+        </div>
+      )}
 
       <div className="mt-auto grid grid-cols-2 gap-2 pt-5">
-        <Link href={selectHref} className={buttonClass("primary", "md", "rounded-xl px-3")}>
-          เลือกแพ็กเกจ
-        </Link>
-        <Link href={detailHref} className={buttonClass("secondary", "md", "rounded-xl px-3")}>
+        {SHOW_SELECT_PLAN && (
+          <Link href={selectHref} className={buttonClass("primary", "md", "rounded-xl px-3")}>
+            เลือกแพ็กเกจ
+          </Link>
+        )}
+        <Link href={detailHref} className={buttonClass("secondary", "md", cx("rounded-xl px-3", !SHOW_SELECT_PLAN && "col-span-2"))}>
           ดูรายละเอียด
         </Link>
         {compareControl && <div className="col-span-2 [&>*]:w-full">{compareControl}</div>}

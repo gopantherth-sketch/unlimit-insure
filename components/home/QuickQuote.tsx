@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { VehicleSelector, draftToSelection, type VehicleDraft } from "@/components/insurance/VehicleSelector";
 import { buttonClass } from "@/components/ui/button";
+import { SHOW_PROTOTYPE_EXTRAS } from "@/lib/features";
 import { withJourney } from "@/lib/params";
 import type { VehicleCatalog } from "@/lib/types";
 import { defaultEvVehicle, defaultVehicle } from "@/lib/vehicle";
@@ -47,7 +48,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
   return (
     <div className="overflow-hidden rounded-[20px] border border-navy-100 bg-white shadow-float">
       <div role="tablist" aria-label="ประเภทประกัน" className="flex gap-1 overflow-x-auto bg-navy-50/70 px-2 pt-2 sm:px-4 sm:pt-3">
-        {tabs.map((t) => {
+        {tabs.filter((t) => SHOW_PROTOTYPE_EXTRAS || !t.disabled).map((t) => {
           const Icon = t.icon;
           const active = tab === t.id;
           return (

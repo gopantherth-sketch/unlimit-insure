@@ -8,7 +8,7 @@ import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
 import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
 import { contact } from "@/content/contact";
-import { SHOW_PRICES } from "@/lib/features";
+import { SHOW_PRICES, SHOW_SELECT_PLAN } from "@/lib/features";
 import { formatNumber } from "@/lib/format";
 import { JourneySteps } from "@/components/quote/JourneySteps";
 import { NeedVehicle } from "@/components/quote/NeedVehicle";
@@ -105,10 +105,12 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                       <PriceOnRequest placement="compare" compact message={contact.messages.plan(`${q.product.name} (${q.insurer.name})`)} />
                     )}
                     <div className="mt-auto grid grid-cols-2 gap-2">
-                      <Link href={selectPlanHref(q.productId, journey, buyEnabled)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
-                        เลือกแผนนี้
-                      </Link>
-                      <Link href={withJourney(`/plans/${q.productId}`, journey)} className={buttonClass("secondary", "md", "rounded-xl px-3")}>
+                      {SHOW_SELECT_PLAN && (
+                        <Link href={selectPlanHref(q.productId, journey, buyEnabled)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
+                          เลือกแผนนี้
+                        </Link>
+                      )}
+                      <Link href={withJourney(`/plans/${q.productId}`, journey)} className={buttonClass("secondary", "md", SHOW_SELECT_PLAN ? "rounded-xl px-3" : "col-span-2 rounded-xl px-3")}>
                         ดูรายละเอียด
                       </Link>
                     </div>

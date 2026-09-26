@@ -18,5 +18,17 @@ export const SHOW_AFTER_PURCHASE = false;
  */
 export const CATALOG_FROM_CODE = true;
 
+/**
+ * "เลือกแพ็กเกจ / เลือกแผนนี้" buttons. While prices are hidden and online purchase is off they only
+ * lead to the advisor page, duplicating the LINE button next to them (owner review 2026-09-27).
+ */
+export const SHOW_SELECT_PLAN = false;
+
+/**
+ * Prototype-only UI: per-plan data-source badges and panel ("ข้อมูลตัวอย่าง"), the policy-document
+ * placeholder, and "เร็ว ๆ นี้" product tabs. The sitewide sample-data notice in the footer stays.
+ */
+export const SHOW_PROTOTYPE_EXTRAS = false;
+
 /** Partner insurer logo strip: only with licensed logos and permission (task D4). */
 export const SHOW_PARTNER_LOGOS = false;
