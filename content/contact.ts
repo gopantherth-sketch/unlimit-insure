@@ -14,6 +14,8 @@ export const contact = {
   phoneDisplay: "091-444-5542",
   /** Owner-supplied 2026-09-27: general and personal-data contact. */
   email: "unlimit.adm@gmail.com",
+  /** Owner-supplied 2026-09-27: contact address for the legal pages (not shown in the footer). */
+  address: "108/66 หมู่บ้านพลีโน่ชัยพฤกษ์ ซอย 5/5 ต.พิมลราช อ.บางบัวทอง จ.นนทบุรี 11110",
   /** E.164 for tel: links. */
   phoneE164: "+66914445542",
   facebookName: "Unlimit Insure",
