@@ -92,7 +92,7 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
       <p className="mt-4 text-sm leading-relaxed text-navy-500">
         {quotes.some((q) => simulate(active, q).covered) ? copy.coveredText : copy.notCoveredText}
       </p>
-      <p className="mt-2 text-xs text-navy-400">ต้นแบบ: ผลลัพธ์คำนวณจากข้อมูลแผนตัวอย่าง ยังไม่ใช่เงื่อนไขกรมธรรม์จริง</p>
+      <p className="mt-2 text-xs text-navy-400">ผลลัพธ์นี้มาจากแผนตัวอย่าง ยังไม่ใช่เงื่อนไขกรมธรรม์จริง</p>
     </div>
   );
 }

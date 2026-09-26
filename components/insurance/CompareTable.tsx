@@ -107,7 +107,7 @@ export function CompareTable({ quotes, labels }: Props) {
                           return (
                             <td key={q.id} className={cx("tabular px-4 py-3", isBest ? "font-semibold text-success-700" : "text-navy-800")}>
                               {typeof v === "boolean" ? <CoverMark covered={v} /> : f.display(q)}
-                              {isBest && <span className="sr-only"> (ดีที่สุดในรายการนี้)</span>}
+                              {isBest && <span className="sr-only"> (เด่นกว่าในข้อนี้)</span>}
                             </td>
                           );
                         })}

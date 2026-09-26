@@ -166,7 +166,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: 
                   </h2>
                   <p className="mt-2 text-[15px] leading-relaxed text-navy-600">
                     ตรงกับสิ่งที่คุณต้องการ {top.match.matched} จาก {top.match.total} ข้อ มากที่สุดในผลลัพธ์นี้
-                    ถ้าหลายแผนตรงเท่ากัน เราเลือกแผนที่เบี้ยต่ำกว่า ลำดับนี้ไม่ขึ้นกับค่าตอบแทนที่เราได้รับ
+                    ลำดับนี้ไม่ขึ้นกับค่าตอบแทนที่เราได้รับ
                   </p>
                   <div className="mt-5 flex items-center gap-3">
                     <InsurerMark insurer={top.insurer} />

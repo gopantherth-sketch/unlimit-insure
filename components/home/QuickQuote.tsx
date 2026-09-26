@@ -102,7 +102,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
         <div className="mt-4 flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-center gap-2 text-navy-600">
             <CircleCheck aria-hidden className="h-[18px] w-[18px] text-brand-600" />
-            ฟรี ไม่ผูกมัด ยังไม่ต้องให้เบอร์โทร
+            ฟรี ไม่ผูกมัด
           </p>
           <Link href="/advisor" className="link-arrow">
             ไม่เจอรุ่นรถของคุณ? ให้ที่ปรึกษาช่วยหา
