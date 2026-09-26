@@ -11,7 +11,7 @@ export function LegalDocument({ doc }: { doc: LegalDoc }) {
         {doc.status === "draft" && (
           <p className="mt-5 flex max-w-3xl items-start gap-2 rounded-2xl bg-warning-50 p-4 text-sm text-warning-700">
             <TriangleAlert aria-hidden className="mt-0.5 h-4 w-4 shrink-0" />
-            ฉบับร่าง อยู่ระหว่างการตรวจสอบทางกฎหมาย ข้อความในวงเล็บเหลี่ยมคือข้อมูลที่รอยืนยัน
+            ฉบับร่าง อยู่ระหว่างการตรวจสอบทางกฎหมาย หากมีคำถามเรื่องข้อมูลส่วนบุคคลหรือข้อกำหนด ติดต่อเราได้ตามช่องทางท้ายหน้านี้
           </p>
         )}
       </PageHero>
