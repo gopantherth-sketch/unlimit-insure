@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { ArrowRight, CircleCheck } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import { Photo, ScriptAccent } from "@/components/brand/Photo";
-import { buttonClass } from "@/components/ui/button";
+import { CallButton, LineButton } from "@/components/contact/ContactButtons";
+import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 
 /** Advisor panel with cut-out advisor photo overlapping the top edge (mockup §10). */
@@ -17,10 +17,10 @@ export function AdvisorCTA() {
                 <br />
                 {homeCopy.advisorSubtitle}
               </h2>
-              <Link href="/advisor" className={buttonClass("primary", "lg", "mt-6 px-8")}>
-                ปรึกษาฟรี
-                <ArrowRight aria-hidden className="h-5 w-5" />
-              </Link>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <LineButton placement="home" message={contact.messages.general} label={contact.labels.lineLong} size="lg" className="px-8" />
+                <CallButton placement="home" showNumber size="lg" />
+              </div>
             </div>
             <ul className="space-y-3">
               {homeCopy.advisorPoints.map((p) => (

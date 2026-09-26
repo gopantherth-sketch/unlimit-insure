@@ -70,7 +70,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2 id="funnel" className="text-lg font-bold">เส้นทางลูกค้า</h2>
           <p className="text-sm text-navy-500">
-            จากเริ่มเลือกรถถึงส่งคำขอ: <span className="tabular font-semibold text-navy-900">{pct(byName.lead_submitted ?? 0, first)}</span>
+            จากเริ่มเลือกรถถึงกดติดต่อทาง LINE: <span className="tabular font-semibold text-navy-900">{pct(byName.contact_line ?? 0, first)}</span>
           </p>
         </div>
         <div className="mt-4">

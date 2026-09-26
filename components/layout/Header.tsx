@@ -2,31 +2,24 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, UserRound, X } from "lucide-react";
+import { Menu, Phone, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/Logo";
-import { buttonClass } from "@/components/ui/button";
+import { CallButton, LineButton } from "@/components/contact/ContactButtons";
+import { contact } from "@/content/contact";
+import { track } from "@/lib/analytics/track";
+import { telHref } from "@/lib/contact";
 import { cx } from "@/lib/cx";
 
-// Customer navigation, labelled as in the selected mockup.
+// Customer navigation, labelled as in the selected mockup. My Garage and sign-in are hidden until
+// customer accounts exist; contact goes through LINE and phone.
 const siteNav = [
   { href: "/insurance", label: "ประกันรถยนต์" },
-  { href: "/quote", label: "เช็กเบี้ย" },
+  { href: "/quote", label: "เลือกแผนประกัน" },
   { href: "/lab", label: "บทความ" },
-  { href: "/garage", label: "บริการหลังการขาย" },
+  { href: "/claims", label: "เมื่อเกิดเหตุ" },
   { href: "/#why", label: "เกี่ยวกับเรา" },
 ] as const;
-
-/** Customer accounts are not live yet: shown as in the mockup, but not interactive. */
-function SignInSoon({ className }: { className?: string }) {
-  return (
-    <span aria-disabled="true" className={cx("inline-flex items-center gap-1.5 text-[15px] font-medium text-navy-400", className)}>
-      <UserRound aria-hidden className="h-[18px] w-[18px]" />
-      เข้าสู่ระบบ
-      <span className="rounded-full bg-navy-50 px-1.5 py-0.5 text-[11px] font-medium text-navy-500">เร็ว ๆ นี้</span>
-    </span>
-  );
-}
 
 export function Header() {
   const pathname = usePathname();
@@ -63,10 +56,15 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-4">
-            <SignInSoon className="hidden xl:inline-flex" />
-            <Link href="/advisor" className={buttonClass("primary", "md", "hidden rounded-xl px-6 sm:inline-flex")}>
-              ปรึกษาฟรี
-            </Link>
+            <a
+              href={telHref}
+              onClick={() => track("contact_call", "header")}
+              className="hidden items-center gap-1.5 text-[15px] font-semibold text-navy-700 hover:text-brand-700 xl:inline-flex"
+            >
+              <Phone aria-hidden className="h-[18px] w-[18px] text-brand-600" />
+              <span className="tabular">{contact.phoneDisplay}</span>
+            </a>
+            <LineButton placement="header" className="hidden px-6 sm:inline-flex" />
             <button
               type="button"
               className="inline-flex h-11 w-11 items-center justify-center rounded-xl text-navy-700 hover:bg-navy-50 lg:hidden"
@@ -93,13 +91,9 @@ export function Header() {
                 </Link>
               </li>
             ))}
-            <li className="px-3 py-3">
-              <SignInSoon />
-            </li>
-            <li className="pt-1">
-              <Link href="/advisor" className={buttonClass("primary", "md", "w-full rounded-xl")}>
-                ปรึกษาฟรี
-              </Link>
+            <li className="grid grid-cols-2 gap-2 pt-2">
+              <LineButton placement="header" className="w-full" />
+              <CallButton placement="header" className="w-full" />
             </li>
           </ul>
         </nav>

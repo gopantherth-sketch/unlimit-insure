@@ -1,13 +1,15 @@
 import Link from "next/link";
-import { Mail, MessageCircle, Phone } from "lucide-react";
+import { MessageCircle, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
+import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
+import { lineAddUrl, telHref } from "@/lib/contact";
 
 const columns = [
   {
     title: "ประกันรถ",
     links: [
-      { href: "/quote", label: "เช็กเบี้ยประกันรถ" },
+      { href: "/quote", label: "เลือกแผนประกันรถ" },
       { href: "/compare", label: "เปรียบเทียบแพ็กเกจ" },
       { href: "/lab/ev-insurance", label: "ประกันรถ EV" },
       { href: "/insurance", label: "ประกันรถตามรุ่น" },
@@ -23,28 +25,12 @@ const columns = [
     ],
   },
   {
-    title: "หลังการซื้อ",
+    title: "ช่วยเหลือ",
     links: [
-      { href: "/garage", label: "My Garage" },
       { href: "/claims", label: "ขั้นตอนเมื่อเกิดเหตุ" },
       { href: "/advisor", label: "ปรึกษาผู้เชี่ยวชาญ" },
     ],
   },
-];
-
-// Contact details are not confirmed yet: placeholders only, never invented numbers or handles.
-const contacts = [
-  { icon: Phone, label: "โทรศัพท์" },
-  { icon: MessageCircle, label: "LINE" },
-  { icon: Mail, label: "อีเมล" },
-];
-
-// Social accounts are not live yet: shown as neutral, non-interactive placeholders.
-const socials = [
-  { name: "Facebook", glyph: "f", className: "bg-[#1877F2] font-bold" },
-  { name: "LINE", glyph: "L", className: "bg-[#06C755] font-bold" },
-  { name: "YouTube", glyph: "▶", className: "bg-[#FF0000] text-[11px]" },
-  { name: "TikTok", glyph: "♪", className: "bg-navy-900" },
 ];
 
 export function Footer() {
@@ -73,27 +59,36 @@ export function Footer() {
           ))}
           <div>
             <h2 className="font-display text-[15px] font-semibold text-navy-900">ติดต่อเรา</h2>
-            <ul className="mt-3 space-y-2.5">
-              {contacts.map(({ icon: Icon, label }) => (
-                <li key={label} className="flex items-center gap-2 text-sm text-navy-500">
-                  <Icon aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
-                  <span>
-                    <span className="sr-only">{label}: </span>[รอข้อมูล]
+            <ul className="mt-3 space-y-2.5 text-sm">
+              <li>
+                <a href={telHref} className="flex items-center gap-2 text-navy-600 hover:text-brand-700">
+                  <Phone aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
+                  <span className="sr-only">โทรศัพท์: </span>
+                  <span className="tabular">{contact.phoneDisplay}</span>
+                </a>
+              </li>
+              <li>
+                <a href={lineAddUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-navy-600 hover:text-brand-700">
+                  <MessageCircle aria-hidden className="h-4 w-4 shrink-0 text-[#06C755]" />
+                  <span className="sr-only">LINE: </span>
+                  {contact.lineId}
+                </a>
+              </li>
+              <li>
+                {contact.facebookUrl ? (
+                  <a href={contact.facebookUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-navy-600 hover:text-brand-700">
+                    <span aria-hidden className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#1877F2] text-[11px] font-bold leading-none text-white">f</span>
+                    <span className="sr-only">Facebook: </span>
+                    {contact.facebookName}
+                  </a>
+                ) : (
+                  <span className="flex items-center gap-2 text-navy-600">
+                    <span aria-hidden className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#1877F2] text-[11px] font-bold leading-none text-white">f</span>
+                    <span className="sr-only">Facebook: </span>
+                    {contact.facebookName}
                   </span>
-                </li>
-              ))}
-            </ul>
-            <ul aria-label="โซเชียลมีเดีย (เร็ว ๆ นี้)" className="mt-5 flex gap-2">
-              {socials.map((s) => (
-                <li
-                  key={s.name}
-                  title={`${s.name} — เร็ว ๆ นี้`}
-                  className={`inline-flex h-8 w-8 items-center justify-center rounded-full text-sm text-white opacity-90 ${s.className}`}
-                >
-                  <span aria-hidden>{s.glyph}</span>
-                  <span className="sr-only">{s.name} (เร็ว ๆ นี้)</span>
-                </li>
-              ))}
+                )}
+              </li>
             </ul>
           </div>
         </div>
@@ -108,7 +103,7 @@ export function Footer() {
           </p>
         </div>
         <p className="container-page border-t border-white/10 py-3 text-xs text-navy-300">
-          ต้นแบบระบบ — ข้อมูลแพ็กเกจทั้งหมดเป็นข้อมูลตัวอย่าง ยังไม่ใช่ข้อเสนอประกันภัยจริง
+          แพ็กเกจบนเว็บไซต์เป็นตัวอย่างเพื่ออธิบายความคุ้มครอง ยังไม่ใช่ข้อเสนอประกันภัยจริง ราคาและเงื่อนไขจริงสอบถามทาง LINE หรือโทรศัพท์
         </p>
       </div>
     </footer>

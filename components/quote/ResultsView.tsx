@@ -10,6 +10,9 @@ import { MatchList } from "@/components/insurance/MatchSummary";
 import { JourneySteps } from "@/components/quote/JourneySteps";
 import { buttonClass } from "@/components/ui/button";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
+import { LineButton } from "@/components/contact/ContactButtons";
+import { contact } from "@/content/contact";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import { rememberCompared, rememberViewed } from "@/lib/journey";
 import { track } from "@/lib/analytics/track";
@@ -100,8 +103,12 @@ export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: 
                 <p className="eyebrow">My Car</p>
                 <h1 className="mt-2 text-[26px] font-bold leading-tight text-navy-900 sm:text-[34px]">แพ็กเกจสำหรับ {vehicleLabel(vehicle)}</h1>
                 <p className="mt-2 text-[15px] text-navy-500 sm:text-base">
-                  มูลค่ารถโดยประมาณ <span className="tabular font-semibold text-navy-700">{formatBaht(vehicle.estimatedValue)}</span>
-                  {usage && <> · {usageLabel(usage)}</>} · พบ {quotes.length} แพ็กเกจที่รับรถคันนี้
+                  {SHOW_PRICES && (
+                    <>
+                      มูลค่ารถโดยประมาณ <span className="tabular font-semibold text-navy-700">{formatBaht(vehicle.estimatedValue)}</span> ·{" "}
+                    </>
+                  )}
+                  {usage && <>{usageLabel(usage)} · </>}พบ {quotes.length} แพ็กเกจที่รับรถคันนี้
                 </p>
               </div>
             </div>
@@ -164,14 +171,24 @@ export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: 
                   <div className="mt-5 flex items-center gap-3">
                     <InsurerMark insurer={top.insurer} />
                     <div>
-                      <p className="tabular font-display text-[28px] font-bold leading-none text-navy-900">
-                        {formatBaht(top.premium)} <span className="font-sans text-sm font-normal text-navy-500">/ ปี</span>
-                      </p>
+                      {SHOW_PRICES && (
+                        <p className="tabular font-display text-[28px] font-bold leading-none text-navy-900">
+                          {formatBaht(top.premium)} <span className="font-sans text-sm font-normal text-navy-500">/ ปี</span>
+                        </p>
+                      )}
                       <p className="mt-1 text-sm text-navy-500">
                         {top.insurer.name} · {insuranceTypeLabel[top.coverage.insuranceType]}
                       </p>
                     </div>
                   </div>
+                  {!SHOW_PRICES && (
+                    <LineButton
+                      placement="results"
+                      message={contact.messages.plan(`${top.product.name} (${top.insurer.name})`, vehicleLabel(vehicle))}
+                      label={contact.labels.askPrice}
+                      className="mt-5 self-start"
+                    />
+                  )}
                 </div>
                 <div className="rounded-2xl border border-navy-100 bg-white p-4 sm:p-5">
                   <p className="mb-3 text-sm font-semibold text-navy-800">เทียบกับสิ่งที่คุณเลือก</p>
@@ -215,7 +232,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: 
                 </label>
                 <div className="relative min-w-0 flex-1 lg:flex-none">
                   <select id="sort" value={sort} onChange={(e) => setSort(e.target.value as SortId)} className="field-select h-11 w-full text-sm lg:w-auto">
-                    {(Object.keys(sorters) as SortId[]).map((id) => (
+                    {(Object.keys(sorters) as SortId[]).filter((id) => SHOW_PRICES || id !== "premium").map((id) => (
                       <option key={id} value={id}>
                         {sorters[id].label}
                       </option>

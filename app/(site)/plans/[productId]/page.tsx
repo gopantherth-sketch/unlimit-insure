@@ -11,6 +11,9 @@ import { TrackView } from "@/components/TrackView";
 import { buttonClass } from "@/components/ui/button";
 import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldGroupLabel, insuranceTypeLabel, repairTypeLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
+import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
+import { contact } from "@/content/contact";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht, formatNumber } from "@/lib/format";
 import { buildMatchContext, matchQuote } from "@/lib/match";
 import { parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
@@ -186,14 +189,27 @@ export default async function PlanPage({ params, searchParams }: { params: Param
             <div className="card rounded-xl2 border-white p-6 shadow-float">
               {quote && vehicle ? (
                 <>
-                  <p className="text-sm text-navy-500">เบี้ยประกันโดยประมาณสำหรับ {vehicleLabel(vehicle)}</p>
-                  <div className="mt-3 rounded-2xl bg-wash px-4 py-4">
-                    <p className="tabular font-display text-[40px] font-bold leading-none text-navy-900">
-                      {formatNumber(quote.premium)} <span className="font-sans text-base font-normal text-navy-500">บาท / ปี</span>
-                    </p>
-                    <p className="mt-2 text-sm text-navy-600">ทุนประกัน <span className="tabular font-semibold">{formatBaht(quote.sumInsured)}</span></p>
-                  </div>
-                  <p className="mt-3 text-xs leading-relaxed text-navy-400">ราคาเบื้องต้น อาจเปลี่ยนได้หลังยืนยันข้อมูล · ผ่อนชำระ: รอข้อมูลเงื่อนไขจากบริษัทประกัน</p>
+                  {SHOW_PRICES ? (
+                    <>
+                      <p className="text-sm text-navy-500">เบี้ยประกันโดยประมาณสำหรับ {vehicleLabel(vehicle)}</p>
+                      <div className="mt-3 rounded-2xl bg-wash px-4 py-4">
+                        <p className="tabular font-display text-[40px] font-bold leading-none text-navy-900">
+                          {formatNumber(quote.premium)} <span className="font-sans text-base font-normal text-navy-500">บาท / ปี</span>
+                        </p>
+                        <p className="mt-2 text-sm text-navy-600">ทุนประกัน <span className="tabular font-semibold">{formatBaht(quote.sumInsured)}</span></p>
+                      </div>
+                      <p className="mt-3 text-xs leading-relaxed text-navy-400">ราคาเบื้องต้น อาจเปลี่ยนได้หลังยืนยันข้อมูล · ผ่อนชำระ: รอข้อมูลเงื่อนไขจากบริษัทประกัน</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-sm text-navy-500">แผนนี้สำหรับ {vehicleLabel(vehicle)}</p>
+                      <PriceOnRequest
+                        placement="plan"
+                        message={contact.messages.plan(`${quote.product.name} (${quote.insurer.name})`, vehicleLabel(vehicle))}
+                        className="mt-3"
+                      />
+                    </>
+                  )}
                 </>
               ) : result && result.status === "ineligible" ? (
                 <p className="text-navy-600">แผนนี้ไม่รับ {vehicle ? vehicleLabel(vehicle) : "รถคันนี้"} ตามเงื่อนไขของแผน (เช่น อายุรถหรือประเภทรถ)</p>

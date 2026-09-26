@@ -7,6 +7,7 @@ import { InsuranceCard } from "@/components/insurance/InsuranceCard";
 import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
 import { withJourney, selectPlanHref } from "@/lib/params";
@@ -70,7 +71,9 @@ export default async function ModelPage({ params }: { params: Params }) {
           <section aria-labelledby="examples" className="mt-12">
             <h2 id="examples" className="h-section">ตัวอย่างแพ็กเกจสำหรับ {vehicleLabel(vehicle)}</h2>
             <p className="mt-2 text-navy-500">
-              มูลค่ารถโดยประมาณ {formatBaht(vehicle.estimatedValue)} · เรียงตามเบี้ย เลือกสิ่งที่สำคัญกับคุณ เพื่อดูว่าแผนไหนตรงกับคุณ
+              {SHOW_PRICES
+                ? `มูลค่ารถโดยประมาณ ${formatBaht(vehicle.estimatedValue)} · เรียงตามเบี้ย เลือกสิ่งที่สำคัญกับคุณ เพื่อดูว่าแผนไหนตรงกับคุณ`
+                : "เลือกสิ่งที่สำคัญกับคุณ เพื่อดูว่าแผนไหนตรงกับคุณ แล้วทักมาทาง LINE เพื่อขอราคาจริง"}
             </p>
             <ul className="mt-6 grid gap-5 md:grid-cols-3">
               {quotes.map((q) => (

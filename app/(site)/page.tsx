@@ -17,6 +17,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { homeCopy } from "@/content/home";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
 import { getDemo } from "@/lib/demo";
+import { SHOW_AFTER_PURCHASE, SHOW_PRICES } from "@/lib/features";
 import { withJourney } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import { getCatalog } from "@/lib/server/catalog";
@@ -71,7 +72,8 @@ export default async function HomePage() {
       <TrustStrip />
       <WhyUnlimit />
       <HowItWorks />
-      {demo && demo.quotes.length > 1 && <SmartCompareDemo vehicle={demo.vehicle} quotes={demo.quotes} />}
+      {/* The compare demo explains price differences, so it waits for real prices. */}
+      {SHOW_PRICES && demo && demo.quotes.length > 1 && <SmartCompareDemo vehicle={demo.vehicle} quotes={demo.quotes} />}
       {demo && demo.quotes.length > 0 && (
         <section aria-labelledby="sim-title" className="bg-white pb-16 sm:pb-20">
           <div className="container-page">
@@ -83,7 +85,8 @@ export default async function HomePage() {
       <LifestyleBanner />
       <ContentRow table={typeTable} />
       <Promises />
-      <AfterPurchase />
+      {/* My Garage and renewal reminders need customer accounts (back office parked). */}
+      {SHOW_AFTER_PURCHASE && <AfterPurchase />}
       <FaqSection />
       <AdvisorCTA />
     </>

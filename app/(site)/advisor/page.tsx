@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { CircleCheck } from "lucide-react";
 import { Photo, ScriptAccent } from "@/components/brand/Photo";
 import { homeCopy } from "@/content/home";
-import { AdvisorHandoff } from "@/components/insurance/AdvisorHandoff";
+import { AdvisorContact } from "@/components/insurance/AdvisorContact";
 import { contextFromParams } from "@/lib/leads";
 import type { RawParams } from "@/lib/params";
 import { getCatalog } from "@/lib/server/catalog";
@@ -28,7 +28,7 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
               ปรึกษาผู้เชี่ยวชาญ<span className="text-brand-600">ฟรี</span>
             </h1>
             <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-navy-600 sm:text-lg">
-              ที่ปรึกษาช่วยอธิบายความคุ้มครองและตอบคำถาม โดยเห็นข้อมูลรถและแผนที่คุณดูไว้แล้ว ไม่มีการเร่งให้ตัดสินใจ
+              ที่ปรึกษาช่วยหาราคาจริง อธิบายความคุ้มครอง และตอบคำถามทาง LINE หรือโทรศัพท์ ไม่มีการเร่งให้ตัดสินใจ
             </p>
             <ul className="mt-6 flex flex-wrap gap-2 text-sm">
               {homeCopy.advisorPoints.map((t) => (
@@ -46,7 +46,7 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
         </div>
       </section>
       <div className="container-page mt-6 sm:mt-8">
-        <AdvisorHandoff context={safeContext} planNames={planNames} vehicleText={vehicle ? vehicleLabel(vehicle) : null} />
+        <AdvisorContact context={safeContext} planNames={planNames} vehicleText={vehicle ? vehicleLabel(vehicle) : null} />
       </div>
     </div>
   );

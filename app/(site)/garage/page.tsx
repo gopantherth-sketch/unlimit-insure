@@ -5,6 +5,8 @@ import { CalendarClock, CarFront, FileText, Headset, LifeBuoy, RefreshCw, Shield
 import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
 import { LookupForm } from "@/components/track/LookupForm";
+import { redirect } from "next/navigation";
+import { SHOW_AFTER_PURCHASE } from "@/lib/features";
 
 export const metadata: Metadata = seo("/garage");
 
@@ -37,6 +39,8 @@ const timeline = [
 ] as const;
 
 export default function GaragePage() {
+  // Parked with the back office: sample data only, and lookups need applications.
+  if (!SHOW_AFTER_PURCHASE) redirect("/claims");
   return (
     <div className="bg-canvas pb-16">
       <PageHero

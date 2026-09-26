@@ -3,7 +3,10 @@ import { Sparkles } from "lucide-react";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
 import { MatchBadge, MatchList } from "@/components/insurance/MatchSummary";
+import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
 import { VerifiedSource } from "@/components/insurance/VerifiedSource";
+import { contact } from "@/content/contact";
+import { SHOW_PRICES } from "@/lib/features";
 import { buttonClass } from "@/components/ui/button";
 import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldByKey, insuranceTypeLabel } from "@/lib/coverageFields";
@@ -54,14 +57,23 @@ export function InsuranceCard({ quote, detailHref, selectHref, compareControl, h
         </span>
       </div>
 
-      <div className="mt-5 rounded-2xl bg-wash px-4 py-3.5">
-        <p className="text-xs font-medium text-navy-500">เบี้ยโดยประมาณ</p>
-        <p className="mt-0.5 flex items-baseline gap-1.5">
-          <span className="tabular font-display text-[32px] font-bold leading-none text-navy-900">{formatNumber(quote.premium)}</span>
-          <span className="text-sm text-navy-500">บาท / ปี</span>
-        </p>
-        <p className="mt-1.5 text-xs leading-snug text-navy-400">ราคาจริงขึ้นอยู่กับการพิจารณาของบริษัทประกัน</p>
-      </div>
+      {SHOW_PRICES ? (
+        <div className="mt-5 rounded-2xl bg-wash px-4 py-3.5">
+          <p className="text-xs font-medium text-navy-500">เบี้ยโดยประมาณ</p>
+          <p className="mt-0.5 flex items-baseline gap-1.5">
+            <span className="tabular font-display text-[32px] font-bold leading-none text-navy-900">{formatNumber(quote.premium)}</span>
+            <span className="text-sm text-navy-500">บาท / ปี</span>
+          </p>
+          <p className="mt-1.5 text-xs leading-snug text-navy-400">ราคาจริงขึ้นอยู่กับการพิจารณาของบริษัทประกัน</p>
+        </div>
+      ) : (
+        <PriceOnRequest
+          placement="results"
+          compact
+          message={contact.messages.plan(`${quote.product.name} (${quote.insurer.name})`)}
+          className="mt-5"
+        />
+      )}
 
       <dl className="mt-4 divide-y divide-navy-100 text-[15px]">
         {CARD_FIELDS.map((key) => {

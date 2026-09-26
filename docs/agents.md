@@ -62,6 +62,7 @@ Order is priority. Status and history: `docs/progress.md`.
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". | — |
 | D3 | Review the live site on phones after C1/C3 and fix visual issues. | C1 |
 | D4 | Insurer logo strip: keep the neutral placeholders until the owner supplies licensed logos with permission; then design the tiles. | Owner logos |
+| D5 | **Priority (website-first launch).** Polish the LINE-first look: `components/contact/ContactButtons.tsx` (LINE green is `#06803b` for AA contrast, don't go lighter), `components/layout/MobileContactBar.tsx`, `components/insurance/PriceOnRequest.tsx`, `components/insurance/AdvisorContact.tsx`, header and footer. Make the homepage more engaging now that the price demo and My Garage sections are hidden. Done = checked at 360 px and 1280 px, public-page axe scan clean. | — |
 
 ### Copywriter
 | # | Task | Blocked on |
@@ -72,6 +73,7 @@ Order is priority. Status and history: `docs/progress.md`.
 | W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`, 140 items) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. | — |
 | W5 | Per-insurer claims guidance (roadmap P3.8) once real insurers are known. | C4 |
 | W6 | SEO titles and descriptions final pass once the domain is chosen (`content/seo.ts`, `docs/seo-plan.md`). | C5 |
+| W7 | **Priority (website-first launch).** Review Core's emergency copy edits for the LINE-first launch: `content/home.ts` (hero CTA, trust points, how-it-works, promises), `content/faq.ts`, `content/contact.ts` (button labels, prefilled LINE messages), and the no-price wording in `PriceOnRequest` / `AdvisorContact`. Remove any remaining "check prices / buy online / My Garage" promises (`content/home.ts` afterPoints, `content/seo.ts` descriptions such as "พร้อมเบี้ยโดยประมาณ"). Then `npm run content:verify`. | — |
 
 ### Owner (Dave)
 | # | Needed | Unblocks |

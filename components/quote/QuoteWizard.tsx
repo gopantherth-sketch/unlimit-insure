@@ -31,6 +31,7 @@ import { VehicleSelector, draftToSelection, emptyDraft, type VehicleDraft } from
 import { JourneySteps } from "@/components/quote/JourneySteps";
 import { buttonClass } from "@/components/ui/button";
 import { track } from "@/lib/analytics/track";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import { parsePriorities, parseUsage, parseVehicle, toRaw, withJourney } from "@/lib/params";
 import { priorityDefinitions, usageDefinitions } from "@/lib/priorities";
@@ -122,7 +123,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
         {step !== "car" && vehicle && (
           <MyCarChip
             label={vehicleLabel(vehicle)}
-            value={formatBaht(vehicle.estimatedValue)}
+            value={SHOW_PRICES ? formatBaht(vehicle.estimatedValue) : null}
             changeHref={withJourney("/quote", { vehicle: selection, usage, priorities, step: "car" })}
           />
         )}
@@ -143,10 +144,12 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
                 </span>
                 <div className="min-w-0 flex-1 text-sm">
                   <p className="font-display text-[15px] font-semibold text-navy-900">{vehicleLabel(vehicle)}</p>
-                  <div className="flex flex-wrap items-center gap-x-1 text-navy-500">
-                    มูลค่ารถโดยประมาณ <span className="tabular font-semibold text-navy-800">{formatBaht(vehicle.estimatedValue)}</span>
-                    <ExplainButton term="sumInsured" withLabel />
-                  </div>
+                  {SHOW_PRICES && (
+                    <div className="flex flex-wrap items-center gap-x-1 text-navy-500">
+                      มูลค่ารถโดยประมาณ <span className="tabular font-semibold text-navy-800">{formatBaht(vehicle.estimatedValue)}</span>
+                      <ExplainButton term="sumInsured" withLabel />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
@@ -240,7 +243,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
       <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[13px] text-navy-400">
         <LockKeyhole aria-hidden className="h-3.5 w-3.5 shrink-0" />
-        ฟรี ไม่ผูกมัด ดูราคาได้โดยไม่ต้องให้เบอร์โทร
+        ฟรี ไม่ผูกมัด ดูแผนได้โดยไม่ต้องให้เบอร์โทร
       </p>
     </div>
   );
@@ -266,7 +269,7 @@ const priorityIcon: Record<PriorityId, LucideIcon> = {
   evBattery: BatteryCharging,
 };
 
-function MyCarChip({ label, value, changeHref }: { label: string; value: string; changeHref: string }) {
+function MyCarChip({ label, value, changeHref }: { label: string; value: string | null; changeHref: string }) {
   return (
     <div className="mt-4 flex items-center gap-3 rounded-2xl border border-brand-100 bg-brand-50/70 py-2 pl-2 pr-3 sm:inline-flex sm:pr-4">
       <span aria-hidden className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white text-brand-600 shadow-card">
@@ -275,9 +278,11 @@ function MyCarChip({ label, value, changeHref }: { label: string; value: string;
       <span className="min-w-0 flex-1 leading-tight">
         <span className="block text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-600">My Car</span>
         <span className="block font-display text-[15px] font-semibold text-navy-900">{label}</span>
-        <span className="mt-0.5 block text-xs text-navy-500">
-          มูลค่ารถโดยประมาณ <span className="tabular font-medium text-navy-700">{value}</span>
-        </span>
+        {value && (
+          <span className="mt-0.5 block text-xs text-navy-500">
+            มูลค่ารถโดยประมาณ <span className="tabular font-medium text-navy-700">{value}</span>
+          </span>
+        )}
       </span>
       <Link href={changeHref} className="ml-1 inline-flex h-11 shrink-0 items-center gap-1 rounded-xl px-2 text-sm font-semibold text-brand-600 hover:bg-white hover:text-brand-800">
         <Pencil aria-hidden className="h-3.5 w-3.5" />

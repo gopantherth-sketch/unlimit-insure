@@ -9,6 +9,9 @@ import { scenarioRules } from "@/lib/scenarios";
 
 const terms = Object.keys(glossary);
 const scenarios = scenarioRules.map((r) => r.id as string);
+/** Where a contact button sits (dimension for contact_line / contact_call). */
+export const CONTACT_PLACEMENTS = ["header", "mobile_bar", "footer", "home", "advisor", "plan", "results", "compare"] as const;
+export type ContactPlacement = (typeof CONTACT_PLACEMENTS)[number];
 
 export const eventDefs = {
   quote_started: { label: "เริ่มเลือกรถ", dims: [] as string[] },
@@ -19,6 +22,8 @@ export const eventDefs = {
   plan_viewed: { label: "ดูรายละเอียดแพ็กเกจ", dims: [...INSURANCE_TYPES] as string[] },
   advisor_viewed: { label: "เปิดหน้าที่ปรึกษา", dims: [] as string[] },
   lead_submitted: { label: "ส่งคำขอที่ปรึกษา", dims: [] as string[] },
+  contact_line: { label: "กดติดต่อทาง LINE", dims: [...CONTACT_PLACEMENTS] as string[] },
+  contact_call: { label: "กดโทรหาเรา", dims: [...CONTACT_PLACEMENTS] as string[] },
   explain_opened: { label: "เปิดคำอธิบาย", dims: terms },
   simulator_used: { label: "ใช้เครื่องจำลอง", dims: scenarios },
   lab_viewed: { label: "อ่าน Insurance Lab", dims: labArticles.map((a) => a.slug) },
@@ -31,7 +36,7 @@ export const eventDefs = {
 
 export type EventName = keyof typeof eventDefs;
 
-export const FUNNEL: EventName[] = ["quote_started", "usage_selected", "results_viewed", "compare_viewed", "advisor_viewed", "lead_submitted"];
+export const FUNNEL: EventName[] = ["quote_started", "usage_selected", "results_viewed", "compare_viewed", "advisor_viewed", "contact_line"];
 
 export function isValidEvent(name: unknown, dim: unknown): name is EventName {
   if (typeof name !== "string" || !(name in eventDefs)) return false;

@@ -7,6 +7,7 @@ import { MatchBadge } from "@/components/insurance/MatchSummary";
 import { CoverMark } from "@/components/ui/CoverMark";
 import { bestQuoteIdsByField, differingFieldKeys } from "@/lib/compare";
 import { fieldGroupLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatNumber } from "@/lib/format";
 import type { Quote, RankedQuote } from "@/lib/types";
 import { cx } from "@/lib/cx";
@@ -66,20 +67,22 @@ export function CompareTable({ quotes, labels }: Props) {
             </tr>
           </thead>
           <tbody>
-            <tr className="border-t border-navy-100">
-              <th scope="row" className="sticky left-0 z-10 bg-white px-4 py-3 text-left font-medium text-navy-600 sm:px-6">
-                <span className="inline-flex items-center gap-0.5">
-                  เบี้ยประกัน / ปี
-                  <ExplainButton term="premium" />
-                </span>
-              </th>
-              {quotes.map((q) => (
-                <td key={q.id} className={cx("tabular px-4 py-3.5 font-display text-xl font-bold", q.premium === minPremium ? "text-success-700" : "text-navy-900")}>
-                  {formatNumber(q.premium)}
-                  <span className="ml-1 font-sans text-xs font-normal text-navy-400">บาท</span>
-                </td>
-              ))}
-            </tr>
+            {SHOW_PRICES && (
+              <tr className="border-t border-navy-100">
+                <th scope="row" className="sticky left-0 z-10 bg-white px-4 py-3 text-left font-medium text-navy-600 sm:px-6">
+                  <span className="inline-flex items-center gap-0.5">
+                    เบี้ยประกัน / ปี
+                    <ExplainButton term="premium" />
+                  </span>
+                </th>
+                {quotes.map((q) => (
+                  <td key={q.id} className={cx("tabular px-4 py-3.5 font-display text-xl font-bold", q.premium === minPremium ? "text-success-700" : "text-navy-900")}>
+                    {formatNumber(q.premium)}
+                    <span className="ml-1 font-sans text-xs font-normal text-navy-400">บาท</span>
+                  </td>
+                ))}
+              </tr>
+            )}
             {groups.map((g) => {
               const rows = fields.filter((f) => f.group === g && (!onlyDiff || differing.has(f.key)));
               if (rows.length === 0) return null;

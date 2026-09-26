@@ -6,6 +6,9 @@ import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
 import { CompareTable } from "@/components/insurance/CompareTable";
 import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
+import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
+import { contact } from "@/content/contact";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatNumber } from "@/lib/format";
 import { JourneySteps } from "@/components/quote/JourneySteps";
 import { NeedVehicle } from "@/components/quote/NeedVehicle";
@@ -94,9 +97,13 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                         <p className="font-display text-[17px] font-semibold leading-snug text-navy-900">{q.product.name}</p>
                       </div>
                     </div>
-                    <p className="tabular font-display text-2xl font-bold text-navy-900">
-                      {formatNumber(q.premium)} <span className="font-sans text-sm font-normal text-navy-500">บาท / ปี</span>
-                    </p>
+                    {SHOW_PRICES ? (
+                      <p className="tabular font-display text-2xl font-bold text-navy-900">
+                        {formatNumber(q.premium)} <span className="font-sans text-sm font-normal text-navy-500">บาท / ปี</span>
+                      </p>
+                    ) : (
+                      <PriceOnRequest placement="compare" compact message={contact.messages.plan(`${q.product.name} (${q.insurer.name})`)} />
+                    )}
                     <div className="mt-auto grid grid-cols-2 gap-2">
                       <Link href={selectPlanHref(q.productId, journey, buyEnabled)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
                         เลือกแผนนี้

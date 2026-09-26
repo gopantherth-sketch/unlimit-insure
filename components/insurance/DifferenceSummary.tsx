@@ -1,5 +1,6 @@
 import { ArrowDownRight, ArrowUpRight, Minus, Plus, Scale } from "lucide-react";
 import { summarizeDifference } from "@/lib/compare";
+import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import type { Quote } from "@/lib/types";
 
@@ -33,8 +34,9 @@ export function DifferenceSummary({ quotes, labels }: Props) {
         {others.map((other, i) => {
           const d = summarizeDifference(base, other);
           const label = labels[i + 1] ?? other.product.name;
-          const cheaper = d.premiumDelta < 0;
-          const same = d.premiumDelta === 0;
+          // With prices hidden, describe coverage only: no cheaper/dearer framing.
+          const cheaper = SHOW_PRICES && d.premiumDelta < 0;
+          const same = !SHOW_PRICES || d.premiumDelta === 0;
           return (
             <div key={other.id} className="rounded-2xl border border-navy-100 bg-white p-4 shadow-card sm:p-5">
               <h3 className="flex items-start gap-2.5 text-[17px] font-semibold leading-snug text-navy-900">
@@ -46,7 +48,9 @@ export function DifferenceSummary({ quotes, labels }: Props) {
                   <ArrowUpRight aria-hidden className="mt-0.5 h-5 w-5 shrink-0 text-warning-600" />
                 )}
                 <span>
-                  {same
+                  {!SHOW_PRICES
+                    ? `${label} เทียบกับ ${baseLabel}`
+                    : same
                     ? `${label} เบี้ยเท่ากับ ${baseLabel}`
                     : `${label} ${cheaper ? "ถูกกว่า" : "แพงกว่า"} ${baseLabel} ${formatBaht(Math.abs(d.premiumDelta))}`}
                 </span>
