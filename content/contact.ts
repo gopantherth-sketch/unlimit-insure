@@ -16,6 +16,18 @@ export const contact = {
     askPrice: "ขอราคาจริงทาง LINE",
     askPriceNote: "ราคาขึ้นอยู่กับรถและการพิจารณาของบริษัทประกัน ทักมาเพื่อรับใบเสนอราคาจริง ไม่มีค่าใช้จ่าย",
   },
+  /** Homepage band: how to get a real quote. */
+  quoteBand: {
+    eyebrow: "Real quote on LINE",
+    title: "ขอราคาจริงง่าย ๆ ใน 3 ขั้นตอน",
+    body: "ราคาประกันขึ้นอยู่กับรถและการพิจารณาของบริษัทประกัน ทักมาคุยกับที่ปรึกษา เราช่วยหาราคาจริงและอธิบายความคุ้มครองให้ ไม่มีค่าใช้จ่าย",
+    steps: [
+      { title: "แอดไลน์", body: "@unlimit.insure หรือสแกน QR" },
+      { title: "บอกรถของคุณ", body: "ยี่ห้อ รุ่น ปีรถ และสิ่งที่สำคัญกับคุณ" },
+      { title: "รับราคาจริง", body: "พร้อมคำอธิบาย ตัดสินใจเมื่อคุณพร้อม" },
+    ],
+    qrCaption: "สแกนเพื่อแอดไลน์",
+  },
   /** Prefilled LINE messages. The customer sees and can edit them before sending. */
   messages: {
     general: "สวัสดี สนใจปรึกษาเรื่องประกันรถ",

@@ -17,7 +17,8 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { homeCopy } from "@/content/home";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
 import { getDemo } from "@/lib/demo";
-import { SHOW_AFTER_PURCHASE, SHOW_PRICES } from "@/lib/features";
+import { LineQuoteBand } from "@/components/home/LineQuoteBand";
+import { SHOW_AFTER_PURCHASE, SHOW_PARTNER_LOGOS, SHOW_PRICES } from "@/lib/features";
 import { withJourney } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import { getCatalog } from "@/lib/server/catalog";
@@ -69,7 +70,8 @@ export default async function HomePage() {
     <>
       <Hero catalog={{ brands: catalog.brands, models: catalog.models }} />
       <FeatureStrip />
-      <TrustStrip />
+      {/* Partner logos wait for licensed logos (D4); until then the LINE quote band takes the slot. */}
+      {SHOW_PARTNER_LOGOS ? <TrustStrip /> : <LineQuoteBand />}
       <WhyUnlimit />
       <HowItWorks />
       {/* The compare demo explains price differences, so it waits for real prices. */}

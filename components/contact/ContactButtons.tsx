@@ -57,7 +57,7 @@ export function CallButton({
   placement: ContactPlacement;
   showNumber?: boolean;
   size?: Size;
-  variant?: "outline" | "solid";
+  variant?: "outline" | "solid" | "onDark";
   className?: string;
 }) {
   return (
@@ -69,7 +69,9 @@ export function CallButton({
         sizes[size],
         variant === "solid"
           ? "bg-brand-600 text-white shadow-lift hover:bg-brand-700"
-          : "border border-brand-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-brand-50",
+          : variant === "onDark"
+            ? "border border-white/40 text-white hover:border-white/70 hover:bg-white/10"
+            : "border border-brand-200 bg-white text-brand-700 hover:border-brand-300 hover:bg-brand-50",
         className,
       )}
     >

@@ -9,3 +9,6 @@ export const SHOW_PRICES = false;
 
 /** My Garage, renewal reminders and other after-purchase features that need the back office. */
 export const SHOW_AFTER_PURCHASE = false;
+
+/** Partner insurer logo strip: only with licensed logos and permission (task D4). */
+export const SHOW_PARTNER_LOGOS = false;
