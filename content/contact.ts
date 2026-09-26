@@ -35,7 +35,14 @@ export const contact = {
     general: "สวัสดี สนใจปรึกษาเรื่องประกันรถ",
     plan: (plan: string, vehicle?: string | null) =>
       `สวัสดี ขอราคาประกันแผน ${plan}${vehicle ? ` สำหรับ ${vehicle}` : ""}`,
-    plans: (plans: string[], vehicle?: string | null) =>
-      `สวัสดี ขอราคาและคำแนะนำประกันรถ${vehicle ? ` ${vehicle}` : ""}${plans.length ? ` แผนที่สนใจ: ${plans.join(", ")}` : ""}`,
+    plans: (plans: string[], vehicle?: string | null, details?: { usage?: string; priorities?: string[] }) =>
+      [
+        `สวัสดี ขอราคาและคำแนะนำประกันรถ${vehicle ? ` ${vehicle}` : ""}`,
+        details?.usage ? `การใช้งาน: ${details.usage}` : null,
+        details?.priorities?.length ? `สิ่งที่สำคัญ: ${details.priorities.join(", ")}` : null,
+        plans.length ? `แผนที่สนใจ: ${plans.join(", ")}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n"),
   },
 };

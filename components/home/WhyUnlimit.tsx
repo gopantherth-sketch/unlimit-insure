@@ -16,7 +16,7 @@ export function WhyUnlimit() {
             <span className="text-brand-600">Unlimit Insure</span>
           </h2>
           <p className="mt-3 max-w-[22em] text-[17px] leading-relaxed text-navy-600">{homeCopy.whyBody}</p>
-          <Link href="#smart-compare" className={buttonClass("primary", "md", "mt-6 rounded-xl px-6")}>
+          <Link href="#how" className={buttonClass("primary", "md", "mt-6 rounded-xl px-6")}>
             ดูเพิ่มเติม
             <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>

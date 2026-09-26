@@ -9,13 +9,15 @@ import { cx } from "@/lib/cx";
 
 type Size = "sm" | "md" | "lg";
 
+// Every size keeps a 44px tap target.
 const sizes: Record<Size, string> = {
-  sm: "h-9 px-4 text-sm",
+  sm: "h-11 px-4 text-sm",
   md: "h-11 px-5 text-[15px]",
   lg: "h-12 px-6 text-base sm:h-14 sm:px-7",
 };
 
-const base = "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-colors";
+const base =
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl font-semibold transition-[color,background-color,border-color,box-shadow,transform] duration-150 active:translate-y-px";
 
 /** LINE green button. With `message`, opens a chat with that text prefilled; otherwise the add-friend screen. */
 export function LineButton({
@@ -37,7 +39,12 @@ export function LineButton({
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => track("contact_line", placement)}
-      className={cx(base, sizes[size], "bg-[#06803b] text-white shadow-lift hover:bg-[#03702f] active:bg-[#026b2c]", className)}
+      className={cx(
+        base,
+        sizes[size],
+        "bg-line-600 text-white shadow-[0_2px_4px_rgba(11,19,48,0.06),0_14px_28px_-14px_rgba(6,128,59,0.55)] hover:bg-line-700 active:bg-line-800 focus-visible:ring-line-600",
+        className,
+      )}
     >
       <MessageCircle aria-hidden className="h-5 w-5" />
       {label}

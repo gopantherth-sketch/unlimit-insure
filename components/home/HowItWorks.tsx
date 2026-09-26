@@ -3,7 +3,7 @@ import { homeCopy } from "@/content/home";
 /** Light five-step strip: numbered dots on a line, titles with one short line each. */
 export function HowItWorks() {
   return (
-    <section aria-labelledby="how-title" className="bg-wash pb-14 sm:pb-16">
+    <section id="how" aria-labelledby="how-title" className="scroll-mt-24 bg-wash pb-14 sm:pb-16">
       <div className="container-page">
         <div className="rounded-2xl border border-white bg-white/70 px-5 py-7 sm:px-8">
           <h2 id="how-title" className="text-lg font-semibold text-navy-900 sm:text-xl">

@@ -5,8 +5,10 @@ import { useEffect, useId, useState } from "react";
 import { CallButton, LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
 import { track } from "@/lib/analytics/track";
+import { lineAddUrl } from "@/lib/contact";
 import { readJourney } from "@/lib/journey";
 import type { LeadContext } from "@/lib/leads";
+import { qrSvg } from "@/lib/payment/qr";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 
 interface Props {
@@ -31,7 +33,10 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
   }, []);
 
   const plans = context.selectedPlanIds.length ? context.selectedPlanIds : compared;
-  const message = contact.messages.plans(plans.map(planName), vehicleText);
+  const message = contact.messages.plans(plans.map(planName), vehicleText, {
+    usage: context.usage ? usageLabel(context.usage) : undefined,
+    priorities: context.priorities.map(priorityLabel),
+  });
 
   const summary: { label: string; value: string }[] = [
     ...(vehicleText ? [{ label: "รถ", value: vehicleText }] : []),
@@ -43,7 +48,7 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
   return (
     <div className="grid gap-6 lg:grid-cols-[1.35fr_1fr] lg:items-start lg:gap-8">
       <section aria-labelledby={`${id}-contact`} className="card rounded-xl2 border-white p-6 shadow-float sm:p-8">
-        <span aria-hidden className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#06C755]/10 text-[#06C755]">
+        <span aria-hidden className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-line-50 text-line-600 ring-1 ring-line-100">
           <MessageCircle className="h-6 w-6" strokeWidth={1.75} />
         </span>
         <h2 id={`${id}-contact`} className="mt-4 text-xl font-bold text-navy-900">
@@ -60,6 +65,23 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
         <p className="mt-3 text-xs leading-relaxed text-navy-400">
           ปุ่ม LINE จะเปิดแชตพร้อมข้อความที่เตรียมไว้ให้ คุณแก้ไขได้ก่อนกดส่ง หน้านี้ไม่เก็บข้อมูลส่วนตัวของคุณ
         </p>
+        {/* Desktop: scan with the phone instead of opening LINE on the computer. */}
+        <a
+          href={lineAddUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 hidden items-center gap-5 rounded-2xl border border-line-100 bg-line-50/60 p-4 transition-colors hover:border-line-200 lg:flex"
+        >
+          <span
+            aria-hidden
+            className="block shrink-0 rounded-xl bg-white p-1.5 shadow-card"
+            dangerouslySetInnerHTML={{ __html: qrSvg(lineAddUrl, 104).replace('role="img"', 'aria-hidden="true"') }}
+          />
+          <span>
+            <span className="block font-semibold text-navy-900">{contact.quoteBand.qrCaption}</span>
+            <span className="mt-0.5 block text-sm text-navy-500">{contact.lineId}</span>
+          </span>
+        </a>
       </section>
 
       {summary.length > 0 && (
@@ -70,7 +92,7 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
           <h2 id={`${id}-ctx`} className="mt-4 text-xl font-bold text-navy-900">
             สิ่งที่คุณเลือกไว้
           </h2>
-          <p className="mt-1 text-sm text-navy-500">ข้อความ LINE ใส่รถและแผนที่คุณสนใจไว้ให้แล้ว เรื่องอื่นบอกที่ปรึกษาในแชตได้</p>
+          <p className="mt-1 text-sm text-navy-500">ข้อความ LINE ใส่ข้อมูลเหล่านี้ไว้ให้แล้ว เรื่องอื่นบอกที่ปรึกษาในแชตได้</p>
           <dl className="mt-5 divide-y divide-navy-100 rounded-2xl border border-navy-100 bg-white px-4 text-[15px]">
             {summary.map((s) => (
               <div key={s.label} className="py-3">

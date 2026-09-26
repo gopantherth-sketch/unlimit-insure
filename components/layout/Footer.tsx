@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MessageCircle, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
+import { LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 import { lineAddUrl, telHref } from "@/lib/contact";
@@ -40,6 +41,7 @@ export function Footer() {
         <div className="max-w-xs">
           <Logo />
           <p className="mt-4 text-[15px] leading-relaxed text-navy-600">{homeCopy.footerTagline}</p>
+          <LineButton placement="footer" message={contact.messages.general} label={contact.labels.lineLong} className="mt-5" />
           <p className="mt-3 text-xs leading-relaxed text-navy-400">ใบอนุญาตนายหน้าประกันวินาศภัย: [รอข้อมูล]</p>
         </div>
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
@@ -69,7 +71,7 @@ export function Footer() {
               </li>
               <li>
                 <a href={lineAddUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-navy-600 hover:text-brand-700">
-                  <MessageCircle aria-hidden className="h-4 w-4 shrink-0 text-[#06C755]" />
+                  <MessageCircle aria-hidden className="h-4 w-4 shrink-0 text-line-600" />
                   <span className="sr-only">LINE: </span>
                   {contact.lineId}
                 </a>

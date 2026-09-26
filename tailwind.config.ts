@@ -32,6 +32,11 @@ const config: Config = {
         canvas: "#F7F8FC",
         /** Very soft blue-grey section wash from the selected mockup. */
         wash: "#F3F6FD",
+        /**
+         * LINE contact green. 600 is the darkest LINE-like green that keeps white text AA (5.3:1);
+         * never put text on the lighter brand green #06C755.
+         */
+        line: { 50: "#EAF8F0", 100: "#CDEFDB", 200: "#9EDDB8", 600: "#06803B", 700: "#03702F", 800: "#026B2C" },
         success: { 50: "#ECFDF3", 500: "#16A34A", 600: "#12805C", 700: "#0B6446" },
         warning: { 50: "#FFF7E6", 600: "#B45309", 700: "#92400E" },
         danger: { 50: "#FEF1F2", 500: "#DC2626", 600: "#C0263A" },
