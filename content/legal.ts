@@ -2,6 +2,8 @@
 // Status is DRAFT. Every item in `verify` must be confirmed by a lawyer / DPO before launch.
 // Square-bracket placeholders mark business facts that are not yet known. Never replace them with guesses.
 
+import { contact } from "./contact";
+
 export interface LegalSection {
   heading: string;
   body: string[];
@@ -181,7 +183,7 @@ export const termsOfUse: LegalDoc = {
       heading: "เราคือใคร",
       body: [
         "Unlimit Insure ให้บริการโดย [ชื่อนิติบุคคล]",
-        "สถานะการให้บริการ: นายหน้าประกันวินาศภัย Nithi Apaisuwan ใบอนุญาตเลขที่ 6204049613",
+        `สถานะการให้บริการ: ${contact.brokerLine}`,
         "เราไม่ใช่บริษัทประกัน ผู้รับประกันภัยคือบริษัทประกันที่ระบุในกรมธรรม์ของคุณ",
       ],
     },
@@ -260,7 +262,7 @@ export const termsOfUse: LegalDoc = {
     },
   ],
   verify: [
-    "ใบอนุญาตนายหน้าประกันวินาศภัย เลขที่ 6204049613 (Nithi Apaisuwan) หมดอายุ 03/11/2570 — ต่ออายุก่อนวันหมดอายุ และแก้เลขบนเว็บทุกจุดถ้าเลขเปลี่ยน",
+    `ใบอนุญาตนายหน้าประกันวินาศภัย เลขที่ ${contact.broker.licenceNo} (${contact.broker.holder}) หมดอายุ 03/11/2570 — ต่ออายุก่อนวันหมดอายุ และแก้เลขใน content/contact.ts ถ้าเลขเปลี่ยน`,
     "ชื่อผู้ถือใบอนุญาตสะกดตามใบอนุญาต (ภาษาไทยหรืออังกฤษ) และความยินยอมให้แสดงชื่อบนเว็บไซต์",
     "ชื่อนิติบุคคล และบริษัทมีใบอนุญาตนายหน้าแบบนิติบุคคลหรือไม่ (ถ้ามี ใช้ใบอนุญาตนิติบุคคลแทนบุคคลธรรมดา)",
     "ข้อความที่ต้องเปิดเผยตามประกาศ คปภ. ว่าด้วยการเสนอขายประกันภัยผ่านช่องทางอิเล็กทรอนิกส์",

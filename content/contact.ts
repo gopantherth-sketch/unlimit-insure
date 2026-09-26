@@ -3,7 +3,13 @@
 
 const lineId = "@unlimit.insure";
 
+/** Broker licence (owner, 2026-09-27). Name and number only: never ID numbers. Expiry 03/11/2570 is tracked in the verify list, not shown. */
+const broker = { holder: "Nithi Apaisuwan", licenceNo: "6204049613" };
+
 export const contact = {
+  broker,
+  /** Licence line shown in the footer and legal pages. */
+  brokerLine: `นายหน้าประกันวินาศภัย ${broker.holder} ใบอนุญาตเลขที่ ${broker.licenceNo}`,
   lineId,
   phoneDisplay: "091-444-5542",
   /** E.164 for tel: links. */
