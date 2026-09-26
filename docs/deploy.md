@@ -8,7 +8,7 @@ Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare
 - D1 `unlimit-insure`: `10bc6601-2379-4a44-b8ee-8ff48d897fcb` (APAC), migration `0000_init` applied, MOCK catalogue seeded
 - Admin secrets: set with `wrangler secret put` (see step 4 below)
 
-## Go live now (helper checklist)
+## Go live now (Core checklist)
 
 The Worker and D1 database already exist. Online purchase is **off** (`PURCHASE_ENABLED=false` in `wrangler.jsonc`), so no R2 bucket is needed: "select plan" buttons go to the advisor form and `/buy` redirects there.
 

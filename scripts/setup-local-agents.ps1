@@ -1,4 +1,4 @@
-# One-time setup for the three local agents (helper, designer, copywriter) on Windows.
+# One-time setup for the three local agents (core, designer, copywriter) on Windows. See docs/agents.md.
 # Run from anywhere:  powershell -ExecutionPolicy Bypass -File scripts\setup-local-agents.ps1
 # Safe to run again: existing folders are reused, and it only opens the agent windows.
 $ErrorActionPreference = "Stop"
@@ -12,7 +12,7 @@ foreach ($tool in "git", "npm", "claude") {
   if (-not (Get-Command $tool -ErrorAction SilentlyContinue)) { throw "$tool is not installed or not on PATH." }
 }
 
-Write-Host "== Helper folder: $root"
+Write-Host "== Core folder: $root"
 Set-Location $root
 git pull origin main
 npm install
@@ -21,7 +21,7 @@ git fetch origin
 foreach ($dir in $design, $copy) {
   if (-not (Test-Path $dir)) {
     Write-Host "== Creating $dir"
-    # Detached at origin/main: main stays checked out in the helper folder; agents branch from here.
+    # Detached at origin/main: main stays checked out in the core folder; agents branch from here.
     git worktree add --detach $dir origin/main
   }
   Write-Host "== Installing in $dir"
@@ -32,7 +32,7 @@ foreach ($dir in $design, $copy) {
 }
 
 $agents = @(
-  @{ Name = "Unlimit helper";     Dir = $root;   Prompt = "Read docs/helper-agent.md and follow it. Wait for tasks." },
+  @{ Name = "Unlimit core";       Dir = $root;   Prompt = "Use the unlimit-core agent brief in .claude/agents/unlimit-core.md. Read HANDOVER.md and docs/progress.md, then tell me the top 3 next steps." },
   @{ Name = "Unlimit designer";   Dir = $design; Prompt = "Use the unlimit-designer agent brief in .claude/agents/unlimit-designer.md. Wait for tasks." },
   @{ Name = "Unlimit copywriter"; Dir = $copy;   Prompt = "Use the unlimit-copywriter agent brief in .claude/agents/unlimit-copywriter.md. Wait for tasks." }
 )

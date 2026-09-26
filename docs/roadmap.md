@@ -1,6 +1,6 @@
 # Production Roadmap
 
-Live tracker: https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC (status is updated there; this file is the plan snapshot).
+Plan snapshot. Current status: [`docs/progress.md`](progress.md) (the tracker artifact is no longer updated after handover, 2026-09-26). Owners: PM → Core, Content → Copywriter (see [`docs/agents.md`](agents.md)).
 
 Owners: **PM** = Claude (structure, code) · **Content** = copy agent · **Business** = owner · **Legal** = licensed reviewer.
 

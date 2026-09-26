@@ -19,7 +19,12 @@
     "db:seed:local": "wrangler d1 execute unlimit-insure --local --file seed/mock-catalog.sql",
     "db:seed:remote": "wrangler d1 execute unlimit-insure --remote --file seed/mock-catalog.sql",
     "import:template": "tsx scripts/build-import-template.ts",
-    "content:verify": "tsx scripts/build-verify-list.ts"
+    "content:verify": "tsx scripts/build-verify-list.ts",
+    "e2e:journey": "node tests/e2e/journey.mjs",
+    "e2e:admin-users": "node tests/e2e/admin-users.mjs",
+    "e2e:import": "node tests/e2e/import.mjs",
+    "e2e:purchase": "node tests/e2e/purchase.mjs",
+    "e2e:a11y": "node tests/e2e/a11y.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20",
@@ -37,9 +42,11 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "autoprefixer": "^10.6.1",
+    "axe-core": "^4.13.0",
     "better-sqlite3": "^12.11.1",
     "drizzle-kit": "^0.31.11",
     "exceljs": "^4.4.0",
+    "playwright": "^1.56.1",
     "postcss": "^8.5.28",
     "tailwindcss": "^3.4.19",
     "tsx": "^4.23.15",

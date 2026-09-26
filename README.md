@@ -3,6 +3,8 @@
 Motor insurance decision and ownership platform. **Understand → Compare → Decide → Stay Protected.**
 Source of truth: [`PROJECT_MASTER.md`](PROJECT_MASTER.md).
 
+**Continuing the project? Start with [`HANDOVER.md`](HANDOVER.md)**: state, decisions, map, next steps. Status: [`docs/progress.md`](docs/progress.md). Team and backlog: [`docs/agents.md`](docs/agents.md).
+
 ## Status
 
 V1 on **mock data**, running on Cloudflare Workers + D1. Every insurer, product, premium and vehicle price is a placeholder (see [`docs/data-inventory.md`](docs/data-inventory.md)).
@@ -23,7 +25,9 @@ Leads and consent are stored in D1; the admin manages leads and product versions
 | Admin: leads, product versions, source verification | Done (V1) |
 | Multi-user admin (owner/staff), lead assignment, per-user activity log | Done |
 | Privacy policy / terms | Draft, pending legal review |
-| My Garage | Static preview only (V2) |
+| Online purchase: buy form, private tracking link, uploads, PromptPay/transfer, staff application admin | Built, switched off (`PURCHASE_ENABLED`) |
+| My Garage | Lookup by reference + phone; multi-car view is a preview until customer login |
+| Staff alerts (LINE / email) | Built, inactive until secrets are set |
 
 ## Run
 
