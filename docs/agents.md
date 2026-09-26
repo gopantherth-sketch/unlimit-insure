@@ -63,6 +63,7 @@ Order is priority. Status and history: `docs/progress.md`.
 | D3 | Review the live site on phones after C1/C3 and fix visual issues. | C1 |
 | D4 | Insurer logo strip: keep the neutral placeholders until the owner supplies licensed logos with permission; then design the tiles. | Owner logos |
 | D5 | **Priority (website-first launch).** Polish the LINE-first look: `components/contact/ContactButtons.tsx` (LINE green is `#06803b` for AA contrast, don't go lighter), `components/layout/MobileContactBar.tsx`, `components/insurance/PriceOnRequest.tsx`, `components/insurance/AdvisorContact.tsx`, header and footer. Make the homepage more engaging now that the price demo and My Garage sections are hidden. Done = checked at 360 px and 1280 px, public-page axe scan clean. | — |
+| D6 | **Owner request 2026-09-27.** Full visual review of the LIVE site (https://unlimitinsure.com), every public page at 390 px and 1440 px: type scale and font sizes (body readability, heading hierarchy, Thai line-height), font choice and weights (Prompt / IBM Plex Sans Thai / Allura), all graphics (icons, illustrations, photos, hero, cards, the LINE band, empty states), spacing and colour consistency. First send Core a short findings list ranked by impact, then fix on `design/visual-review`. Done = before/after screenshots, axe clean, 0 overflow, tsc/test/build pass. Flag any photo or illustration that needs owner files or new assets. | — |
 
 ### Copywriter
 | # | Task | Blocked on |
@@ -74,6 +75,7 @@ Order is priority. Status and history: `docs/progress.md`.
 | W5 | Per-insurer claims guidance (roadmap P3.8) once real insurers are known. | C4 |
 | W6 | SEO titles and descriptions final pass once the domain is chosen (`content/seo.ts`, `docs/seo-plan.md`). | C5 |
 | W7 | **Priority (website-first launch).** Review Core's emergency copy edits for the LINE-first launch: `content/home.ts` (hero CTA, trust points, how-it-works, promises), `content/faq.ts`, `content/contact.ts` (button labels, prefilled LINE messages), and the no-price wording in `PriceOnRequest` / `AdvisorContact`. Remove any remaining "check prices / buy online / My Garage" promises (`content/home.ts` afterPoints, `content/seo.ts` descriptions such as "พร้อมเบี้ยโดยประมาณ"). Then `npm run content:verify`. | — |
+| W8 | **Owner request 2026-09-27.** Read the LIVE site (https://unlimitinsure.com) end to end as a customer on a phone: headline strength, clarity, length and rhythm of every section, button labels, repetition, anything that sounds like a prototype. Work with the designer on type size and line length where copy length is the cause. First send Core a short findings list ranked by impact, then fix on `copy/live-review`. Done = content:verify run, tsc/test/build pass. | — |
 
 ### Owner (Dave)
 | # | Needed | Unblocks |
