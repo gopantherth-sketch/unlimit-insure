@@ -44,8 +44,12 @@ npm run preview                       # production build in the Workers runtime 
 4. Document storage (Phase 3 purchase uploads): enable R2 on the account (dashboard → R2, free tier), then `npx wrangler r2 bucket create unlimit-insure-docs`. The Worker binds it as `DOCS` (`wrangler.jsonc`); deploys fail until the bucket exists.
 5. Secrets: `npx wrangler secret put ADMIN_USERNAME` and `npx wrangler secret put ADMIN_PASSWORD`. Optional `SESSION_SECRET` (32+ chars) signs admin and customer-tracking cookies; without it `ADMIN_PASSWORD` is used, so rotating the password also logs customers out of their tracking pages (their private link + phone check still works).
 6. Deploy: `npm run deploy`, or connect the GitHub repo in the dashboard (Workers & Pages → Create → Import a repository) with build command `npx opennextjs-cloudflare build` and deploy command `npx opennextjs-cloudflare deploy`.
-7. Payment details: log in as owner → ตั้งค่า → enter the receiving account name and PromptPay ID (or bank + account). Until then customers see "ทีมงานจะแจ้งช่องทางชำระเงินให้คุณ".
-8. Domain: Workers → unlimit-insure → Settings → Domains & Routes → add the custom domain. Then set `NEXT_PUBLIC_SITE_URL=https://<domain>` as a build variable and redeploy (sitemap, robots, canonical URLs).
+7. Staff alerts (optional, either or both). Messages contain only the reference and an admin link.
+   - LINE: create a LINE Official Account with Messaging API enabled (LINE Developers console), then `npx wrangler secret put LINE_CHANNEL_ACCESS_TOKEN` and `npx wrangler secret put LINE_ALERT_TO` (comma-separated user or group IDs; add the bot to the team group to get its group ID).
+   - Email: a Resend account with a verified sending domain, then secrets `RESEND_API_KEY`, `ALERT_EMAIL_FROM` (e.g. `alerts@<domain>`) and `ALERT_EMAIL_TO` (comma-separated).
+   - Check in admin → ตั้งค่า → ส่งข้อความทดสอบ.
+8. Payment details: log in as owner → ตั้งค่า → enter the receiving account name and PromptPay ID (or bank + account). Until then customers see "ทีมงานจะแจ้งช่องทางชำระเงินให้คุณ".
+9. Domain: Workers → unlimit-insure → Settings → Domains & Routes → add the custom domain. Then set `NEXT_PUBLIC_SITE_URL=https://<domain>` as a build variable and redeploy (sitemap, robots, canonical URLs).
 
 ## Schema changes
 

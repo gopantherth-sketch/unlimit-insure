@@ -18,7 +18,7 @@ export default async function AdminLoginPage({ searchParams }: { searchParams: P
   const configured = await adminConfigured();
 
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4">
+    <main className="flex min-h-dvh items-center justify-center px-4">
       <form action={signIn} className="card w-full max-w-sm p-7">
         <div className="flex items-center gap-2 text-brand-600">
           <Lock aria-hidden className="h-5 w-5" />
@@ -51,6 +51,6 @@ export default async function AdminLoginPage({ searchParams }: { searchParams: P
           </>
         )}
       </form>
-    </div>
+    </main>
   );
 }

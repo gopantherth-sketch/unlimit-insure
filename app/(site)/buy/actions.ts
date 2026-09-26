@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { normalizePlate, validateBuyForm, type BuyErrors, type BuyFormInput } from "@/lib/applications/validate";
 import { recordEvent } from "@/lib/db/analytics";
+import { notifyStaff } from "@/lib/server/notify";
 import { createApplication, getApplicationByReference } from "@/lib/db/applications";
 import { getDb } from "@/lib/db/client";
 import { normalizePhone } from "@/lib/leads";
@@ -45,7 +46,7 @@ export async function submitApplication(_prev: BuyState, formData: FormData): Pr
   if (!vehicle || !result || result.status !== "ok") return { errors: { form: "plan_unavailable" }, values };
 
   const db = await getDb();
-  const { reference, token } = await createApplication(db, {
+  const { id, reference, token } = await createApplication(db, {
     quote: result.quote,
     vehicle,
     customerName: values.customerName.trim(),
@@ -58,6 +59,7 @@ export async function submitApplication(_prev: BuyState, formData: FormData): Pr
     consentMarketing: formData.get("consentMarketing") === "on",
   });
   await recordEvent(db, "application_submitted").catch(() => {});
+  await notifyStaff({ kind: "application", reference, path: `/admin/applications/${id}` }).catch(() => {});
   const created = await getApplicationByReference(db, reference);
   if (created) await grantAccess(created);
   redirect(`/track/${reference}?t=${encodeURIComponent(token)}&new=1`);

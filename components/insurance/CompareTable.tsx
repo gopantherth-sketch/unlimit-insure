@@ -44,7 +44,7 @@ export function CompareTable({ quotes, labels }: Props) {
           แสดงเฉพาะที่ต่างกัน
         </label>
       </div>
-      <div className="relative overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="ตารางเปรียบเทียบความคุ้มครอง (เลื่อนซ้าย-ขวาได้)" className="relative overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
         <table className="w-full min-w-[640px] border-collapse text-[15px]">
           <caption className="sr-only">ตารางเปรียบเทียบความคุ้มครอง</caption>
           <thead>

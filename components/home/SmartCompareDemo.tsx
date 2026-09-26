@@ -25,7 +25,7 @@ export function SmartCompareDemo({ vehicle, quotes }: { vehicle: ResolvedVehicle
       <div className="container-page">
         <SectionHeading id="compare-demo-title" eyebrow="Smart Compare" title="ต่างกันตรงไหน?" body={homeCopy.compareDemoBody} />
         <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-          <div className="overflow-x-auto rounded-2xl border border-navy-100 bg-white shadow-card">
+          <div tabIndex={0} role="region" aria-label="ตารางตัวอย่างเปรียบเทียบ (เลื่อนซ้าย-ขวาได้)" className="overflow-x-auto rounded-2xl border border-navy-100 bg-white shadow-card focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
             <table className="w-full min-w-[520px] text-[15px]">
               <caption className="px-5 pt-5 text-left text-sm text-navy-500 sm:px-6">
                 ตัวอย่างสำหรับ {vehicleLabel(vehicle)} — ข้อมูลตัวอย่าง

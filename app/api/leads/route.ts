@@ -5,6 +5,7 @@ import { createLead } from "@/lib/db/leads";
 import { normalizePhone, validateLead, type LeadRequest } from "@/lib/leads";
 import { parsePriorities, parseUsage, parseVehicle } from "@/lib/params";
 import { getCatalog } from "@/lib/server/catalog";
+import { notifyStaff } from "@/lib/server/notify";
 
 // Best-effort per-isolate throttle. Keys are hashed and held in memory only; nothing about the caller is stored.
 const WINDOW_MS = 10 * 60 * 1000;
@@ -61,7 +62,7 @@ export async function POST(req: Request) {
     : null;
 
   const db = await getDb();
-  const { reference } = await createLead(db, {
+  const { id, reference } = await createLead(db, {
     name: fields.name,
     phone: fields.phone,
     lineId: fields.lineId,
@@ -79,5 +80,6 @@ export async function POST(req: Request) {
   });
 
   await recordEvent(db, "lead_submitted").catch(() => {});
+  await notifyStaff({ kind: "lead", reference, path: `/admin/leads/${id}` }).catch(() => {});
   return NextResponse.json({ ok: true, reference }, { status: 201 });
 }

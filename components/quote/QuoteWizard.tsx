@@ -155,7 +155,9 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
         {step === "use" && vehicle && (
           <fieldset className="mt-5">
-            <legend className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">รถคันนี้ใช้แบบไหน?</legend>
+            <legend>
+              <h1 className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">รถคันนี้ใช้แบบไหน?</h1>
+            </legend>
             <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">ช่วยให้เราแนะนำสิ่งที่ควรดู คำตอบนี้ไม่มีผลกับราคา</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {usageDefinitions.map((u) => (
@@ -176,7 +178,9 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
         {step === "needs" && vehicle && (
           <fieldset className="mt-5">
-            <legend className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">อะไรสำคัญกับคุณ?</legend>
+            <legend>
+              <h1 className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">อะไรสำคัญกับคุณ?</h1>
+            </legend>
             <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">เลือกได้หลายข้อ เราจะบอกว่าแต่ละแผนตรงกับคุณกี่ข้อ และข้อไหนบ้าง</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {availablePriorities.map((p) => (

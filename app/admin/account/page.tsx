@@ -37,7 +37,7 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
   const { required, error } = await searchParams;
 
   return (
-    <div className="flex min-h-dvh items-center justify-center px-4 py-10">
+    <main className="flex min-h-dvh items-center justify-center px-4 py-10">
       <div className="card w-full max-w-md p-7">
         <p className="text-sm font-semibold uppercase tracking-wider text-brand-600">บัญชีของฉัน</p>
         <h1 className="mt-2 text-2xl font-bold">{who.name}</h1>
@@ -77,6 +77,6 @@ export default async function AccountPage({ searchParams }: { searchParams: Prom
           <Link href="/admin" className="mt-5 inline-block text-sm font-semibold text-brand-600">← กลับหน้าผู้ดูแล</Link>
         )}
       </div>
-    </div>
+    </main>
   );
 }

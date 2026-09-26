@@ -28,7 +28,7 @@ function TypeMatrix({ catalog }: { catalog: Catalog }) {
   const reps = pick(data.quotes, ["a-type1-dealer", "a-type2plus", "b-type3plus"]);
   const scenarios = scenarioRules.filter((r) => !r.evOnly);
   return (
-    <div className="card overflow-x-auto rounded-xl2">
+    <div tabIndex={0} role="region" aria-label="ตารางเปรียบเทียบ (เลื่อนซ้าย-ขวาได้)" className="card overflow-x-auto rounded-xl2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
       <table className="w-full min-w-[420px] text-[15px]">
         <caption className="px-5 pt-5 text-left text-sm text-navy-500">ตัวอย่างจากแผนตัวอย่างสำหรับ {vehicleLabel(data.vehicle)}</caption>
         <thead>

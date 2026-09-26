@@ -73,7 +73,7 @@ export function ContentRow({ table }: { table: TypeTable | null }) {
         {table && (
           <section aria-labelledby="type-table-title" className="flex min-w-0 flex-col rounded-2xl border border-navy-100 bg-white p-5 shadow-card sm:p-7">
             <CardHeader id="type-table-title" title={homeCopy.typeTableTitle} href="/lab/type1-vs-2plus" />
-            <div className="-mx-1 mt-5 overflow-x-auto">
+            <div tabIndex={0} role="region" aria-label="ตารางเทียบชั้นประกัน (เลื่อนซ้าย-ขวาได้)" className="-mx-1 mt-5 overflow-x-auto rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
               <table className="w-full min-w-[300px] overflow-hidden rounded-xl text-[13px] sm:text-sm">
                 <caption className="caption-bottom pt-3 text-left text-xs text-navy-400">{table.caption}</caption>
                 <thead>

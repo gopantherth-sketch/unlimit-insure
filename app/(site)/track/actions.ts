@@ -18,6 +18,7 @@ import {
 import { getDb } from "@/lib/db/client";
 import { normalizePhone } from "@/lib/leads";
 import { documentKey, getDocsBucket } from "@/lib/server/storage";
+import { notifyStaff } from "@/lib/server/notify";
 import { customerApplication, grantAccess, throttled } from "@/lib/server/track-auth";
 
 const str = (f: FormData, k: string, max = 200) => String(f.get(k) ?? "").trim().slice(0, max);
@@ -99,7 +100,10 @@ export async function sendForReview(formData: FormData) {
   const app = await customerApplication(reference);
   if (!app) redirect(`/track/${reference}`);
   const r = await moveApplication(await getDb(), app.id, "submitted", "customer", customerActor);
-  if (r.ok) await recordEvent(await getDb(), "documents_submitted").catch(() => {});
+  if (r.ok) {
+    await recordEvent(await getDb(), "documents_submitted").catch(() => {});
+    await notifyStaff({ kind: "documents", reference: app.reference, path: `/admin/applications/${app.id}` }).catch(() => {});
+  }
   redirect(`/track/${app.reference}${r.ok ? "?ok=submitted" : `?error=${r.error}`}`);
 }
 
@@ -108,6 +112,9 @@ export async function notifyPayment(formData: FormData) {
   const app = await customerApplication(reference);
   if (!app) redirect(`/track/${reference}`);
   const r = await moveApplication(await getDb(), app.id, "payment_submitted", "customer", customerActor);
-  if (r.ok) await recordEvent(await getDb(), "payment_submitted").catch(() => {});
+  if (r.ok) {
+    await recordEvent(await getDb(), "payment_submitted").catch(() => {});
+    await notifyStaff({ kind: "payment", reference: app.reference, path: `/admin/applications/${app.id}` }).catch(() => {});
+  }
   redirect(`/track/${app.reference}${r.ok ? "?ok=paid" : `?error=${r.error}`}`);
 }

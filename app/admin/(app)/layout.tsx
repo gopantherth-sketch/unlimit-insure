@@ -32,7 +32,7 @@ export default async function AdminAppLayout({ children }: { children: React.Rea
           </div>
         </div>
       </header>
-      <div className="container-page py-8">{children}</div>
+      <main id="main" className="container-page py-8">{children}</main>
     </>
   );
 }

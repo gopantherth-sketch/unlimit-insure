@@ -58,7 +58,7 @@ export default async function LeadsPage({ searchParams }: { searchParams: Promis
           </Link>
         ))}
       </nav>
-      <div className="card overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="ตาราง" className="card overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
         <table className="w-full min-w-[720px] text-sm">
           <thead className="bg-canvas text-left text-navy-500">
             <tr>

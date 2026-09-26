@@ -17,11 +17,11 @@ export function TrustStrip() {
           </h2>
           <p className="text-sm text-navy-400">{homeCopy.partnersNote}</p>
         </div>
-        <ul className="-mx-4 mt-6 flex snap-x gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-7">
+        <ul tabIndex={0} aria-label="พื้นที่โลโก้บริษัทประกัน (รอข้อมูล)" className="-mx-4 mt-6 flex snap-x gap-3 overflow-x-auto px-4 pb-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500 sm:mx-0 sm:grid sm:grid-cols-4 sm:overflow-visible sm:px-0 lg:grid-cols-7">
           {Array.from({ length: TILE_COUNT }, (_, i) => (
             <li
               key={i}
-              className="flex h-[76px] min-w-[128px] snap-start items-center justify-center gap-2 rounded-xl border border-navy-100 bg-white text-[13px] text-navy-300 shadow-[0_1px_2px_rgba(11,19,48,0.04)]"
+              className="flex h-[76px] min-w-[128px] snap-start items-center justify-center gap-2 rounded-xl border border-navy-100 bg-white text-[13px] text-navy-400 shadow-[0_1px_2px_rgba(11,19,48,0.04)]"
             >
               <Building2 aria-hidden className="h-5 w-5" strokeWidth={1.5} />
               <span>โลโก้พันธมิตร</span>

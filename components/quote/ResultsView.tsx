@@ -225,6 +225,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes }: Props) {
               </div>
             </div>
 
+            <h2 className="sr-only">แพ็กเกจทั้งหมด</h2>
             <p className="mt-4 text-sm text-navy-400" aria-live="polite">
               แสดง {shown.length} จาก {visible.length} แพ็กเกจ
             </p>

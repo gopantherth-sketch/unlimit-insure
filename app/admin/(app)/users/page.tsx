@@ -26,7 +26,7 @@ export default async function UsersPage({ searchParams }: { searchParams: Promis
       </div>
       <Flash ok={ok} error={error} okMessages={userOkMessage} errorMessages={userErrorMessage} />
 
-      <div className="card overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="ตาราง" className="card overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
         <table className="w-full min-w-[640px] text-sm">
           <thead className="bg-canvas text-left text-navy-500">
             <tr>

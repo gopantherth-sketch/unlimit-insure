@@ -20,6 +20,7 @@ import { getDb } from "@/lib/db/client";
 import { classifyPromptPayId } from "@/lib/payment/promptpay";
 import { paymentSettingKeys, setSetting } from "@/lib/db/settings";
 import { actorOf, requireAdmin, requireOwner } from "@/lib/server/admin-auth";
+import { sendTestAlert } from "@/lib/server/notify";
 import { publicOrigin } from "@/lib/server/origin";
 import { documentKey, getDocsBucket } from "@/lib/server/storage";
 
@@ -149,4 +150,11 @@ export async function savePaymentSettings(formData: FormData) {
   for (const k of paymentSettingKeys) await setSetting(db, k, str(formData, k, 200), who.name);
   revalidatePath("/admin/settings");
   redirect("/admin/settings?ok=saved");
+}
+
+export async function sendTestAlertAction() {
+  await requireOwner();
+  const results = await sendTestAlert();
+  const q = results.length === 0 ? "error=no_channels" : results.every((r) => r.ok) ? "ok=test_sent" : `error=test_failed&failed=${results.filter((r) => !r.ok).map((r) => r.channel).join(",")}`;
+  redirect(`/admin/settings?${q}`);
 }

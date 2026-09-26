@@ -16,7 +16,7 @@ export default async function ProductsPage() {
         <h1 className="text-2xl font-bold">แพ็กเกจ</h1>
         <p className="text-sm text-navy-500">เผยแพร่ได้เฉพาะเวอร์ชันที่ตรวจสอบแหล่งข้อมูลแล้ว</p>
       </div>
-      <div className="card overflow-x-auto">
+      <div tabIndex={0} role="region" aria-label="ตาราง" className="card overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
         <table className="w-full min-w-[760px] text-sm">
           <thead className="bg-canvas text-left text-navy-500">
             <tr>
