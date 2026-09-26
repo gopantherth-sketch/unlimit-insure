@@ -12,6 +12,8 @@ export const contact = {
   brokerLine: `นายหน้าประกันวินาศภัย ${broker.holder} ใบอนุญาตเลขที่ ${broker.licenceNo}`,
   lineId,
   phoneDisplay: "091-444-5542",
+  /** Owner-supplied 2026-09-27: general and personal-data contact. */
+  email: "unlimit.adm@gmail.com",
   /** E.164 for tel: links. */
   phoneE164: "+66914445542",
   facebookName: "Unlimit Insure",

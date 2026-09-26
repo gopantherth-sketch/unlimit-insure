@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageCircle, Phone } from "lucide-react";
+import { Mail, MessageCircle, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
@@ -74,6 +74,13 @@ export function Footer() {
                   <MessageCircle aria-hidden className="h-4 w-4 shrink-0 text-line-600" />
                   <span className="sr-only">LINE: </span>
                   {contact.lineId}
+                </a>
+              </li>
+              <li>
+                <a href={`mailto:${contact.email}`} className="flex items-center gap-2 break-all text-navy-600 hover:text-brand-700">
+                  <Mail aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
+                  <span className="sr-only">อีเมล: </span>
+                  {contact.email}
                 </a>
               </li>
               <li>

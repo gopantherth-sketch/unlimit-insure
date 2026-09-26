@@ -136,7 +136,7 @@ export const privacyPolicy: LegalDoc = {
       heading: "ติดต่อเรื่องข้อมูลส่วนบุคคล",
       body: [
         `ผู้ควบคุมข้อมูล: ${contact.broker.holder}`,
-        "เจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคล: [อีเมล DPO]",
+        `อีเมลติดต่อเรื่องข้อมูลส่วนบุคคล: ${contact.email}`,
         "ที่อยู่: [ที่อยู่]",
       ],
     },
@@ -258,7 +258,7 @@ export const termsOfUse: LegalDoc = {
     },
     {
       heading: "ติดต่อเรา",
-      body: [`${contact.broker.holder}`, "อีเมล: [อีเมลติดต่อ]", "ที่อยู่: [ที่อยู่]"],
+      body: [`${contact.broker.holder}`, `อีเมล: ${contact.email}`, "ที่อยู่: [ที่อยู่]"],
     },
   ],
   verify: [
