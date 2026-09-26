@@ -2,7 +2,7 @@
 
 Snapshot of the live tracker (https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC) taken 2026-09-26 at handover. From now on **this file is the source of truth**: the core manager updates it with each merged change. The tracker page is no longer updated.
 
-**C1 (go live on workers.dev), 2026-09-26:** deployed `59eb9a6` (version `aac6d9cb`). Remote D1 has migrations 0000–0003. Secrets `ADMIN_USERNAME`, `ADMIN_PASSWORD` (reset by the owner) and `SESSION_SECRET` set. Live checks: all public pages 200, admin pages redirect to login, `/buy` → `/advisor` (purchase off), `e2e:journey` passes on the live URL (one test lead "ทดสอบ" stored). Pending on the owner: admin login on the live site, dashboard Git build settings.
+**C1 (go live on workers.dev), 2026-09-26:** deployed `59eb9a6` (version `aac6d9cb`). Remote D1 has migrations 0000–0003. Secret `SESSION_SECRET` set; `ADMIN_USERNAME` / `ADMIN_PASSWORD` are older values the owner no longer knows and must re-set (`wrangler secret put`). Live checks: all public pages 200, admin pages redirect to login, `/buy` → `/advisor` (purchase off), `e2e:journey` passes on the live URL (one test lead "ทดสอบ" stored). Pending on the owner: admin login on the live site, dashboard Git build settings.
 
 Totals: 21 done · 9 in progress · 30 to do · 1 blocked · 61 tasks.
 
@@ -60,7 +60,7 @@ Owners: **Core** = system core manager (code, data, deploy) · **Designer** · *
 | P2.9 | Replace placeholder logos and imagery | Core | To do |  |
 | P2.10 | SEO: metadata, sitemap, Lab articles per car model | Copy | Done | Metadata, robots, sitemap, 15 car-model pages at /insurance (draft copy) |
 | P2.11 | Analytics and funnel events (no personal data) | Core | In progress | Built: anonymous counters + /admin/analytics. Migration 0001 applied on remote D1; deployed 2026-09-26 (C1). |
-| P2.12 | Hosting on Cloudflare Workers + D1, domain, backups, monitoring | Core | In progress | Live: unlimit-insure.gopanther-th.workers.dev (D1 APAC), `main` @ 59eb9a6 deployed 2026-09-26; migrations 0000–0003 applied; secrets ADMIN_USERNAME, ADMIN_PASSWORD, SESSION_SECRET set. Pending: Git build settings in dashboard (owner), custom domain (C5), backups, monitoring. |
+| P2.12 | Hosting on Cloudflare Workers + D1, domain, backups, monitoring | Core | In progress | Live: unlimit-insure.gopanther-th.workers.dev (D1 APAC), `main` @ 59eb9a6 deployed 2026-09-26; migrations 0000–0003 applied; SESSION_SECRET set. Pending: owner re-sets ADMIN_USERNAME / ADMIN_PASSWORD, Git build settings in dashboard (owner), custom domain (C5), backups, monitoring. |
 | P2.13 | QA: mobile devices, accessibility, performance | Core | In progress | Automated pass done: 59 page scans (360px + 1280px), 0 accessibility violations, no overflow, no errors. Real-device and live-site speed test after deploy. |
 | P2.14 | Compliance sign-off before launch | Legal | To do |  |
 | P2.15 | Soft launch and first-week review | Business | To do |  |
