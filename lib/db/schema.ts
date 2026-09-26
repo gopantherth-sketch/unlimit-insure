@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { index, integer, primaryKey, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+import type { ApplicationStatus, DocumentKind } from "@/lib/applications/status";
 import type { BodyType, Coverage, Eligibility, InsuranceType, Powertrain, PricingRule, VerificationStatus } from "@/lib/types";
 
 // Cloudflare D1 (SQLite). Timestamps are ISO-8601 text; structured product terms are JSON text.
@@ -208,3 +209,86 @@ export const eventCounts = sqliteTable(
   },
   (t) => [primaryKey({ columns: [t.day, t.name, t.dim] })],
 );
+
+// ---- Phase 3: purchase applications ----
+
+
+/**
+ * A customer's application to buy one quoted plan. The quote is frozen in `quote_snapshots`;
+ * `final_premium` differs only when the insurer confirms another price (shown to the customer with a reason).
+ * Access for the customer is via a private link: only the SHA-256 of the token is stored.
+ */
+export const applications = sqliteTable(
+  "applications",
+  {
+    id: text("id").primaryKey(),
+    reference: text("reference").notNull().unique(),
+    status: text("status").$type<ApplicationStatus>().notNull().default("documents_pending"),
+    quoteSnapshotId: text("quote_snapshot_id").notNull().references(() => quoteSnapshots.id),
+    productId: text("product_id").notNull(),
+    productVersionId: text("product_version_id").notNull(),
+    customerName: text("customer_name").notNull(),
+    phone: text("phone").notNull(),
+    email: text("email"),
+    address: text("address").notNull(),
+    plateNumber: text("plate_number").notNull(),
+    province: text("province").notNull(),
+    coverageStart: text("coverage_start").notNull(),
+    estimatedPremium: integer("estimated_premium").notNull(),
+    finalPremium: integer("final_premium"),
+    finalPremiumReason: text("final_premium_reason"),
+    policyNumber: text("policy_number"),
+    policyStart: text("policy_start"),
+    policyEnd: text("policy_end"),
+    tokenHash: text("token_hash").notNull(),
+    assignedTo: text("assigned_to"),
+    consentMarketing: integer("consent_marketing", { mode: "boolean" }).notNull().default(false),
+    createdAt: createdAt(),
+    updatedAt: text("updated_at").notNull().default(now),
+  },
+  (t) => [index("applications_status_idx").on(t.status), index("applications_created_idx").on(t.createdAt), index("applications_phone_idx").on(t.phone)],
+);
+
+/** Uploaded files. Bytes live in R2 under `r2_key`; this row is the index and access record. */
+export const applicationDocuments = sqliteTable(
+  "application_documents",
+  {
+    id: text("id").primaryKey(),
+    applicationId: text("application_id").notNull().references(() => applications.id),
+    kind: text("kind").$type<DocumentKind>().notNull(),
+    r2Key: text("r2_key").notNull(),
+    fileName: text("file_name").notNull(),
+    contentType: text("content_type").notNull(),
+    sizeBytes: integer("size_bytes").notNull(),
+    uploadedBy: text("uploaded_by").$type<"customer" | "staff">().notNull(),
+    uploadedByUserId: text("uploaded_by_user_id"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("application_documents_app_idx").on(t.applicationId)],
+);
+
+/** Timeline. `visible_to_customer` rows appear on the tracking page. */
+export const applicationEvents = sqliteTable(
+  "application_events",
+  {
+    id: text("id").primaryKey(),
+    applicationId: text("application_id").notNull().references(() => applications.id),
+    type: text("type").$type<"created" | "status_changed" | "message" | "note" | "document_added" | "premium_changed" | "policy_issued" | "link_reset" | "assigned">().notNull(),
+    fromStatus: text("from_status").$type<ApplicationStatus>(),
+    toStatus: text("to_status").$type<ApplicationStatus>(),
+    note: text("note"),
+    visibleToCustomer: integer("visible_to_customer", { mode: "boolean" }).notNull().default(false),
+    actor: text("actor").notNull(),
+    actorUserId: text("actor_user_id"),
+    createdAt: createdAt(),
+  },
+  (t) => [index("application_events_app_idx").on(t.applicationId)],
+);
+
+/** Owner-editable settings (payment instructions etc.). */
+export const settings = sqliteTable("settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedBy: text("updated_by"),
+  updatedAt: text("updated_at").notNull().default(now),
+});

@@ -7,10 +7,12 @@ import { cx } from "@/lib/cx";
 const items = [
   { href: "/admin", label: "ภาพรวม" },
   { href: "/admin/leads", label: "ลีด" },
+  { href: "/admin/applications", label: "ใบสมัคร" },
   { href: "/admin/products", label: "แพ็กเกจ" },
   { href: "/admin/import", label: "นำเข้าข้อมูล" },
   { href: "/admin/analytics", label: "สถิติ" },
   { href: "/admin/users", label: "ผู้ใช้", ownerOnly: true },
+  { href: "/admin/settings", label: "ตั้งค่า", ownerOnly: true },
 ];
 
 export function AdminNav({ isOwner }: { isOwner: boolean }) {

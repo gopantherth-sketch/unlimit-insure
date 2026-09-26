@@ -1,0 +1,45 @@
+import type { Metadata } from "next";
+import { savePaymentSettings } from "@/app/admin/(app)/applications/actions";
+import { Flash } from "@/components/admin/Flash";
+import { buttonClass } from "@/components/ui/button";
+import { getDb } from "@/lib/db/client";
+import { getPaymentSettings, paymentConfigured, type PaymentSettingKey } from "@/lib/db/settings";
+import { requireOwner } from "@/lib/server/admin-auth";
+
+export const metadata: Metadata = { title: "ตั้งค่า" };
+
+const fields: { key: PaymentSettingKey; label: string; hint: string }[] = [
+  { key: "payment.accountName", label: "ชื่อบัญชีผู้รับเงิน", hint: "ต้องตรงกับชื่อที่ลูกค้าเห็นในแอปธนาคารตอนโอน" },
+  { key: "payment.promptpayId", label: "พร้อมเพย์ (เบอร์มือถือ หรือเลขผู้เสียภาษี 13 หลัก)", hint: "ใช้สร้าง QR พร้อมยอดเงินให้ลูกค้าสแกน" },
+  { key: "payment.bankName", label: "ธนาคาร", hint: "ไม่บังคับถ้ามีพร้อมเพย์" },
+  { key: "payment.bankAccount", label: "เลขบัญชีธนาคาร", hint: "ไม่บังคับถ้ามีพร้อมเพย์" },
+];
+
+export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ ok?: string; error?: string }> }) {
+  await requireOwner();
+  const [{ ok, error }, s] = await Promise.all([searchParams, getPaymentSettings(await getDb())]);
+  const ready = paymentConfigured(s);
+  return (
+    <div className="max-w-2xl space-y-6">
+      <h1 className="text-2xl font-bold">ตั้งค่า</h1>
+      <Flash ok={ok} error={error} okMessages={{ saved: "บันทึกแล้ว" }} errorMessages={{ promptpay: "พร้อมเพย์ต้องเป็นเบอร์มือถือ 10 หลัก เลข 13 หลัก หรือ e-Wallet 15 หลัก" }} />
+      <form action={savePaymentSettings} className="card space-y-4 p-5">
+        <div>
+          <h2 className="font-bold">บัญชีรับชำระเบี้ย</h2>
+          <p className="mt-1 text-sm text-navy-500">ลูกค้าเห็นข้อมูลนี้ในขั้นชำระเงิน ตรวจให้ถูกต้องก่อนบันทึก และต้องเป็นบัญชีที่รับเบี้ยได้ตามข้อกำหนดของนายหน้า</p>
+          <p className={`mt-2 text-sm font-medium ${ready ? "text-success-700" : "text-warning-700"}`}>
+            {ready ? "พร้อมรับชำระ" : "ยังไม่ครบ: ต้องมีชื่อบัญชี และพร้อมเพย์หรือธนาคาร+เลขบัญชี ลูกค้าจะเห็นข้อความให้ติดต่อที่ปรึกษาแทน"}
+          </p>
+        </div>
+        {fields.map((f) => (
+          <div key={f.key}>
+            <label htmlFor={f.key} className="field-label">{f.label}</label>
+            <input id={f.key} name={f.key} defaultValue={s[f.key]} maxLength={f.key === "payment.promptpayId" ? 40 : 200} className="field-input" />
+            <p className="mt-1 text-xs text-navy-400">{f.hint}</p>
+          </div>
+        ))}
+        <button type="submit" className={buttonClass("primary", "sm")}>บันทึก</button>
+      </form>
+    </div>
+  );
+}

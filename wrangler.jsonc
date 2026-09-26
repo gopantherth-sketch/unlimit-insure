@@ -15,5 +15,7 @@
       "database_id": "10bc6601-2379-4a44-b8ee-8ff48d897fcb",
       "migrations_dir": "migrations"
     }
-  ]
+  ],
+  // Private bucket for application documents and policy PDFs. Create once: npx wrangler r2 bucket create unlimit-insure-docs
+  "r2_buckets": [{ "binding": "DOCS", "bucket_name": "unlimit-insure-docs" }]
 }

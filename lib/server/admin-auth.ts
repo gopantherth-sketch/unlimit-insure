@@ -58,6 +58,11 @@ export function actorOf(p: AdminPrincipal): Actor {
   return { name: p.name, userId: p.userId };
 }
 
+/** Server-side signing secret (SESSION_SECRET, else ADMIN_PASSWORD), or null when neither is set. */
+export async function signingSecret(): Promise<string | null> {
+  return (await config()).secret;
+}
+
 /** Whether any login is possible (a signing secret exists). */
 export async function adminConfigured(): Promise<boolean> {
   return (await config()).secret !== null;

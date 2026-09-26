@@ -248,7 +248,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes }: Props) {
                         quote={q}
                         highlight={q.id === top?.id && hasPriorities ? "แนะนำสำหรับคุณ" : undefined}
                         detailHref={withJourney(`/plans/${q.productId}`, journey)}
-                        selectHref={withJourney("/advisor", { ...journey, plans: [q.productId] })}
+                        selectHref={withJourney(`/buy/${q.productId}`, journey)}
                         compareControl={
                           <button
                             type="button"

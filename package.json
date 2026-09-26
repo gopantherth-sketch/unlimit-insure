@@ -26,6 +26,7 @@
     "drizzle-orm": "^0.45.3",
     "lucide-react": "^1.48.0",
     "next": "^15.5.26",
+    "qrcode-generator": "^2.0.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "read-excel-file": "^9.3.10"

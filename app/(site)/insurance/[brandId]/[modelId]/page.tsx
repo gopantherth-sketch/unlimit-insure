@@ -76,7 +76,7 @@ export default async function ModelPage({ params }: { params: Params }) {
                   <InsuranceCard
                     quote={q}
                     detailHref={withJourney(`/plans/${q.productId}`, journey)}
-                    selectHref={withJourney("/advisor", { ...journey, plans: [q.productId] })}
+                    selectHref={withJourney(`/buy/${q.productId}`, journey)}
                   />
                 </li>
               ))}

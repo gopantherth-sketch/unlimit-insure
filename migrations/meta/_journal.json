@@ -22,6 +22,13 @@
       "when": 1790363559913,
       "tag": "0002_admin_users",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1790387838763,
+      "tag": "0003_applications",
+      "breakpoints": true
     }
   ]
 }

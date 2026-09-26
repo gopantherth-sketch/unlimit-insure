@@ -96,7 +96,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                       {formatNumber(q.premium)} <span className="font-sans text-sm font-normal text-navy-500">บาท / ปี</span>
                     </p>
                     <div className="mt-auto grid grid-cols-2 gap-2">
-                      <Link href={withJourney("/advisor", { ...journey, plans: [q.productId] })} className={buttonClass("primary", "md", "rounded-xl px-3")}>
+                      <Link href={withJourney(`/buy/${q.productId}`, journey)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
                         เลือกแผนนี้
                       </Link>
                       <Link href={withJourney(`/plans/${q.productId}`, journey)} className={buttonClass("secondary", "md", "rounded-xl px-3")}>

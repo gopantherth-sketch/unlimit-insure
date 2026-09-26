@@ -23,6 +23,10 @@ export const eventDefs = {
   simulator_used: { label: "ใช้เครื่องจำลอง", dims: scenarios },
   lab_viewed: { label: "อ่าน Insurance Lab", dims: labArticles.map((a) => a.slug) },
   model_page_viewed: { label: "ดูหน้ารุ่นรถ", dims: [] as string[] },
+  buy_viewed: { label: "เปิดหน้าสมัคร", dims: [] as string[] },
+  application_submitted: { label: "ส่งใบสมัคร", dims: [] as string[] },
+  documents_submitted: { label: "ส่งเอกสารให้ตรวจ", dims: [] as string[] },
+  payment_submitted: { label: "แจ้งชำระเงิน", dims: [] as string[] },
 } as const;
 
 export type EventName = keyof typeof eventDefs;

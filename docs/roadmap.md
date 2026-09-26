@@ -86,7 +86,7 @@ Ship the exploration, compare and advisor experience on real, verified data.
 | P2.15 | Soft launch and first-week review | Business |
 
 ## Phase 3 — V2 purchase and My Garage
-_Target: after V1 launch_
+_Built on mock data · Sep 2026 (manual PromptPay/transfer, private link + phone check instead of login, staff-checked steps). Goes live with Phase 2 launch items._
 
 Let customers buy online where supported and manage their policy afterwards.
 
@@ -97,7 +97,7 @@ Let customers buy online where supported and manage their policy afterwards.
 
 | # | Task | Owner |
 |---|---|---|
-| P3.1 | Customer login: phone OTP, later LINE / Google | PM |
+| P3.1 | Customer access: private link + phone last-4 now; phone OTP / LINE login later | PM |
 | P3.2 | Purchase flow: customer, vehicle, documents, review | PM |
 | P3.3 | Secure document upload and storage | PM |
 | P3.4 | Payment integration (PromptPay / card / instalments) — Depends on Phase 1 payment flow | PM |

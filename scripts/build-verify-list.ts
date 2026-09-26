@@ -5,6 +5,7 @@ import { claimsCopy } from "@/content/claims";
 import { faq } from "@/content/faq";
 import { glossary } from "@/content/glossary";
 import { homeCopy } from "@/content/home";
+import { purchaseCopy } from "@/content/purchase";
 import { labArticles } from "@/content/lab";
 import { privacyPolicy, termsOfUse } from "@/content/legal";
 import { scenarioCopy } from "@/content/scenarios";
@@ -35,6 +36,7 @@ const groups: Group[] = [
       ...claimsCopy.faq.flatMap((f) => (f.verify ?? []).map((t) => ({ where: f.question, text: t }))),
     ],
   },
+  { title: "Purchase and tracking", source: "content/purchase.ts", items: purchaseCopy.verify.map((t) => ({ where: "buy / track", text: t })) },
 ];
 
 const total = groups.reduce((n, g) => n + g.items.length, 0);

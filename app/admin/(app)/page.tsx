@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { leadStatusLabel, leadStatusTone, formatDateTime } from "@/components/admin/labels";
+import { leadStatusLabel, leadStatusTone, formatDateTime, staffActionStatuses } from "@/components/admin/labels";
+import { countApplicationsByStatus } from "@/lib/db/applications";
 import { getDb } from "@/lib/db/client";
 import { countLeadsByStatus, leadStatuses, listLeads } from "@/lib/db/leads";
 import { listProductsWithVersions } from "@/lib/db/products-admin";
@@ -8,12 +9,13 @@ import { cx } from "@/lib/cx";
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ denied?: string; ok?: string }> }) {
   const { denied, ok } = await searchParams;
   const db = await getDb();
-  const [counts, recent, products] = await Promise.all([countLeadsByStatus(db), listLeads(db, { limit: 8 }), listProductsWithVersions(db)]);
+  const [counts, recent, products, appCounts] = await Promise.all([countLeadsByStatus(db), listLeads(db, { limit: 8 }), listProductsWithVersions(db), countApplicationsByStatus(db)]);
   const versions = products.flatMap((p) => p.versions);
   const total = Object.values(counts).reduce((a, b) => a + b, 0);
   const tiles = [
     { label: "ลีดทั้งหมด", value: total, href: "/admin/leads" },
     { label: "ลีดใหม่รอติดต่อ", value: counts.new, href: "/admin/leads?status=new" },
+    { label: "ใบสมัครรอทีมดำเนินการ", value: staffActionStatuses.reduce((n, s) => n + (appCounts[s] ?? 0), 0), href: "/admin/applications?view=todo" },
     { label: "แพ็กเกจที่เผยแพร่", value: products.filter((p) => p.versions.some((v) => v.status === "published")).length, href: "/admin/products" },
     { label: "เวอร์ชันที่ยังไม่ได้ตรวจสอบแหล่งข้อมูล", value: versions.filter((v) => v.sourceStatus !== "verified").length, href: "/admin/products" },
   ];
@@ -27,7 +29,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: P
       {ok === "password" && (
         <p role="status" className="rounded-xl bg-success-50 p-3 text-sm font-medium text-success-700">เปลี่ยนรหัสผ่านแล้ว</p>
       )}
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {tiles.map((t) => (
           <li key={t.label}>
             <Link href={t.href} className="card block p-5 hover:shadow-lift">

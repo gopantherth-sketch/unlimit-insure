@@ -5,8 +5,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   serverExternalPackages: ["better-sqlite3"],
-  // Product import sends parsed spreadsheet rows to a server action.
-  experimental: { serverActions: { bodySizeLimit: "8mb" } },
+  // Product import rows and document uploads (10 MB max per file) go through server actions.
+  experimental: { serverActions: { bodySizeLimit: "12mb" } },
 };
 
 export default nextConfig;

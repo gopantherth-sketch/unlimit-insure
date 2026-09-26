@@ -4,6 +4,7 @@ import Link from "next/link";
 import { CalendarClock, CarFront, FileText, Headset, LifeBuoy, RefreshCw, ShieldCheck, TriangleAlert } from "lucide-react";
 import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
+import { LookupForm } from "@/components/track/LookupForm";
 
 export const metadata: Metadata = seo("/garage");
 
@@ -43,14 +44,29 @@ export default function GaragePage() {
         eyebrow={
           <span className="flex flex-wrap items-center gap-3">
             My Garage
-            <span className="rounded-full bg-warning-50 px-2.5 py-1 text-xs font-medium normal-case tracking-normal text-warning-700">ตัวอย่างหน้าจอ เปิดใช้ในระยะถัดไป</span>
           </span>
         }
         title="รถและกรมธรรม์ของคุณ ในที่เดียว"
         body="ก่อนซื้อเราอธิบาย หลังซื้อเรายังดูแล ดูสถานะ เอกสาร ขั้นตอนเคลม และการต่ออายุได้ในที่เดียว"
       />
       <div className="container-page">
-        <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+        <section aria-labelledby="lookup-title" className="card mb-10 rounded-xl2 p-6 sm:p-8">
+          <h2 id="lookup-title" className="text-xl font-bold text-navy-900">
+            ติดตามใบสมัครและกรมธรรม์
+          </h2>
+          <p className="mt-1 text-sm text-navy-500">
+            เปิดลิงก์ส่วนตัวที่ได้หลังส่งใบสมัคร หรือค้นหาด้วยเลขอ้างอิงและเบอร์โทรที่ใช้สมัคร
+          </p>
+          <div className="mt-5">
+            <LookupForm />
+          </div>
+        </section>
+
+        <p className="mb-4 flex flex-wrap items-center gap-3">
+          <span className="rounded-full bg-warning-50 px-2.5 py-1 text-xs font-medium text-warning-700">ตัวอย่างหน้าจอ</span>
+          <span className="text-sm text-navy-500">หน้ารวมรถหลายคันจะเปิดใช้เมื่อมีระบบบัญชีผู้ใช้</span>
+        </p>
+        <div aria-label="ตัวอย่างหน้าจอ My Garage" className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
           <section aria-labelledby="cars" className="space-y-4">
             <h2 id="cars" className="sr-only">
               รถของคุณ

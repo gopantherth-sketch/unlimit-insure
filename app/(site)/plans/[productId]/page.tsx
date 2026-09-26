@@ -204,7 +204,7 @@ export default async function PlanPage({ params, searchParams }: { params: Param
                 </>
               )}
               <div className="mt-6 flex flex-col gap-2">
-                <Link href={withJourney("/advisor", { ...journey, plans: [product.id] })} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
+                <Link href={withJourney(`/buy/${product.id}`, journey)} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
                   เลือกแพ็กเกจนี้
                 </Link>
                 {input && (
