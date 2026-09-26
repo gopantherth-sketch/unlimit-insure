@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useActionState, useEffect, useState } from "react";
-import { Loader2, TriangleAlert } from "lucide-react";
+import { CarFront, Loader2, ShieldCheck, TriangleAlert, UserRound, type LucideIcon } from "lucide-react";
 import { submitApplication, type BuyState } from "@/app/(site)/buy/actions";
 import { buttonClass } from "@/components/ui/button";
 import { purchaseCopy as c } from "@/content/purchase";
@@ -19,6 +19,20 @@ interface Props {
 }
 
 const initial: BuyState = { errors: {}, values: {} };
+
+function SectionTitle({ id, n, icon: Icon, children }: { id: string; n: number; icon: LucideIcon; children: React.ReactNode }) {
+  return (
+    <h2 id={id} className="flex items-center gap-3 text-lg font-bold">
+      <span aria-hidden className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
+        <Icon className="h-5 w-5" strokeWidth={1.75} />
+      </span>
+      <span>
+        <span className="block text-xs font-semibold uppercase tracking-wider text-brand-600">ส่วนที่ {n} จาก 3</span>
+        {children}
+      </span>
+    </h2>
+  );
+}
 
 function Field({ id, label, hint, error, children }: { id: BuyField; label: string; hint?: string; error?: string; children: React.ReactNode }) {
   return (
@@ -51,10 +65,13 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
 
   return (
     <form action={action} noValidate className="space-y-6">
-      <input type="hidden" name="productId" value={productId} />
-      <input type="hidden" name="brand" value={vehicle.brandId} />
-      <input type="hidden" name="model" value={vehicle.modelId} />
-      <input type="hidden" name="year" value={vehicle.year} />
+      {/* Wrapped in [hidden] so space-y doesn't push the first card down. */}
+      <div hidden>
+        <input type="hidden" name="productId" value={productId} />
+        <input type="hidden" name="brand" value={vehicle.brandId} />
+        <input type="hidden" name="model" value={vehicle.modelId} />
+        <input type="hidden" name="year" value={vehicle.year} />
+      </div>
 
       {state.errors.form && (
         <p role="alert" className="flex items-start gap-2 rounded-2xl bg-danger-50 p-4 text-sm font-medium text-danger-600">
@@ -66,7 +83,7 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
       )}
 
       <section aria-labelledby="sec-customer" className="card space-y-4 p-5 sm:p-7">
-        <h2 id="sec-customer" className="text-lg font-bold">{c.sections.customer}</h2>
+        <SectionTitle id="sec-customer" n={1} icon={UserRound}>{c.sections.customer}</SectionTitle>
         <Field id="customerName" error={err("customerName")} label="ชื่อ-นามสกุล" hint={c.fieldHints.name}>
           <input id="customerName" name="customerName" defaultValue={v.customerName} autoComplete="name" required className="field-input" aria-invalid={!!err("customerName")} aria-describedby={described("customerName")} />
         </Field>
@@ -84,7 +101,7 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
       </section>
 
       <section aria-labelledby="sec-vehicle" className="card space-y-4 p-5 sm:p-7">
-        <h2 id="sec-vehicle" className="text-lg font-bold">{c.sections.vehicle}</h2>
+        <SectionTitle id="sec-vehicle" n={2} icon={CarFront}>{c.sections.vehicle}</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
           <Field id="plateNumber" error={err("plateNumber")} label="เลขทะเบียนรถ" hint={c.fieldHints.plate}>
             <input id="plateNumber" name="plateNumber" defaultValue={v.plateNumber} required className="field-input" aria-invalid={!!err("plateNumber")} aria-describedby={described("plateNumber")} />
@@ -131,7 +148,7 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
       </section>
 
       <section aria-labelledby="sec-consent" className="card space-y-4 p-5 sm:p-7">
-        <h2 id="sec-consent" className="text-lg font-bold">{c.sections.consent}</h2>
+        <SectionTitle id="sec-consent" n={3} icon={ShieldCheck}>{c.sections.consent}</SectionTitle>
         <ul className="list-disc space-y-1.5 rounded-2xl bg-canvas p-4 pl-8 text-sm leading-relaxed text-navy-700">
           {c.disclosures.map((d) => (
             <li key={d}>{d}</li>
@@ -145,19 +162,19 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
           ] as const
         ).map(([k, text]) => (
           <div key={k}>
-            <label className="flex items-start gap-3 text-sm leading-relaxed text-navy-700">
-              <input id={k} name={k} type="checkbox" defaultChecked={!!v[k]} className="mt-1 h-4 w-4 shrink-0 accent-brand-600" aria-invalid={!!err(k)} aria-describedby={err(k) ? `${k}-err` : undefined} />
+            <label className={cx("flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-navy-700 rounded-xl border p-3 transition-colors hover:border-brand-200 has-[:checked]:border-brand-300 has-[:checked]:bg-brand-50/60", err(k) ? "border-danger-500" : "border-navy-100")}>
+              <input id={k} name={k} type="checkbox" defaultChecked={!!v[k]} className="mt-0.5 h-5 w-5 shrink-0 accent-brand-600" aria-invalid={!!err(k)} aria-describedby={err(k) ? `${k}-err` : undefined} />
               <span>{text}</span>
             </label>
             {err(k) && (
-              <p id={`${k}-err`} className="ml-7 mt-1 text-sm text-danger-600">
+              <p id={`${k}-err`} className="mt-1 pl-3 text-sm text-danger-600">
                 {err(k)}
               </p>
             )}
           </div>
         ))}
-        <label className="flex items-start gap-3 text-sm leading-relaxed text-navy-700">
-          <input name="consentMarketing" type="checkbox" className="mt-1 h-4 w-4 shrink-0 accent-brand-600" />
+        <label className="flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-navy-700 rounded-xl border border-navy-100 p-3 transition-colors hover:border-brand-200 has-[:checked]:border-brand-300 has-[:checked]:bg-brand-50/60">
+          <input name="consentMarketing" type="checkbox" className="mt-0.5 h-5 w-5 shrink-0 accent-brand-600" />
           <span>{c.consents.marketing}</span>
         </label>
       </section>
@@ -166,7 +183,7 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
         <Link href={advisorHref} className={buttonClass("ghost", "md")}>
           อยากคุยกับที่ปรึกษาก่อน
         </Link>
-        <button type="submit" disabled={pending || commercial} className={buttonClass("primary", "lg", cx("sm:min-w-64"))}>
+        <button type="submit" disabled={pending || commercial} className={buttonClass("primary", "lg", "w-full sm:w-auto sm:min-w-64")}>
           {pending && <Loader2 aria-hidden className="h-5 w-5 animate-spin" />}
           {c.submitLabel}
         </button>

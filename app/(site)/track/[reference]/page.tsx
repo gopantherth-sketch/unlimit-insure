@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CheckCircle2, Circle, Download, FileText, LifeBuoy, LockKeyhole, MessageSquare, Phone, TriangleAlert } from "lucide-react";
+import { CheckCircle2, Circle, CircleSlash, ClipboardList, Download, Hourglass, ShieldCheck, FileText, LifeBuoy, LockKeyhole, MessageSquare, Phone, TriangleAlert } from "lucide-react";
 import { confirmPhone, notifyPayment, sendForReview } from "@/app/(site)/track/actions";
 import { CopyLink } from "@/components/track/CopyLink";
 import { Timeline } from "@/components/track/Timeline";
@@ -30,6 +30,14 @@ const errorText: Record<string, string> = {
   missing_documents: "ยังขาดเอกสารที่จำเป็น",
   missing_payment_slip: "อัปโหลดสลิปการโอนก่อนแจ้งชำระเงิน",
   not_allowed: "ทำรายการนี้ในขั้นตอนนี้ไม่ได้",
+};
+
+const customerTurn: ApplicationStatus[] = ["documents_pending", "needs_info", "awaiting_payment"];
+const statusTone = {
+  turn: { Icon: ClipboardList, card: "", bar: "bg-brand-600", icon: "bg-brand-50 text-brand-600", badge: "bg-brand-600 text-white" },
+  waiting: { Icon: Hourglass, card: "", bar: "bg-navy-300", icon: "bg-navy-50 text-navy-600", badge: "bg-navy-100 text-navy-700" },
+  done: { Icon: ShieldCheck, card: "", bar: "bg-success-600", icon: "bg-success-50 text-success-700", badge: "" },
+  stopped: { Icon: CircleSlash, card: "", bar: "bg-danger-600", icon: "bg-danger-50 text-danger-600", badge: "" },
 };
 
 function Shell({ children }: { children: React.ReactNode }) {
@@ -111,6 +119,10 @@ export default async function TrackPage({ params, searchParams }: { params: Prom
   const privateUrl = sp.new && sp.t ? `${await publicOrigin()}/track/${app.reference}?t=${encodeURIComponent(sp.t)}` : null;
   const daysLeft = app.policyEnd ? Math.ceil((new Date(`${app.policyEnd}T00:00:00+07:00`).getTime() - Date.now()) / 86_400_000) : null;
   const priceChanged = app.finalPremium !== null && app.finalPremium !== app.estimatedPremium;
+  const kind = customerTurn.includes(status) ? "turn" : status === "policy_issued" ? "done" : status === "rejected" || status === "cancelled" ? "stopped" : "waiting";
+  const tone = statusTone[kind];
+  const StatusIcon = tone.Icon;
+  const badge = kind === "turn" ? c.tracking.yourTurn : kind === "waiting" ? c.tracking.waiting : null;
 
   return (
     <Shell>
@@ -128,12 +140,23 @@ export default async function TrackPage({ params, searchParams }: { params: Prom
         </section>
       )}
 
-      <p className="eyebrow">{c.tracking.title}</p>
-      <div className="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h1 className="text-2xl font-bold sm:text-3xl">{st.title}</h1>
-        <span className="font-mono text-sm text-navy-400">{app.reference}</span>
-      </div>
-      <p className="mt-2 max-w-2xl text-navy-600">{st.body}</p>
+      <section aria-labelledby="status-title" className={cx("card relative overflow-hidden p-5 sm:p-7", tone.card)}>
+        <span aria-hidden className={cx("absolute inset-y-0 left-0 w-1.5", tone.bar)} />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <p className="eyebrow">{c.tracking.title}</p>
+          <span className="font-mono text-xs text-navy-500">{app.reference}</span>
+        </div>
+        <div className="mt-3 flex items-start gap-3 sm:gap-4">
+          <span aria-hidden className={cx("inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl", tone.icon)}>
+            <StatusIcon className="h-6 w-6" strokeWidth={1.75} />
+          </span>
+          <div className="min-w-0">
+            <h1 id="status-title" className="text-2xl font-bold leading-tight sm:text-3xl">{st.title}</h1>
+            {badge && <p className={cx("mt-2 inline-flex rounded-full px-3 py-1 text-xs font-semibold", tone.badge)}>{badge}</p>}
+            <p className="mt-2 max-w-2xl text-navy-600">{st.body}</p>
+          </div>
+        </div>
+      </section>
       {sp.error && errorText[sp.error] && (
         <p role="alert" className="mt-4 rounded-xl bg-danger-50 p-3 text-sm font-medium text-danger-600">{errorText[sp.error]}</p>
       )}

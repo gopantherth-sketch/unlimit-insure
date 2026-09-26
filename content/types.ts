@@ -166,7 +166,15 @@ export interface PurchaseCopy {
     /** Label for who acts at each step. */
     actorLabel: Record<"customer" | "unlimit" | "insurer", string>;
     stepLabel: Record<"apply" | "review" | "payment" | "insurer" | "issued", string>;
+    /** Status badge: the customer has something to do / is waiting on someone else. */
+    yourTurn: string;
+    waiting: string;
+    /** "ขั้นที่ {n} จาก {total}" on the compact mobile timeline. */
+    stepOf: string;
   };
+  /** Buy page: documents to have ready for the next step. */
+  prepareTitle: string;
+  prepareBody: string;
   /** Customer-facing status headline and explanation. */
   statusText: Record<ApplicationStatus, { title: string; body: string }>;
   documents: Record<DocumentKind, { label: string; hint: string }>;

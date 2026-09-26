@@ -1,7 +1,8 @@
 "use client";
 
-import { Loader2, Upload } from "lucide-react";
-import { useActionState, useRef } from "react";
+import { Loader2, Paperclip, Upload } from "lucide-react";
+import { useActionState, useEffect, useRef, useState } from "react";
+import { cx } from "@/lib/cx";
 import { uploadDocument, type UploadState } from "@/app/(site)/track/actions";
 import { purchaseCopy as c } from "@/content/purchase";
 import type { DocumentKind } from "@/lib/applications/status";
@@ -19,6 +20,9 @@ const messages: Record<NonNullable<UploadState["error"]>, string> = {
 export function UploadForm({ reference, kinds, fixedKind }: { reference: string; kinds: DocumentKind[]; fixedKind?: DocumentKind }) {
   const [state, action, pending] = useActionState(uploadDocument, {} as UploadState);
   const form = useRef<HTMLFormElement>(null);
+  const [fileName, setFileName] = useState("");
+  // React resets the form after every action, so the chosen file is gone either way.
+  useEffect(() => setFileName(""), [state]);
   const id = fixedKind ?? "doc";
   return (
     <form ref={form} action={action} className="space-y-3 rounded-2xl border border-dashed border-navy-200 bg-white p-4">
@@ -50,8 +54,19 @@ export function UploadForm({ reference, kinds, fixedKind }: { reference: string;
             type="file"
             required
             accept="image/jpeg,image/png,image/webp,image/heic,application/pdf,.heic"
-            className="block w-full text-sm file:mr-3 file:rounded-full file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:font-semibold file:text-brand-700"
+            onChange={(e) => setFileName(e.currentTarget.files?.[0]?.name ?? "")}
+            className="peer sr-only"
           />
+          <label
+            htmlFor={`${id}-file`}
+            className="flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border border-navy-200 bg-white px-3 py-2 text-sm transition-colors hover:border-brand-300 peer-focus-visible:ring-2 peer-focus-visible:ring-brand-500"
+          >
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-brand-50 px-3 py-1.5 font-semibold text-brand-700">
+              <Paperclip aria-hidden className="h-4 w-4" />
+              เลือกไฟล์
+            </span>
+            <span className={cx("min-w-0 truncate", fileName ? "font-medium text-navy-900" : "text-navy-500")}>{fileName || "ยังไม่ได้เลือกไฟล์"}</span>
+          </label>
         </div>
       </div>
       <p className="text-xs text-navy-400">{c.uploadRules}</p>

@@ -71,7 +71,12 @@ export const purchaseCopy: PurchaseCopy = {
       insurer: "บริษัทประกันพิจารณา",
       issued: "ออกกรมธรรม์",
     },
+    yourTurn: "ถึงขั้นตอนของคุณ",
+    waiting: "ตอนนี้คุณไม่ต้องทำอะไร",
+    stepOf: "ขั้นที่ {n} จาก {total}",
   },
+  prepareTitle: "เตรียมเอกสารไว้ได้เลย",
+  prepareBody: "หลังส่งใบสมัคร อัปโหลดรูปถ่ายหรือไฟล์ PDF ของเอกสารเหล่านี้ในหน้าติดตามสถานะ",
   statusText: {
     documents_pending: {
       title: "รอเอกสารจากคุณ",
