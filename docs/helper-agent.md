@@ -1,4 +1,18 @@
-# Local helper agent — standing brief
+# Local agents
+
+Three local Claude Code sessions run on the owner's PC, each in its own terminal in this repo folder, each started with `claude remote-control`:
+
+| Agent | Start prompt | Works on | Git |
+|---|---|---|---|
+| Helper | "Read docs/helper-agent.md and follow it. Wait for tasks." | Deploy, migrations, secrets, services | No commits |
+| Designer | "Use the unlimit-designer agent brief in .claude/agents/unlimit-designer.md. Wait for tasks." | Visuals, layout, images | Branch `design/*`, pushed |
+| Copywriter | "Use the unlimit-copywriter agent brief in .claude/agents/unlimit-copywriter.md. Wait for tasks." | All wording, SEO, verify list | Branch `copy/*`, pushed |
+
+The PM (cloud session) sends tasks, reviews pushed branches and merges into `main`. Designer and copywriter never touch each other's files; when a layout needs words, the designer leaves `TODO(copy)` for the copywriter.
+
+If two agents work at the same time, give each its own copy of the folder (`git worktree add ../unlimit-insure-design main` and `../unlimit-insure-copy main`) so their branches don't collide.
+
+# Helper — standing brief
 
 The helper is a Claude Code session running on the owner's PC, in this repo folder, started with
 `claude remote-control` so the PM session (cloud) can hand it tasks. It exists because the cloud
