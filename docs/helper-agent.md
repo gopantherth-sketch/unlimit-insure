@@ -1,6 +1,6 @@
 # Local agents
 
-Three local Claude Code sessions run on the owner's PC, each in its own terminal in this repo folder, each started with `claude remote-control`:
+Three local Claude Code sessions run on the owner's PC, each in its own terminal and folder, each started with `claude remote-control`:
 
 | Agent | Start prompt | Works on | Git |
 |---|---|---|---|
@@ -10,7 +10,7 @@ Three local Claude Code sessions run on the owner's PC, each in its own terminal
 
 The PM (cloud session) sends tasks, reviews pushed branches and merges into `main`. Designer and copywriter never touch each other's files; when a layout needs words, the designer leaves `TODO(copy)` for the copywriter.
 
-If two agents work at the same time, give each its own copy of the folder (`git worktree add ../unlimit-insure-design main` and `../unlimit-insure-copy main`) so their branches don't collide.
+Each agent gets its own folder so their branches never collide. One-time setup from the main `unlimit-insure` folder (the helper's): `git worktree add ../unlimit-insure-design main` and `git worktree add ../unlimit-insure-copy main`, then `npm install` in each new folder. Start the designer in `unlimit-insure-design` and the copywriter in `unlimit-insure-copy`.
 
 # Helper — standing brief
 
