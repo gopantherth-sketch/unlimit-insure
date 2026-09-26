@@ -10,7 +10,9 @@ Three local Claude Code sessions run on the owner's PC, each in its own terminal
 
 The PM (cloud session) sends tasks, reviews pushed branches and merges into `main`. Designer and copywriter never touch each other's files; when a layout needs words, the designer leaves `TODO(copy)` for the copywriter.
 
-Each agent gets its own folder so their branches never collide. One-time setup from the main `unlimit-insure` folder (the helper's): `git worktree add ../unlimit-insure-design main` and `git worktree add ../unlimit-insure-copy main`, then `npm install` in each new folder. Start the designer in `unlimit-insure-design` and the copywriter in `unlimit-insure-copy`.
+Each agent gets its own folder so their branches never collide: the helper uses `unlimit-insure`, the designer `unlimit-insure-design`, the copywriter `unlimit-insure-copy` (git worktrees next to it).
+
+**Setup (Windows, once):** in the `unlimit-insure` folder run `powershell -ExecutionPolicy Bypass -File scripts\setup-local-agents.ps1`. It pulls `main`, installs, creates the two worktrees, and opens three windows running `claude remote-control`, each showing its first message to send. Run it again any time to reopen the windows.
 
 # Helper — standing brief
 

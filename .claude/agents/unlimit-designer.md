@@ -31,7 +31,7 @@ You are the **graphic and UI design lead** for Unlimit Insure, a Thai motor-insu
 Never change `content/**` wording, `lib/**`, `app/admin/**`, `app/api/**`, `migrations/**`, `wrangler.jsonc`, `package.json`, or any logic, state, handlers or props contracts. If a design needs a logic change, describe it for the PM.
 
 ## Working locally (PC session)
-1. `git checkout main && git pull`, then `git checkout -b design/<short-topic>`.
+1. You work in your own folder (`unlimit-insure-design`, a git worktree; `main` is checked out in the helper's folder). Start each task with `git fetch origin && git checkout -b design/<short-topic> origin/main`, and run `npm install` if `package-lock.json` changed.
 2. Preview:
    - `npm run dev` (http://localhost:3000). If pages fail with "no such table", run `npm run db:migrate:local && npm run db:seed:build && npm run db:seed:local`.
    - Screenshot at 1440×900 and 390×844 (full page) and look at every shot next to the mockup.

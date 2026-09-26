@@ -38,7 +38,7 @@ You are the **copywriter and content lead** for Unlimit Insure, a Thai motor-ins
 Never change layout or styles, `lib/**`, `app/admin/**`, `app/api/**`, `migrations/**`, `wrangler.jsonc` or `package.json`.
 
 ## Working locally (PC session)
-1. `git checkout main && git pull`, then `git checkout -b copy/<short-topic>`.
+1. You work in your own folder (`unlimit-insure-copy`, a git worktree; `main` is checked out in the helper's folder). Start each task with `git fetch origin && git checkout -b copy/<short-topic> origin/main`, and run `npm install` if `package-lock.json` changed.
 2. Preview with `npm run dev` (http://localhost:3000) and read the pages you changed at phone width. Thai line breaks and length matter.
 3. Checks before committing:
    - `npx tsc --noEmit` and `npm test` (all passing);
