@@ -28,7 +28,7 @@ const columns = [
     title: "ช่วยเหลือ",
     links: [
       { href: "/claims", label: "ขั้นตอนเมื่อเกิดเหตุ" },
-      { href: "/advisor", label: "ปรึกษาผู้เชี่ยวชาญ" },
+      { href: "/advisor", label: "คุยกับที่ปรึกษา" },
     ],
   },
 ];

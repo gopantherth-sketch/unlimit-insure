@@ -25,7 +25,7 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
           <div className="pb-8 lg:pb-14">
             <p className="eyebrow">Advisor</p>
             <h1 id="advisor-title" className="mt-3 text-[32px] font-bold leading-tight text-navy-900 sm:text-[44px]">
-              ปรึกษาผู้เชี่ยวชาญ<span className="text-brand-600">ฟรี</span>
+              คุยกับที่ปรึกษา<span className="text-brand-600">ฟรี</span>
             </h1>
             <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-navy-600 sm:text-lg">
               ที่ปรึกษาช่วยหาราคาจริง อธิบายความคุ้มครอง และตอบคำถามทาง LINE หรือโทรศัพท์ ไม่มีการเร่งให้ตัดสินใจ

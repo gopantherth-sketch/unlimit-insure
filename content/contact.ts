@@ -1,8 +1,10 @@
 // Contact channels confirmed by the owner on 2026-09-26. The only source for LINE, phone and Facebook
 // details on the site: change them here, never inline in components.
 
+const lineId = "@unlimit.insure";
+
 export const contact = {
-  lineId: "@unlimit.insure",
+  lineId,
   phoneDisplay: "091-444-5542",
   /** E.164 for tel: links. */
   phoneE164: "+66914445542",
@@ -14,7 +16,7 @@ export const contact = {
     lineLong: "คุยกับเราทาง LINE",
     call: "โทรหาเรา",
     askPrice: "ขอราคาจริงทาง LINE",
-    askPriceNote: "ราคาขึ้นอยู่กับรถและการพิจารณาของบริษัทประกัน ทักมาเพื่อรับใบเสนอราคาจริง ไม่มีค่าใช้จ่าย",
+    askPriceNote: "บริษัทประกันเป็นผู้พิจารณาราคาจริง ทักมาทาง LINE เพื่อรับใบเสนอราคา ไม่มีค่าใช้จ่าย",
   },
   /** Homepage band: how to get a real quote. */
   quoteBand: {
@@ -22,7 +24,7 @@ export const contact = {
     title: "ขอราคาจริงง่าย ๆ ใน 3 ขั้นตอน",
     body: "ราคาประกันขึ้นอยู่กับรถและการพิจารณาของบริษัทประกัน ทักมาคุยกับที่ปรึกษา เราช่วยหาราคาจริงและอธิบายความคุ้มครองให้ ไม่มีค่าใช้จ่าย",
     steps: [
-      { title: "แอดไลน์", body: "@unlimit.insure หรือสแกน QR" },
+      { title: "แอดไลน์", body: `${lineId} หรือสแกน QR` },
       { title: "บอกรถของคุณ", body: "ยี่ห้อ รุ่น ปีรถ และสิ่งที่สำคัญกับคุณ" },
       { title: "รับราคาจริง", body: "พร้อมคำอธิบาย ตัดสินใจเมื่อคุณพร้อม" },
     ],

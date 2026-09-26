@@ -125,7 +125,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                 </div>
               </div>
               <Link href={withJourney("/advisor", { ...journey, plans })} className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>
-                ปรึกษาผู้เชี่ยวชาญ
+                คุยกับที่ปรึกษา
               </Link>
             </div>
           </div>

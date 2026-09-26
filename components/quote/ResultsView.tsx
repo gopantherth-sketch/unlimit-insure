@@ -146,7 +146,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: 
             <p className="mt-4 font-display text-xl font-semibold text-navy-900">ยังไม่มีแพ็กเกจตัวอย่างที่รับรถคันนี้</p>
             <p className="mt-2 text-navy-500">ที่ปรึกษาช่วยหาแพ็กเกจที่เหมาะกับรถของคุณได้ ไม่มีค่าใช้จ่าย</p>
             <Link href={withJourney("/advisor", journey)} className={buttonClass("primary", "md", "mt-6 rounded-xl px-6")}>
-              ปรึกษาผู้เชี่ยวชาญ
+              คุยกับที่ปรึกษา
             </Link>
           </div>
         ) : (
