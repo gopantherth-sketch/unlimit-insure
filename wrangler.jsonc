@@ -16,6 +16,9 @@
       "migrations_dir": "migrations"
     }
   ],
-  // Private bucket for application documents and policy PDFs. Create once: npx wrangler r2 bucket create unlimit-insure-docs
-  "r2_buckets": [{ "binding": "DOCS", "bucket_name": "unlimit-insure-docs" }]
+  // Online purchase is off until real products, broker licence and receiving account are confirmed.
+  // To switch on: create the bucket (npx wrangler r2 bucket create unlimit-insure-docs), uncomment r2_buckets,
+  // set PURCHASE_ENABLED to "true", redeploy. See docs/deploy.md.
+  // "r2_buckets": [{ "binding": "DOCS", "bucket_name": "unlimit-insure-docs" }],
+  "vars": { "PURCHASE_ENABLED": "false" }
 }

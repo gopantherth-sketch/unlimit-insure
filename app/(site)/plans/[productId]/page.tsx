@@ -13,9 +13,10 @@ import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldGroupLabel, insuranceTypeLabel, repairTypeLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
 import { formatBaht, formatNumber } from "@/lib/format";
 import { buildMatchContext, matchQuote } from "@/lib/match";
-import { parseQuoteInput, withJourney, type RawParams } from "@/lib/params";
+import { parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
 import { activeVersion, findProduct, generateQuotes, quoteForProduct } from "@/lib/quote";
 import { getCatalog } from "@/lib/server/catalog";
+import { purchaseEnabled } from "@/lib/server/features";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
 type Params = Promise<{ productId: string }>;
@@ -30,6 +31,7 @@ const groups: FieldGroup[] = ["core", "ownDamage", "thirdParty", "people", "serv
 export default async function PlanPage({ params, searchParams }: { params: Params; searchParams: Promise<RawParams> }) {
   const { productId } = await params;
   const catalog = await getCatalog();
+  const buyEnabled = await purchaseEnabled();
   const product = findProduct(catalog, productId);
   if (!product) notFound();
   const insurer = catalog.insurers.find((i) => i.id === product.insurerId);
@@ -204,7 +206,7 @@ export default async function PlanPage({ params, searchParams }: { params: Param
                 </>
               )}
               <div className="mt-6 flex flex-col gap-2">
-                <Link href={withJourney(`/buy/${product.id}`, journey)} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
+                <Link href={selectPlanHref(product.id, journey, buyEnabled)} className={buttonClass("primary", "lg", "w-full rounded-xl")}>
                   เลือกแพ็กเกจนี้
                 </Link>
                 {input && (

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { normalizePlate, validateBuyForm, type BuyErrors, type BuyFormInput } from "@/lib/applications/validate";
 import { recordEvent } from "@/lib/db/analytics";
 import { notifyStaff } from "@/lib/server/notify";
+import { purchaseEnabled } from "@/lib/server/features";
 import { createApplication, getApplicationByReference } from "@/lib/db/applications";
 import { getDb } from "@/lib/db/client";
 import { normalizePhone } from "@/lib/leads";
@@ -20,6 +21,7 @@ export interface BuyState {
 const s = (f: FormData, k: string, max = 500) => String(f.get(k) ?? "").slice(0, max);
 
 export async function submitApplication(_prev: BuyState, formData: FormData): Promise<BuyState> {
+  if (!(await purchaseEnabled())) redirect("/advisor");
   const values: BuyFormInput = {
     customerName: s(formData, "customerName", 100),
     phone: s(formData, "phone", 20),

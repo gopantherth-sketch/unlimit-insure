@@ -20,6 +20,7 @@ import { getDb } from "@/lib/db/client";
 import { classifyPromptPayId } from "@/lib/payment/promptpay";
 import { paymentSettingKeys, setSetting } from "@/lib/db/settings";
 import { actorOf, requireAdmin, requireOwner } from "@/lib/server/admin-auth";
+import { purchaseEnabled } from "@/lib/server/features";
 import { sendTestAlert } from "@/lib/server/notify";
 import { publicOrigin } from "@/lib/server/origin";
 import { documentKey, getDocsBucket } from "@/lib/server/storage";
@@ -99,6 +100,7 @@ export async function staffUploadAction(_prev: StaffUploadState, formData: FormD
   const id = str(formData, "id", 64);
   const kind = str(formData, "kind", 30);
   if (kind !== "policy" && kind !== "other") return { error: "kind" };
+  if (!(await purchaseEnabled())) return { error: "not_now" };
   const db = await getDb();
   const app = await getApplication(db, id);
   if (!app) return { error: "not_found" };

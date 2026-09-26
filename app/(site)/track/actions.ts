@@ -19,6 +19,7 @@ import { getDb } from "@/lib/db/client";
 import { normalizePhone } from "@/lib/leads";
 import { documentKey, getDocsBucket } from "@/lib/server/storage";
 import { notifyStaff } from "@/lib/server/notify";
+import { purchaseEnabled } from "@/lib/server/features";
 import { customerApplication, grantAccess, throttled } from "@/lib/server/track-auth";
 
 const str = (f: FormData, k: string, max = 200) => String(f.get(k) ?? "").trim().slice(0, max);
@@ -68,6 +69,7 @@ export async function uploadDocument(_prev: UploadState, formData: FormData): Pr
   const reference = str(formData, "reference", 20);
   const app = await customerApplication(reference);
   if (!app) return { error: "no_access" };
+  if (!(await purchaseEnabled())) return { error: "not_now" };
   const kind = str(formData, "kind", 30) as DocumentKind;
   if (!customerUploadKinds.includes(kind)) return { error: "kind" };
   const docPhase = ["documents_pending", "needs_info", "submitted"].includes(app.status);

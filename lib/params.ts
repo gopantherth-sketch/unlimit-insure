@@ -73,3 +73,8 @@ export function buildQuery(state: JourneyState): string {
 export function withJourney(path: string, state: JourneyState): string {
   return `${path}${buildQuery(state)}`;
 }
+
+/** Where "select this plan" goes: online application when buying is switched on, otherwise the advisor form. */
+export function selectPlanHref(productId: string, state: JourneyState, buyEnabled: boolean): string {
+  return buyEnabled ? withJourney(`/buy/${productId}`, state) : withJourney("/advisor", { ...state, plans: [productId] });
+}

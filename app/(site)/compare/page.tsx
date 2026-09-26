@@ -12,10 +12,11 @@ import { NeedVehicle } from "@/components/quote/NeedVehicle";
 import { RememberCompared } from "@/components/quote/RememberCompared";
 import { buttonClass } from "@/components/ui/button";
 import { rankQuotes } from "@/lib/match";
-import { parsePlanIds, parseQuoteInput, withJourney, type RawParams } from "@/lib/params";
+import { parsePlanIds, parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import type { RankedQuote } from "@/lib/types";
 import { getCatalog } from "@/lib/server/catalog";
+import { purchaseEnabled } from "@/lib/server/features";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
 export const metadata: Metadata = seo("/compare", { noindex: true });
@@ -26,6 +27,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   const raw = await searchParams;
   const input = parseQuoteInput(raw);
   const catalog = await getCatalog();
+  const buyEnabled = await purchaseEnabled();
   const vehicle = input ? resolveVehicle(catalog, input.vehicle) : null;
   if (!input || !vehicle) {
     return <NeedVehicle title="เลือกรถก่อนเปรียบเทียบ" body="การเปรียบเทียบจะแม่นขึ้นเมื่อเรารู้ว่าคุณขับรถอะไร ใช้เวลาไม่ถึงนาที และยังไม่ต้องให้เบอร์โทร" />;
@@ -96,7 +98,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                       {formatNumber(q.premium)} <span className="font-sans text-sm font-normal text-navy-500">บาท / ปี</span>
                     </p>
                     <div className="mt-auto grid grid-cols-2 gap-2">
-                      <Link href={withJourney(`/buy/${q.productId}`, journey)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
+                      <Link href={selectPlanHref(q.productId, journey, buyEnabled)} className={buttonClass("primary", "md", "rounded-xl px-3")}>
                         เลือกแผนนี้
                       </Link>
                       <Link href={withJourney(`/plans/${q.productId}`, journey)} className={buttonClass("secondary", "md", "rounded-xl px-3")}>

@@ -6,6 +6,7 @@ import { rankQuotes } from "@/lib/match";
 import { parseQuoteInput, type RawParams } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import { getCatalog } from "@/lib/server/catalog";
+import { purchaseEnabled } from "@/lib/server/features";
 import { resolveVehicle } from "@/lib/vehicle";
 
 export const metadata: Metadata = seo("/quote/results", { noindex: true });
@@ -17,5 +18,5 @@ export default async function ResultsPage({ searchParams }: { searchParams: Prom
   if (!input || !vehicle) redirect("/quote");
 
   const quotes = rankQuotes(generateQuotes(catalog, vehicle), input.priorities, vehicle);
-  return <ResultsView vehicle={vehicle} usage={input.usage} priorities={input.priorities} quotes={quotes} />;
+  return <ResultsView vehicle={vehicle} usage={input.usage} priorities={input.priorities} quotes={quotes} buyEnabled={await purchaseEnabled()} />;
 }

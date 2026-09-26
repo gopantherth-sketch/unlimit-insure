@@ -9,9 +9,10 @@ import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
 import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
-import { withJourney } from "@/lib/params";
+import { withJourney, selectPlanHref } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import { getCatalog } from "@/lib/server/catalog";
+import { purchaseEnabled } from "@/lib/server/features";
 import { resolveVehicle, vehicleLabel, yearsForModel } from "@/lib/vehicle";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,7 @@ export default async function ModelPage({ params }: { params: Params }) {
   const { brandId, modelId } = await params;
   const copy = modelPages.find((m) => m.modelId === modelId);
   const catalog = await getCatalog();
+  const buyEnabled = await purchaseEnabled();
   const model = catalog.models.find((m) => m.id === modelId && m.brandId === brandId);
   if (!copy || !model) notFound();
 
@@ -76,7 +78,7 @@ export default async function ModelPage({ params }: { params: Params }) {
                   <InsuranceCard
                     quote={q}
                     detailHref={withJourney(`/plans/${q.productId}`, journey)}
-                    selectHref={withJourney(`/buy/${q.productId}`, journey)}
+                    selectHref={selectPlanHref(q.productId, journey, buyEnabled)}
                   />
                 </li>
               ))}

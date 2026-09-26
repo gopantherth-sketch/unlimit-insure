@@ -13,7 +13,7 @@ import { insuranceTypeLabel } from "@/lib/coverageFields";
 import { formatBaht } from "@/lib/format";
 import { rememberCompared, rememberViewed } from "@/lib/journey";
 import { track } from "@/lib/analytics/track";
-import { withJourney } from "@/lib/params";
+import { withJourney, selectPlanHref } from "@/lib/params";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 import type { PriorityId, RankedQuote, ResolvedVehicle, UsageId } from "@/lib/types";
 import { isElectric, vehicleLabel } from "@/lib/vehicle";
@@ -45,9 +45,10 @@ interface Props {
   usage?: UsageId;
   priorities: PriorityId[];
   quotes: RankedQuote[];
+  buyEnabled: boolean;
 }
 
-export function ResultsView({ vehicle, usage, priorities, quotes }: Props) {
+export function ResultsView({ vehicle, usage, priorities, quotes, buyEnabled }: Props) {
   const router = useRouter();
   const [filters, setFilters] = useState<FilterId[]>([]);
   const [sort, setSort] = useState<SortId>("recommended");
@@ -249,7 +250,7 @@ export function ResultsView({ vehicle, usage, priorities, quotes }: Props) {
                         quote={q}
                         highlight={q.id === top?.id && hasPriorities ? "แนะนำสำหรับคุณ" : undefined}
                         detailHref={withJourney(`/plans/${q.productId}`, journey)}
-                        selectHref={withJourney(`/buy/${q.productId}`, journey)}
+                        selectHref={selectPlanHref(q.productId, journey, buyEnabled)}
                         compareControl={
                           <button
                             type="button"

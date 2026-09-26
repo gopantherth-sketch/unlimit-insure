@@ -1,12 +1,38 @@
 # Deploy (Cloudflare Workers + D1)
 
-Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare D1 (SQLite) with Drizzle, admin password as a Worker secret. R2 (documents) comes with the purchase flow.
+Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare D1 (SQLite) with Drizzle, admin password as a Worker secret. R2 (documents) is only needed once online purchase is switched on.
 
 ## Live
 
 - Production: https://unlimit-insure.gopanther-th.workers.dev (account `94ae8d1f7781195ee6756040995a97fc`)
 - D1 `unlimit-insure`: `10bc6601-2379-4a44-b8ee-8ff48d897fcb` (APAC), migration `0000_init` applied, MOCK catalogue seeded
 - Admin secrets: set with `wrangler secret put` (see step 4 below)
+
+## Go live now (helper checklist)
+
+The Worker and D1 database already exist. Online purchase is **off** (`PURCHASE_ENABLED=false` in `wrangler.jsonc`), so no R2 bucket is needed: "select plan" buttons go to the advisor form and `/buy` redirects there.
+
+Run in the project folder on the PC (after `git pull` and `npm install`):
+
+1. `npm run db:migrate:remote` — applies `0001_event_counts`, `0002_admin_users`, `0003_applications`. Answer yes.
+2. Secrets (type the values when prompted; never paste them in chat):
+   - `npx wrangler secret put ADMIN_USERNAME`
+   - `npx wrangler secret put ADMIN_PASSWORD` (12+ characters)
+   - `npx wrangler secret put SESSION_SECRET` (random, 32+ characters; recommended)
+3. Deploy, either way:
+   - Dashboard → Workers & Pages → unlimit-insure → Settings → Build: build command `npx opennextjs-cloudflare build`, deploy command `npx opennextjs-cloudflare deploy`, branch `main`, then retry the latest build; or
+   - from the PC: `npm run deploy`.
+4. Check on the live URL: homepage loads; quote journey reaches results; "เลือกแผนนี้" opens the advisor form; submit a test advisor request; log in at `/admin/login` and see the lead; delete nothing.
+5. Report back: live URL, which checks passed, any error text.
+
+## Switch on online purchase (later)
+
+Only when real products are imported and verified, the broker licence wording is confirmed and the receiving account is known.
+
+1. Enable R2 on the account (dashboard → R2), then `npx wrangler r2 bucket create unlimit-insure-docs`.
+2. In `wrangler.jsonc`: uncomment `r2_buckets` and set `"PURCHASE_ENABLED": "true"` (PM commits this).
+3. Owner: admin → ตั้งค่า → enter the receiving account and PromptPay ID.
+4. Deploy. Buttons switch from the advisor form to the online application.
 
 ## Admin accounts
 
@@ -23,7 +49,7 @@ The Worker is connected to `gopantherth-sketch/unlimit-insure`. In the dashboard
 - Deploy command: `npx opennextjs-cloudflare deploy`
 - Production branch: `main`
 
-Git builds do **not** apply D1 migrations. Pending as of this commit: `0001_event_counts`, `0002_admin_users` — run `npm run db:migrate:remote` (applies whatever is pending). When a change adds a file under `migrations/`, run `npm run db:migrate:remote` before (or right after) the push that needs it.
+Git builds do **not** apply D1 migrations. Pending as of this commit: `0001_event_counts`, `0002_admin_users`, `0003_applications` — run `npm run db:migrate:remote` (applies whatever is pending). When a change adds a file under `migrations/`, run `npm run db:migrate:remote` before (or right after) the push that needs it.
 
 ## Local
 
@@ -41,10 +67,10 @@ npm run preview                       # production build in the Workers runtime 
 1. Create the database: `npx wrangler d1 create unlimit-insure` and put the printed `database_id` into `wrangler.jsonc`.
 2. Apply migrations: `npm run db:migrate:remote`.
 3. Load the catalogue: mock for a preview (`npm run db:seed:remote`) or the real import once verified data exists.
-4. Document storage (Phase 3 purchase uploads): enable R2 on the account (dashboard → R2, free tier), then `npx wrangler r2 bucket create unlimit-insure-docs`. The Worker binds it as `DOCS` (`wrangler.jsonc`); deploys fail until the bucket exists.
+4. Document storage: only when switching on online purchase (see above).
 5. Secrets: `npx wrangler secret put ADMIN_USERNAME` and `npx wrangler secret put ADMIN_PASSWORD`. Optional `SESSION_SECRET` (32+ chars) signs admin and customer-tracking cookies; without it `ADMIN_PASSWORD` is used, so rotating the password also logs customers out of their tracking pages (their private link + phone check still works).
 6. Deploy: `npm run deploy`, or connect the GitHub repo in the dashboard (Workers & Pages → Create → Import a repository) with build command `npx opennextjs-cloudflare build` and deploy command `npx opennextjs-cloudflare deploy`.
-7. Staff alerts (optional, either or both). Messages contain only the reference and an admin link.
+7. Staff alerts (optional, later; either or both). Messages contain only the reference and an admin link.
    - LINE: create a LINE Official Account with Messaging API enabled (LINE Developers console), then `npx wrangler secret put LINE_CHANNEL_ACCESS_TOKEN` and `npx wrangler secret put LINE_ALERT_TO` (comma-separated user or group IDs; add the bot to the team group to get its group ID).
    - Email: a Resend account with a verified sending domain, then secrets `RESEND_API_KEY`, `ALERT_EMAIL_FROM` (e.g. `alerts@<domain>`) and `ALERT_EMAIL_TO` (comma-separated).
    - Check in admin → ตั้งค่า → ส่งข้อความทดสอบ.
