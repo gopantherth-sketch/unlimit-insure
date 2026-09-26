@@ -11,7 +11,7 @@ session cannot reach Cloudflare, the PC or the owner's accounts.
 
 ## Rules
 - Do not edit app code, content or config in the repo, do not commit, do not push. The PM does that.
-  Only exception: none. If a fix is needed, report it.
+  If a fix is needed, report it.
 - Never delete or overwrite Cloudflare resources (Workers, D1 databases, R2 buckets, DNS records,
   secrets) without the owner saying yes in this session for that exact resource.
 - Never run `npm run db:seed:remote` against production.
