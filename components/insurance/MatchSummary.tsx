@@ -32,7 +32,8 @@ export function MatchList({ match, compact = false }: { match: MatchResult; comp
           <span className={r.met ? "text-navy-700" : "text-navy-400"}>
             <span className="sr-only">{r.met ? "ตรง: " : "ไม่ตรง: "}</span>
             <span className="font-medium">{priorityLabel(r.priority)}</span>
-            {!compact && <span className="text-navy-400"> — {r.reason}</span>}
+            {/* Skip the reason when it only repeats the label (e.g. "ซ่อมศูนย์ — ซ่อมศูนย์"). */}
+            {!compact && r.reason !== priorityLabel(r.priority) && <span className="text-navy-400"> — {r.reason}</span>}
           </span>
         </li>
       ))}
