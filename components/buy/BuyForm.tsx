@@ -138,7 +138,7 @@ export function BuyForm({ productId, vehicle, startMin, startMax, advisorHref }:
             <p role="alert" className="mt-3 rounded-2xl bg-warning-50 p-4 text-sm text-warning-700">
               {c.commercialUseBlocked}{" "}
               <Link href={advisorHref} className="font-semibold underline">
-                ปรึกษาผู้เชี่ยวชาญ
+                คุยกับที่ปรึกษา
               </Link>
             </p>
           ) : err("commercialUse") ? (

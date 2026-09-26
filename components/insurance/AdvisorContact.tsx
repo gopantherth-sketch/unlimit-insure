@@ -58,7 +58,7 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
           <CallButton placement="advisor" showNumber size="lg" className="w-full" />
         </div>
         <p className="mt-3 text-xs leading-relaxed text-navy-400">
-          ปุ่ม LINE จะเปิดแชตพร้อมข้อความที่เตรียมไว้ให้ คุณแก้ไขได้ก่อนกดส่ง เราไม่ได้เก็บข้อมูลจากหน้านี้
+          ปุ่ม LINE จะเปิดแชตพร้อมข้อความที่เตรียมไว้ให้ คุณแก้ไขได้ก่อนกดส่ง หน้านี้ไม่เก็บข้อมูลส่วนตัวของคุณ
         </p>
       </section>
 
@@ -68,9 +68,9 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
             <ClipboardList className="h-6 w-6" strokeWidth={1.5} />
           </span>
           <h2 id={`${id}-ctx`} className="mt-4 text-xl font-bold text-navy-900">
-            ข้อมูลที่จะส่งไปกับข้อความ
+            สิ่งที่คุณเลือกไว้
           </h2>
-          <p className="mt-1 text-sm text-navy-500">คุณไม่ต้องเล่าซ้ำ ที่ปรึกษาจะเริ่มจากตรงนี้</p>
+          <p className="mt-1 text-sm text-navy-500">ข้อความ LINE ใส่รถและแผนที่คุณสนใจไว้ให้แล้ว เรื่องอื่นบอกที่ปรึกษาในแชตได้</p>
           <dl className="mt-5 divide-y divide-navy-100 rounded-2xl border border-navy-100 bg-white px-4 text-[15px]">
             {summary.map((s) => (
               <div key={s.label} className="py-3">
