@@ -57,7 +57,7 @@ export function DifferenceSummary({ quotes, labels }: Props) {
               </h3>
               {d.tradeoffs.length > 0 && (
                 <>
-                  <p className="mt-3 text-sm font-semibold text-navy-700">{cheaper ? "แต่ต้องแลกกับ" : "สิ่งที่ด้อยกว่า"}</p>
+                  <p className="mt-3 text-sm font-semibold text-navy-700">{cheaper ? "แต่ต้องแลกกับ" : "สิ่งที่ได้น้อยกว่า"}</p>
                   <ul className="mt-1.5 space-y-1 text-[15px] text-navy-700">
                     {d.tradeoffs.map((t) => (
                       <li key={t} className="flex items-start gap-2">

@@ -55,7 +55,7 @@ function buildTypeTable(catalog: Catalog): TypeTable | null {
   return {
     columns: reps.map((q) => insuranceTypeLabel[q.coverage.insuranceType]),
     rows: typeRows.map((r) => ({ label: r.label, covered: reps.map((q) => r.covered(q.coverage)) })),
-    caption: `ตัวอย่างจากแผนตัวอย่างสำหรับ ${vehicleLabel(vehicle)} ความคุ้มครองจริงเป็นไปตามเงื่อนไขของแต่ละกรมธรรม์`,
+    caption: `แผนตัวอย่างสำหรับ ${vehicleLabel(vehicle)} ความคุ้มครองจริงเป็นไปตามเงื่อนไขของแต่ละกรมธรรม์`,
     href: withJourney("/compare", { vehicle, plans: reps.map((q) => q.productId) }),
   };
 }

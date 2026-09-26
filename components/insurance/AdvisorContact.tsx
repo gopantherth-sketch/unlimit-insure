@@ -52,11 +52,11 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
           <MessageCircle className="h-6 w-6" strokeWidth={1.75} />
         </span>
         <h2 id={`${id}-contact`} className="mt-4 text-xl font-bold text-navy-900">
-          คุยกับที่ปรึกษาทาง LINE หรือโทร
+          เลือกช่องทางที่สะดวก
         </h2>
         <p className="mt-1 text-[15px] leading-relaxed text-navy-600">
           ทักมาทาง LINE <span className="font-semibold text-navy-800">{contact.lineId}</span> หรือโทร{" "}
-          <span className="tabular font-semibold text-navy-800">{contact.phoneDisplay}</span> เพื่อขอราคาจริงและคำแนะนำ ไม่มีค่าใช้จ่าย
+          <span className="tabular font-semibold text-navy-800">{contact.phoneDisplay}</span>
         </p>
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <LineButton placement="advisor" message={message} label="ส่งข้อมูลทาง LINE" size="lg" className="w-full" />

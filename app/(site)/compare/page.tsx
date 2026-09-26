@@ -121,7 +121,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
                 <Headset aria-hidden className="h-10 w-10 shrink-0 text-brand-600" strokeWidth={1.5} />
                 <div>
                   <p className="font-display text-lg font-semibold text-navy-900">ยังตัดสินใจไม่ได้?</p>
-                  <p className="mt-0.5 text-navy-600">ที่ปรึกษาจะเห็นแผนที่คุณเปรียบเทียบอยู่แล้ว ไม่ต้องเล่าซ้ำ</p>
+                  <p className="mt-0.5 text-navy-600">ส่งแผนที่คุณเทียบไปทาง LINE ได้เลย ไม่ต้องพิมพ์เอง</p>
                 </div>
               </div>
               <Link href={withJourney("/advisor", { ...journey, plans })} className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>

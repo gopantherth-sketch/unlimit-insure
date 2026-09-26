@@ -30,7 +30,7 @@ function TypeMatrix({ catalog }: { catalog: Catalog }) {
   return (
     <div tabIndex={0} role="region" aria-label="ตารางเปรียบเทียบ (เลื่อนซ้าย-ขวาได้)" className="card overflow-x-auto rounded-xl2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-500">
       <table className="w-full min-w-[420px] text-[15px]">
-        <caption className="px-5 pt-5 text-left text-sm text-navy-500">ตัวอย่างจากแผนตัวอย่างสำหรับ {vehicleLabel(data.vehicle)}</caption>
+        <caption className="px-5 pt-5 text-left text-sm text-navy-500">แผนตัวอย่างสำหรับ {vehicleLabel(data.vehicle)}</caption>
         <thead>
           <tr className="bg-wash">
             <th scope="col" className="px-5 py-3 text-left text-sm font-semibold text-navy-800">เหตุการณ์</th>
