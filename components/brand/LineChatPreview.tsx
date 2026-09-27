@@ -13,7 +13,7 @@ export function LineChatPreview({ className }: { className?: string }) {
       <div className="overflow-hidden rounded-[28px] border border-navy-100 bg-white shadow-float">
         <div className="flex items-center gap-3 bg-line-600 px-4 py-3 text-white">
           <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white">
-            <Image src="/brand/unlimit-mark.png" alt="" width={30} height={30} unoptimized />
+            <Image src="/brand/unlimit-mark.webp" alt="" width={30} height={30} unoptimized />
           </span>
           <span className="min-w-0">
             <span className="block truncate text-sm font-semibold">Unlimit Insure</span>
@@ -28,7 +28,7 @@ export function LineChatPreview({ className }: { className?: string }) {
           </div>
           <div className="flex items-end gap-2">
             <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white">
-              <Image src="/brand/unlimit-mark.png" alt="" width={22} height={22} unoptimized />
+              <Image src="/brand/unlimit-mark.webp" alt="" width={22} height={22} unoptimized />
             </span>
             <span className="inline-flex items-center gap-1 rounded-2xl rounded-bl-md bg-white px-3.5 py-3 shadow-sm">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-navy-300" />
