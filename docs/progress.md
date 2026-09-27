@@ -10,6 +10,8 @@ Snapshot of the live tracker (https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC)
 
 **C5 (domain), 2026-09-26:** `unlimitinsure.com` (registered on this Cloudflare account) and `www.unlimitinsure.com` attached as Worker custom domains in `wrangler.jsonc`; `SITE_URL` defaults to `https://unlimitinsure.com` in production builds (canonical, sitemap, robots). workers.dev stays on.
 
+**Google Search Console, 2026-09-27:** domain property `unlimitinsure.com` verified under gopanther.th@gmail.com via a DNS TXT record (`google-site-verification=…` on the apex; do NOT remove it). Sitemap `https://unlimitinsure.com/sitemap.xml` submitted: Success, 27 pages discovered.
+
 **C2 (Workers plan), 2026-09-26:** account is on **Workers Free** (10 ms CPU per request). Measured with `wrangler tail` on the live site: `/` 273 ms (cold start), `/quote/results` 62, `/lab` 51, `/quote` 43, `/advisor` 37, `/compare` 32, `/admin/login` 26 ms CPU; all returned OK today, but every page is 3–27× the Free limit, so real traffic risks error 1102 (exceeded CPU). PBKDF2 at 100k iterations adds ~14 ms (measured locally), which is small next to page rendering, so lowering iterations would not fix this. Recommendation: Workers Paid ($5/month, up to 5 min CPU). Owner decision; no code change needed.
 
 Totals: 21 done · 9 in progress · 30 to do · 1 blocked · 61 tasks.
