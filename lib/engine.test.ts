@@ -5,7 +5,13 @@ import { buildQuery, parseQuoteInput, toRaw } from "@/lib/params";
 import { activeVersion, findProduct, generateQuotes, quoteForProduct, snapshotQuote } from "@/lib/quote";
 import { simulate } from "@/lib/scenarios";
 import { resolveVehicle } from "@/lib/vehicle";
-import { mockCatalog as C } from "@/lib/data";
+import { mockCatalog } from "@/lib/data";
+
+// Pin the test car's list price so engine tests don't depend on the (changing) vehicle data.
+const C = {
+  ...mockCatalog,
+  models: mockCatalog.models.map((m) => (m.id === "toyota-corolla-cross" ? { ...m, newPrice: 1_050_000 } : m)),
+};
 
 const now = new Date("2026-09-25T09:00:00Z");
 const corolla = resolveVehicle(C, { brandId: "toyota", modelId: "toyota-corolla-cross", year: 2025 }, now)!;
