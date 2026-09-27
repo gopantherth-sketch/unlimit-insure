@@ -37,6 +37,14 @@ export const metadata: Metadata = {
     icon: [{ url: "/favicon-32.png", sizes: "32x32" }, { url: "/icon-192.png", sizes: "192x192" }],
     apple: "/apple-touch-icon.png",
   },
+  // Link previews on Facebook, LINE and X. No page sets its own openGraph, so this applies site-wide.
+  openGraph: {
+    type: "website",
+    siteName: "Unlimit Insure",
+    locale: "th_TH",
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "Unlimit Insure ประกันรถที่เข้าใจคุณ มากกว่าแค่ราคา" }],
+  },
+  twitter: { card: "summary_large_image", images: ["/og-image.jpg"] },
 };
 
 export const viewport: Viewport = {
