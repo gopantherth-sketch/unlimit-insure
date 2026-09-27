@@ -66,8 +66,7 @@ export default function LabIndexPage() {
               </li>
             );
           })}
-          {/* Fills the grid's last slot with the main action while the site is LINE-first.
-              TODO(core): add a "lab" contact placement in lib/analytics/events.ts; "advisor" until then. */}
+          {/* Fills the grid's last slot with the main action while the site is LINE-first. */}
           <li className="flex">
             <div className="flex w-full flex-col justify-between gap-6 rounded-xl2 border border-line-100 bg-gradient-to-br from-line-50 via-white to-white p-6 shadow-card sm:p-7">
               <div>
@@ -77,7 +76,7 @@ export default function LabIndexPage() {
                 <h2 className="mt-5 text-[19px] font-bold leading-snug text-navy-900">{homeCopy.advisorTitle}</h2>
                 <p className="mt-2 text-[15px] leading-relaxed text-navy-600">{homeCopy.advisorSubtitle}</p>
               </div>
-              <LineButton placement="advisor" message={contact.messages.general} label={contact.labels.lineLong} className="w-full" />
+              <LineButton placement="lab" message={contact.messages.general} label={contact.labels.lineLong} className="w-full" />
             </div>
           </li>
         </ul>

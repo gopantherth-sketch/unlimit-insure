@@ -10,7 +10,7 @@ import { scenarioRules } from "@/lib/scenarios";
 const terms = Object.keys(glossary);
 const scenarios = scenarioRules.map((r) => r.id as string);
 /** Where a contact button sits (dimension for contact_line / contact_call). */
-export const CONTACT_PLACEMENTS = ["header", "mobile_bar", "footer", "home", "advisor", "plan", "results", "compare"] as const;
+export const CONTACT_PLACEMENTS = ["header", "mobile_bar", "footer", "home", "advisor", "plan", "results", "compare", "lab"] as const;
 export type ContactPlacement = (typeof CONTACT_PLACEMENTS)[number];
 
 export const eventDefs = {
