@@ -27,7 +27,7 @@ Three faces, loaded with `next/font/google` in `app/layout.tsx`:
 
 - **Prompt** 500–800 (`font-display`, `--font-display`) — heavy rounded-geometric Thai display. Applied to every `h1`–`h3` in `globals.css`, the logo wordmark and a few display numbers.
 - **IBM Plex Sans Thai** 400–700 (`font-sans`) — body, labels, tables.
-- **Allura** (`font-script`, `.script-accent`) — handwritten English accents in brand blue. Exactly four on the homepage: "Drive / With Confidence" (hero), "More / Than Insurance" (lifestyle), "We're / Here for You" (advisor). Always `aria-hidden`, via `<ScriptAccent>` in `components/brand/Photo.tsx`.
+- **Allura** (`font-script`, `.script-accent`) — handwritten English accents in brand blue. One on the whole site: "Drive / With Confidence" in the hero (owner decision, D6). Always `aria-hidden`, via `<ScriptAccent>` in `components/brand/Photo.tsx`.
 
 | Role | Size |
 | --- | --- |
@@ -36,7 +36,7 @@ Three faces, loaded with `next/font/google` in `app/layout.tsx`:
 | Section H2 (`.h-section`) | 26 / 32 px Prompt bold |
 | Card title | 18–20 px Prompt semibold/bold |
 | Body | 16–17 px, 1.6–1.85 line-height for long Thai text |
-| Small / meta | 14 px; 12 px minimum, only for labels |
+| Small / meta | 14 px; 13 px minimum (`text-xs` is 13 px in `tailwind.config.ts`: Thai tone marks need it) |
 | Eyebrow (`.eyebrow`) | 12 px, uppercase, 0.18em tracking, brand-600 |
 
 Numbers use `.tabular` (tabular figures).
@@ -58,9 +58,12 @@ Numbers use `.tabular` (tabular figures).
 - **Buttons** (`components/ui/button.ts`): `primary` (solid blue), `secondary` (outlined), `ghost`, `white` (on blue/navy). Sizes `sm` 36 px, `md` 44 px, `lg` 48–56 px. Tap targets ≥ 44 px on mobile. Pills by default; passing a `rounded-*` class (e.g. `rounded-xl`) gives the mockup's rounded-rectangle buttons (header "ปรึกษาฟรี", quick-quote CTA, "ดูเพิ่มเติม").
 - **Header**: floating white rounded card (`rounded-2xl`, `shadow-float`) inside a sticky bar with 8–12 px inset. Nav: ประกันรถยนต์ · เช็กเบี้ย · บทความ · บริการหลังการขาย · เกี่ยวกับเรา. "เข้าสู่ระบบ" is shown non-interactive with a "เร็ว ๆ นี้" chip until customer accounts exist.
 - **Quick quote card**: tab strip on a pale bar; active tab is white with a 4 px blue top bar. Motor + EV live; มอเตอร์ไซค์ / การเดินทาง / สุขภาพ disabled with "เร็ว ๆ นี้". Selects carry a decorative icon tile (`VehicleSelector withIcons`).
-- **Feature row / Why cards**: outlined lucide icons at 40–44 px, stroke 1.5, no tiles.
+- **Feature row / Why cards**: outlined lucide icons at 40–44 px, stroke 1.5, no tiles. Below `sm` both switch to compact rows with the icon on the left (feature icons in a 48 px `wash` tile), which keeps the phone page short. Hero trust points sit in one `wash` panel below 420 px.
+- **Headings** wrap with `text-wrap: balance` (globals.css). Where a heading must not break before a repeat mark (ๆ), the component turns balance off and sizes the heading to fit.
 - **Comparison marks** (`components/ui/CoverMark.tsx`): filled green check circle / red ✕, with `role="img"` labels.
-- **Footer**: white, logo + tagline, 3 link columns + ติดต่อเรา (placeholders "[รอข้อมูล]") and non-interactive social circles; navy bottom bar with © line, legal links and the prototype disclaimer.
+- **Footer**: white, logo + tagline + LINE button + broker line, 3 link columns + ติดต่อเรา (full width on phones so the email never breaks); links 15 px on phones with 4 px vertical padding for tap targets; navy bottom bar with © line, legal links and the prototype disclaimer (max 48rem wide).
+- **LINE chat preview** (`components/brand/LineChatPreview.tsx`): decorative, `aria-hidden`. Stands in for the advisor photo (homepage AdvisorCTA from `sm`, `/advisor` hero on `lg`) until the owner sends one. Shows only our own prefilled message and a typing indicator: never a person, invented replies or customer messages.
+- **Lab cards without a photo**: brand-600 → navy-900 gradient tile with a dot pattern, a large faint icon and the icon in a glass square. Replace with a photo when one exists (`photo-briefs.md`). The Lab grid ends with a LINE tile that fills the last slot.
 - **Forms**: `.field-label`, `.field-select`, `.field-input` — 48 px height, 16 px text (prevents iOS zoom), visible focus ring `brand-500`.
 - **Option cards** (quote wizard): radio/checkbox visually replaced by cards; native input kept (`sr-only`) for keyboard and screen readers. 2 px border, 48 px icon tile (`bg-wash` → solid `brand-600` when checked), Prompt label + hint. Mobile: horizontal row with the indicator at the end; `sm`+: vertical card, indicator top-right, ExplainButton beside it (outside the `<label>`). Icons per usage/priority are mapped in `QuoteWizard.tsx` (`usageIcon`, `priorityIcon`).
 - **Inner-page hero** (`components/ui/PageHero.tsx`): `wash → canvas` gradient band, optional back link, eyebrow (short English), Prompt H1 30 / 40 px, body 17–18 px. Used by Lab, Lab article, My Garage, claims, car-model pages and legal pages. Journey pages (results, compare, plan, advisor) use the same wash band inline.

@@ -35,18 +35,21 @@ function CardHeader({ id, title, href }: { id: string; title: string; href: stri
   );
 }
 
-/** Two-column row: articles with thumbnails + compact insurance-type table (mockup §8). */
-export function ContentRow({ table }: { table: TypeTable | null }) {
+/**
+ * Articles with thumbnails, plus the compact insurance-type table when one is passed (mockup §8).
+ * Without a table the articles run across the full width (three columns on lg).
+ */
+export function ContentRow({ table = null }: { table?: TypeTable | null }) {
   const articles = featured
     .map((f) => ({ ...f, article: labArticles.find((a) => a.slug === f.slug) }))
     .filter((f) => f.article !== undefined);
 
   return (
     <div className="bg-white py-14 sm:py-16">
-      <div className="container-page grid gap-6 lg:grid-cols-2">
+      <div className={table ? "container-page grid gap-6 lg:grid-cols-2" : "container-page"}>
         <section aria-labelledby="articles-title" className="flex min-w-0 flex-col rounded-2xl border border-navy-100 bg-white p-5 shadow-card sm:p-7">
           <CardHeader id="articles-title" title={homeCopy.articlesTitle} href="/lab" />
-          <ul className="mt-5 flex flex-1 flex-col justify-evenly gap-4">
+          <ul className={table ? "mt-5 flex flex-1 flex-col justify-evenly gap-4" : "mt-5 grid gap-4 lg:grid-cols-3 lg:gap-6"}>
             {articles.map(({ slug, photo, tag, article }) => {
               const p = photos[photo];
               return (

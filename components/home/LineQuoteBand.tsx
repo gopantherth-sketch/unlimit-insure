@@ -10,7 +10,7 @@ import { qrSvg } from "@/lib/payment/qr";
 export function LineQuoteBand() {
   const band = contact.quoteBand;
   return (
-    <section aria-labelledby="line-quote-title" className="bg-white pb-14 sm:pb-16">
+    <section id="line-quote" aria-labelledby="line-quote-title" className="scroll-mt-24 bg-white pb-14 sm:pb-16">
       <div className="container-page">
         <div className="relative isolate overflow-hidden rounded-[24px] bg-gradient-to-br from-navy-900 via-navy-800 to-brand-800 p-6 text-white shadow-float sm:p-10">
           {/* Soft light behind the text and the QR card. Decorative. */}
@@ -20,7 +20,7 @@ export function LineQuoteBand() {
           <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center lg:gap-12">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-200">{band.eyebrow}</p>
-              <h2 id="line-quote-title" className="mt-3 text-[26px] font-bold leading-snug sm:text-[32px]">
+              <h2 id="line-quote-title" className="mt-3 text-[22px] font-bold leading-snug [text-wrap:wrap] min-[420px]:text-[26px] sm:text-[32px]">
                 {band.title}
               </h2>
               <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-navy-100 sm:text-base">{band.body}</p>

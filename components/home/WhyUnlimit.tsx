@@ -16,7 +16,7 @@ export function WhyUnlimit() {
             <span className="text-brand-600">Unlimit Insure</span>
           </h2>
           <p className="mt-3 max-w-[22em] text-[17px] leading-relaxed text-navy-600">{homeCopy.whyBody}</p>
-          <Link href="#how" className={buttonClass("primary", "md", "mt-6 rounded-xl px-6")}>
+          <Link href="#line-quote" className={buttonClass("primary", "md", "mt-6 rounded-xl px-6")}>
             ดูเพิ่มเติม
             <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>
@@ -25,10 +25,13 @@ export function WhyUnlimit() {
           {homeCopy.whyPoints.map((p, i) => {
             const Icon = icons[i] ?? FileSearch;
             return (
-              <li key={p.title} className="rounded-2xl border border-white bg-white p-6 shadow-card sm:p-7">
-                <Icon aria-hidden className="h-10 w-10 text-brand-600" strokeWidth={1.5} />
-                <h3 className="mt-5 text-xl font-bold text-navy-900">{p.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-navy-500">{p.body}</p>
+              // Phones: icon beside the text to keep the stack short; from sm: icon on top.
+              <li key={p.title} className="flex gap-4 rounded-2xl border border-white bg-white p-5 shadow-card sm:block sm:p-7">
+                <Icon aria-hidden className="h-9 w-9 shrink-0 text-brand-600 sm:h-10 sm:w-10" strokeWidth={1.5} />
+                <div>
+                  <h3 className="text-lg font-bold text-navy-900 sm:mt-5 sm:text-xl">{p.title}</h3>
+                  <p className="mt-1 text-[15px] leading-relaxed text-navy-600 sm:mt-2">{p.body}</p>
+                </div>
               </li>
             );
           })}
