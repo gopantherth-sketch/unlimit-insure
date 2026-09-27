@@ -8,8 +8,8 @@ A Thai motor-insurance decision and ownership platform: **Understand → Compare
 ## 2. State (updated 2026-09-26 evening by Core)
 | Item | State |
 |---|---|
-| Code | `main` on GitHub `gopantherth-sketch/unlimit-insure`. Local folders: Core `D:\Unlimit Insure\repo`, Designer `D:\Unlimit Insure\unlimit-insure-design`, Copywriter `D:\Unlimit Insure\unlimit-insure-copy` |
-| Live | **https://unlimitinsure.com** (+ `www`, + workers.dev). Every push to `main` auto-deploys (~2 min) |
+| Code | `main` on GitHub `gopantherth-sketch/unlimit-insure`. Local folders (all under `D:\Unlimit Insure\Website`, since 2026-09-27): Core `repo`, Designer `unlimit-insure-design`, Copywriter `unlimit-insure-copy` (git worktrees of `repo`); also `marketing`, `research` (Gemini outputs), `reports`, `tools\run-e2e.ps1`, `old-app-backup` |
+| Live | **https://unlimitinsure.com** (http and `www` redirect to it; the workers.dev address is off). Every push to `main` auto-deploys (~2 min) |
 | Launch mode | **LINE-first website** (owner decision): no prices, no lead form, no online purchase, no My Garage; contact via LINE `@unlimit.insure`, phone 091-444-5542, Facebook `Unlimit.th` (`content/contact.ts`, flags in `lib/features.ts`). Back office parked but working at `/admin` |
 | Cloudflare | Account `94ae8d1f7781195ee6756040995a97fc`, **Workers Free** (owner keeps budget low; upgrade only if 1102 errors appear), Worker `unlimit-insure`, D1 `unlimit-insure` (`10bc6601-…`, APAC) at migration `0003`. Secrets: `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `SESSION_SECRET` |
 | Next session | Polish the website: designer D5, copywriter W7 (`docs/agents.md`). Owner still owes the broker licence number |

@@ -4,7 +4,7 @@ Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare
 
 ## Live
 
-- Production: https://unlimit-insure.gopanther-th.workers.dev (account `94ae8d1f7781195ee6756040995a97fc`)
+- Production: https://unlimitinsure.com (account `94ae8d1f7781195ee6756040995a97fc`). `worker.ts` redirects http and `www` to it; the workers.dev address is off (`workers_dev: false`).
 - D1 `unlimit-insure`: `10bc6601-2379-4a44-b8ee-8ff48d897fcb` (APAC), migration `0000_init` applied, MOCK catalogue seeded
 - Admin secrets: set with `wrangler secret put` (see step 4 below)
 
