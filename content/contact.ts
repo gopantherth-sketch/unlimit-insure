@@ -31,7 +31,8 @@ export const contact = {
   /** Homepage band: how to get a real quote. */
   quoteBand: {
     eyebrow: "Real quote on LINE",
-    title: "ขอราคาจริงง่าย ๆ ใน 3 ขั้นตอน",
+    // Non-breaking space keeps "ๆ" on the same line as "ง่าย".
+    title: "ขอราคาจริงง่าย ๆ ใน 3 ขั้นตอน",
     body: "ที่ปรึกษาขอราคาจริงจากบริษัทประกันให้ พร้อมอธิบายความคุ้มครอง ไม่มีค่าใช้จ่าย",
     steps: [
       { title: "แอดไลน์", body: `กดปุ่มด้านล่าง หรือค้นหา ${lineId} ในแอป LINE` },
