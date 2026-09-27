@@ -1,8 +1,9 @@
 import type { VehicleBrand, VehicleModel } from "@/lib/types";
 
 // Vehicle catalogue (2026-09-27): brands, models, body types, powertrains and years collected from the
-// brands' official Thai websites (Gemini research, reviewed by Core). newPrice is an indicative lowest
-// list price, NOT verified: it only feeds estimated values, which are hidden while SHOW_PRICES is off.
+// brands' official Thai websites; discontinued 2015–2023 models from archived brand pages (Gemini
+// research, reviewed by Core). newPrice is NOT verified (a spot check of discontinued-model prices found
+// 3 of 5 not on the cited page): it only feeds estimated values, hidden while SHOW_PRICES is off.
 // Existing model ids are kept stable (they are live URLs). Verify prices before prices are switched on.
 
 export const brands: VehicleBrand[] = [
@@ -19,6 +20,9 @@ export const brands: VehicleBrand[] = [
   { id: "gwm", name: "GWM", nameTh: "เกรท วอลล์ มอเตอร์" },
   { id: "hyundai", name: "Hyundai", nameTh: "ฮุนได" },
   { id: "tesla", name: "Tesla", nameTh: "เทสลา" },
+  { id: "chevrolet", name: "Chevrolet", nameTh: "เชฟโรเลต" },
+  { id: "subaru", name: "Subaru", nameTh: "ซูบารุ" },
+  { id: "kia", name: "Kia", nameTh: "เกีย" },
 ];
 
 export const models: VehicleModel[] = [
@@ -111,4 +115,40 @@ export const models: VehicleModel[] = [
   { id: "hyundai-palisade", brandId: "hyundai", name: "Palisade", bodyType: "suv", powertrain: "ICE", newPrice: 2_299_000, yearFrom: 2024, yearTo: 2026 },
   { id: "tesla-model-3-ev", brandId: "tesla", name: "Model 3", bodyType: "sedan", powertrain: "EV", newPrice: 1_149_000, yearFrom: 2022, yearTo: 2026 },
   { id: "tesla-model-y-ev", brandId: "tesla", name: "Model Y", bodyType: "suv", powertrain: "EV", newPrice: 1_769_000, yearFrom: 2022, yearTo: 2026 },
+  { id: "toyota-c-hr-hev", brandId: "toyota", name: "C-HR Hybrid", bodyType: "suv", powertrain: "HEV", newPrice: 1_069_000, yearFrom: 2018, yearTo: 2023 },
+  { id: "toyota-c-hr-ice", brandId: "toyota", name: "C-HR", bodyType: "suv", powertrain: "ICE", newPrice: 979_000, yearFrom: 2018, yearTo: 2021 },
+  { id: "toyota-sienta", brandId: "toyota", name: "Sienta", bodyType: "mpv", powertrain: "ICE", newPrice: 765_000, yearFrom: 2016, yearTo: 2023 },
+  { id: "toyota-avanza", brandId: "toyota", name: "Avanza", bodyType: "mpv", powertrain: "ICE", newPrice: 649_000, yearFrom: 2015, yearTo: 2021 },
+  { id: "honda-jazz", brandId: "honda", name: "Jazz", bodyType: "hatchback", powertrain: "ICE", newPrice: 555_000, yearFrom: 2015, yearTo: 2022 },
+  { id: "honda-civic-hatchback", brandId: "honda", name: "Civic Hatchback", bodyType: "hatchback", powertrain: "ICE", newPrice: 1_169_000, yearFrom: 2017, yearTo: 2021 },
+  { id: "honda-mobilio", brandId: "honda", name: "Mobilio", bodyType: "mpv", powertrain: "ICE", newPrice: 659_000, yearFrom: 2015, yearTo: 2022 },
+  { id: "honda-brio", brandId: "honda", name: "Brio", bodyType: "hatchback", powertrain: "ICE", newPrice: 495_000, yearFrom: 2015, yearTo: 2021 },
+  { id: "honda-brio-amaze", brandId: "honda", name: "Brio Amaze", bodyType: "sedan", powertrain: "ICE", newPrice: 517_000, yearFrom: 2015, yearTo: 2021 },
+  { id: "mitsubishi-lancer-ex", brandId: "mitsubishi", name: "Lancer EX", bodyType: "sedan", powertrain: "ICE", newPrice: 879_000, yearFrom: 2015, yearTo: 2018 },
+  { id: "nissan-sylphy", brandId: "nissan", name: "Sylphy", bodyType: "sedan", powertrain: "ICE", newPrice: 833_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "nissan-march", brandId: "nissan", name: "March", bodyType: "hatchback", powertrain: "ICE", newPrice: 420_000, yearFrom: 2015, yearTo: 2022 },
+  { id: "nissan-note", brandId: "nissan", name: "Note", bodyType: "hatchback", powertrain: "ICE", newPrice: 530_000, yearFrom: 2017, yearTo: 2022 },
+  { id: "nissan-teana", brandId: "nissan", name: "Teana", bodyType: "sedan", powertrain: "ICE", newPrice: 1_339_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "nissan-x-trail-ice", brandId: "nissan", name: "X-Trail", bodyType: "suv", powertrain: "ICE", newPrice: 1_350_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "nissan-x-trail-hev", brandId: "nissan", name: "X-Trail Hybrid", bodyType: "suv", powertrain: "HEV", newPrice: 1_537_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "ford-fiesta", brandId: "ford", name: "Fiesta", bodyType: "hatchback", powertrain: "ICE", newPrice: 644_000, yearFrom: 2015, yearTo: 2019 },
+  { id: "ford-ecosport", brandId: "ford", name: "EcoSport", bodyType: "suv", powertrain: "ICE", newPrice: 739_000, yearFrom: 2015, yearTo: 2019 },
+  { id: "ford-focus", brandId: "ford", name: "Focus", bodyType: "sedan", powertrain: "ICE", newPrice: 1_099_000, yearFrom: 2015, yearTo: 2018 },
+  { id: "mg-gs", brandId: "mg", name: "GS", bodyType: "suv", powertrain: "ICE", newPrice: 890_000, yearFrom: 2016, yearTo: 2019 },
+  { id: "mg-3-ice", brandId: "mg", name: "MG3", bodyType: "hatchback", powertrain: "ICE", newPrice: 519_000, yearFrom: 2015, yearTo: 2023 },
+  { id: "mg-6", brandId: "mg", name: "MG6", bodyType: "sedan", powertrain: "ICE", newPrice: 898_000, yearFrom: 2015, yearTo: 2019 },
+  { id: "mg-v80", brandId: "mg", name: "V80", bodyType: "mpv", powertrain: "ICE", newPrice: 988_000, yearFrom: 2019, yearTo: 2021 },
+  { id: "byd-e6-ev", brandId: "byd", name: "e6", bodyType: "mpv", powertrain: "EV", newPrice: 1_890_000, yearFrom: 2018, yearTo: 2022 },
+  { id: "suzuki-ciaz", brandId: "suzuki", name: "Ciaz", bodyType: "sedan", powertrain: "ICE", newPrice: 528_000, yearFrom: 2015, yearTo: 2023 },
+  { id: "suzuki-ertiga-ice", brandId: "suzuki", name: "Ertiga", bodyType: "mpv", powertrain: "ICE", newPrice: 658_000, yearFrom: 2015, yearTo: 2023 },
+  { id: "hyundai-h-1", brandId: "hyundai", name: "H-1 / Grand Starex", bodyType: "mpv", powertrain: "ICE", newPrice: 1_329_000, yearFrom: 2015, yearTo: 2022 },
+  { id: "hyundai-ioniq-ev", brandId: "hyundai", name: "IONIQ Electric", bodyType: "hatchback", powertrain: "EV", newPrice: 1_749_000, yearFrom: 2019, yearTo: 2022 },
+  { id: "hyundai-kona-ev", brandId: "hyundai", name: "Kona Electric", bodyType: "suv", powertrain: "EV", newPrice: 1_849_000, yearFrom: 2019, yearTo: 2022 },
+  { id: "chevrolet-colorado", brandId: "chevrolet", name: "Colorado", bodyType: "pickup", powertrain: "ICE", newPrice: 538_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "chevrolet-trailblazer", brandId: "chevrolet", name: "Trailblazer", bodyType: "suv", powertrain: "ICE", newPrice: 1_144_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "chevrolet-captiva", brandId: "chevrolet", name: "Captiva", bodyType: "suv", powertrain: "ICE", newPrice: 999_000, yearFrom: 2015, yearTo: 2020 },
+  { id: "chevrolet-cruze", brandId: "chevrolet", name: "Cruze", bodyType: "sedan", powertrain: "ICE", newPrice: 946_000, yearFrom: 2015, yearTo: 2017 },
+  { id: "subaru-xv", brandId: "subaru", name: "XV", bodyType: "suv", powertrain: "ICE", newPrice: 1_159_000, yearFrom: 2015, yearTo: 2023 },
+  { id: "kia-grand-carnival", brandId: "kia", name: "Grand Carnival", bodyType: "mpv", powertrain: "ICE", newPrice: 1_397_000, yearFrom: 2015, yearTo: 2021 },
+  { id: "kia-soul-ev", brandId: "kia", name: "Soul EV", bodyType: "hatchback", powertrain: "EV", newPrice: 2_387_000, yearFrom: 2018, yearTo: 2021 },
 ];
