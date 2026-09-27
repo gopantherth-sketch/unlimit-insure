@@ -27,7 +27,7 @@ Three faces, loaded with `next/font/google` in `app/layout.tsx`:
 
 - **Prompt** 500–800 (`font-display`, `--font-display`) — heavy rounded-geometric Thai display. Applied to every `h1`–`h3` in `globals.css`, the logo wordmark and a few display numbers.
 - **IBM Plex Sans Thai** 400–700 (`font-sans`) — body, labels, tables.
-- **Allura** (`font-script`, `.script-accent`) — handwritten English accents in brand blue. Exactly four on the homepage: "Drive / With Confidence" (hero), "More / Than Insurance" (lifestyle), "We're / Here for You" (advisor). Always `aria-hidden`, via `<ScriptAccent>` in `components/brand/Photo.tsx`.
+- **Allura** (`font-script`, `.script-accent`) — handwritten English accents in brand blue. One on the whole site: "Drive / With Confidence" in the hero (owner decision, D6). Always `aria-hidden`, via `<ScriptAccent>` in `components/brand/Photo.tsx`.
 
 | Role | Size |
 | --- | --- |
@@ -62,6 +62,7 @@ Numbers use `.tabular` (tabular figures).
 - **Headings** wrap with `text-wrap: balance` (globals.css). Where a heading must not break before a repeat mark (ๆ), the component turns balance off and sizes the heading to fit.
 - **Comparison marks** (`components/ui/CoverMark.tsx`): filled green check circle / red ✕, with `role="img"` labels.
 - **Footer**: white, logo + tagline + LINE button + broker line, 3 link columns + ติดต่อเรา (full width on phones so the email never breaks); links 15 px on phones with 4 px vertical padding for tap targets; navy bottom bar with © line, legal links and the prototype disclaimer (max 48rem wide).
+- **LINE chat preview** (`components/brand/LineChatPreview.tsx`): decorative, `aria-hidden`. Stands in for the advisor photo (homepage AdvisorCTA from `sm`, `/advisor` hero on `lg`) until the owner sends one. Shows only our own prefilled message and a typing indicator: never a person, invented replies or customer messages.
 - **Lab cards without a photo**: brand-600 → navy-900 gradient tile with a dot pattern, a large faint icon and the icon in a glass square. Replace with a photo when one exists (`photo-briefs.md`). The Lab grid ends with a LINE tile that fills the last slot.
 - **Forms**: `.field-label`, `.field-select`, `.field-input` — 48 px height, 16 px text (prevents iOS zoom), visible focus ring `brand-500`.
 - **Option cards** (quote wizard): radio/checkbox visually replaced by cards; native input kept (`sr-only`) for keyboard and screen readers. 2 px border, 48 px icon tile (`bg-wash` → solid `brand-600` when checked), Prompt label + hint. Mobile: horizontal row with the indicator at the end; `sm`+: vertical card, indicator top-right, ExplainButton beside it (outside the `<label>`). Icons per usage/priority are mapped in `QuoteWizard.tsx` (`usageIcon`, `priorityIcon`).

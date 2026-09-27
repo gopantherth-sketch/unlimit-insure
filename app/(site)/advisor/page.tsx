@@ -1,7 +1,7 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import { CircleCheck } from "lucide-react";
-import { Photo, ScriptAccent } from "@/components/brand/Photo";
+import { LineChatPreview } from "@/components/brand/LineChatPreview";
 import { homeCopy } from "@/content/home";
 import { AdvisorContact } from "@/components/insurance/AdvisorContact";
 import { contextFromParams } from "@/lib/leads";
@@ -39,10 +39,8 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
               ))}
             </ul>
           </div>
-          <div className="relative mx-auto hidden h-[300px] w-[240px] lg:block">
-            <Photo slot="advisor" sizes="240px" className="object-contain object-bottom" />
-            <ScriptAccent lines={["We're", "Here for You"]} className="absolute -left-44 bottom-20 -rotate-[8deg] text-[40px]" />
-          </div>
+          {/* Stands in for the advisor photo until the owner supplies one. */}
+          <LineChatPreview className="mx-auto hidden w-full max-w-[320px] rotate-[1.5deg] self-center pb-8 lg:block" />
         </div>
       </section>
       <div className="container-page mt-6 sm:mt-8">
