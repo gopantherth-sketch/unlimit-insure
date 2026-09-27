@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { MobileContactBar } from "@/components/layout/MobileContactBar";
+import { StaleBuildGuard } from "@/components/layout/StaleBuildGuard";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,6 +18,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       </main>
       <Footer />
       <MobileContactBar />
+      <StaleBuildGuard />
     </div>
   );
 }
