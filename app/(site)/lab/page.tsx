@@ -1,11 +1,13 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight, Clock, MessageCircle } from "lucide-react";
 import { Photo, type PhotoSlot } from "@/components/brand/Photo";
+import { LineButton } from "@/components/contact/ContactButtons";
 import { labToolIcon } from "@/components/home/InsuranceLabSection";
 import { PageHero } from "@/components/ui/PageHero";
 import { labArticles } from "@/content/lab";
+import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 
 export const metadata: Metadata = seo("/lab");
@@ -35,8 +37,13 @@ export default function LabIndexPage() {
                     {meta?.photo ? (
                       <Photo slot={meta.photo} alt="" sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" className="transition-transform duration-300 group-hover:scale-105" />
                     ) : (
-                      <span aria-hidden className="flex h-full w-full items-center justify-center bg-gradient-to-br from-brand-50 to-wash">
-                        <Icon className="h-16 w-16 text-brand-600" strokeWidth={1.25} />
+                      // No photo yet (photo-briefs.md): a designed tile, so it reads as intentional next to photos.
+                      <span aria-hidden className="relative flex h-full w-full items-center justify-center overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-navy-900">
+                        <span className="absolute inset-0 bg-[radial-gradient(rgba(255,255,255,0.14)_1px,transparent_1px)] [background-size:18px_18px]" />
+                        <Icon className="absolute -bottom-6 -right-6 h-40 w-40 text-white/10" strokeWidth={1} />
+                        <span className="relative inline-flex h-20 w-20 items-center justify-center rounded-3xl bg-white/10 ring-1 ring-white/25 transition-transform duration-300 group-hover:scale-105">
+                          <Icon className="h-10 w-10 text-white" strokeWidth={1.5} />
+                        </span>
                       </span>
                     )}
                   </span>
@@ -59,6 +66,20 @@ export default function LabIndexPage() {
               </li>
             );
           })}
+          {/* Fills the grid's last slot with the main action while the site is LINE-first.
+              TODO(core): add a "lab" contact placement in lib/analytics/events.ts; "advisor" until then. */}
+          <li className="flex">
+            <div className="flex w-full flex-col justify-between gap-6 rounded-xl2 border border-line-100 bg-gradient-to-br from-line-50 via-white to-white p-6 shadow-card sm:p-7">
+              <div>
+                <span aria-hidden className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-line-600 shadow-card ring-1 ring-line-100">
+                  <MessageCircle className="h-6 w-6" strokeWidth={1.75} />
+                </span>
+                <h2 className="mt-5 text-[19px] font-bold leading-snug text-navy-900">{homeCopy.advisorTitle}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-navy-600">{homeCopy.advisorSubtitle}</p>
+              </div>
+              <LineButton placement="advisor" message={contact.messages.general} label={contact.labels.lineLong} className="w-full" />
+            </div>
+          </li>
         </ul>
       </div>
     </div>

@@ -41,6 +41,10 @@ const config: Config = {
         warning: { 50: "#FFF7E6", 600: "#B45309", 700: "#92400E" },
         danger: { 50: "#FEF1F2", 500: "#DC2626", 600: "#C0263A" },
       },
+      // Thai with tone marks needs more size than Latin: the smallest step is 13px, not 12px.
+      fontSize: {
+        xs: ["0.8125rem", { lineHeight: "1.25rem" }],
+      },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         display: ["var(--font-display)", "var(--font-sans)", "system-ui", "sans-serif"],

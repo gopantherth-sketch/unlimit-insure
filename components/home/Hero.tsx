@@ -44,12 +44,13 @@ export function Hero({ catalog }: { catalog: VehicleCatalog }) {
             <span className="text-brand-600">{homeCopy.heroTitleLine2}</span>
           </h1>
           <p className="mt-4 max-w-[30ch] text-lg leading-relaxed text-navy-600 sm:text-[21px]">{homeCopy.heroSubtitle}</p>
-          <ul className="mt-8 grid grid-cols-1 gap-4 min-[420px]:grid-cols-3 min-[420px]:gap-3 sm:gap-6">
+          {/* Phones: one compact panel. From 420px: three columns. */}
+          <ul className="mt-7 grid grid-cols-1 gap-3 rounded-2xl bg-wash px-4 py-3.5 min-[420px]:grid-cols-3 min-[420px]:gap-3 min-[420px]:bg-transparent min-[420px]:p-0 sm:mt-8 sm:gap-6">
             {homeCopy.heroTrustPoints.map((p, i) => {
               const Icon = trustIcons[i] ?? ShieldCheck;
               return (
-                <li key={p.line1} className="flex items-center gap-3 text-[13px] leading-snug text-navy-600 sm:text-sm">
-                  <Icon aria-hidden className="h-9 w-9 shrink-0 text-brand-600" strokeWidth={1.5} />
+                <li key={p.line1} className="flex items-center gap-3 text-sm font-medium leading-snug text-navy-700 sm:text-[15px]">
+                  <Icon aria-hidden className="h-7 w-7 shrink-0 text-brand-600 min-[420px]:h-9 min-[420px]:w-9" strokeWidth={1.5} />
                   <span>
                     {p.line1}
                     <br />

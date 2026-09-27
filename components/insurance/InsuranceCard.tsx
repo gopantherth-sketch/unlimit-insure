@@ -46,7 +46,7 @@ export function InsuranceCard({ quote, detailHref, selectHref, compareControl, h
         <div className="flex min-w-0 items-center gap-3">
           <InsurerMark insurer={quote.insurer} />
           <div className="min-w-0">
-            <p className="truncate text-[13px] text-navy-500">{quote.insurer.name}</p>
+            <p className="truncate text-sm text-navy-500">{quote.insurer.name}</p>
             <h3 id={`plan-${quote.id}`} className="text-lg font-bold leading-snug text-navy-900">
               {quote.product.name}
             </h3>
@@ -75,7 +75,7 @@ export function InsuranceCard({ quote, detailHref, selectHref, compareControl, h
         />
       )}
 
-      <dl className="mt-4 divide-y divide-navy-100 text-[15px]">
+      <dl className="mt-4 divide-y divide-navy-100 text-base sm:text-[15px]">
         {CARD_FIELDS.map((key) => {
           const f = fieldByKey(key);
           if (!f) return null;

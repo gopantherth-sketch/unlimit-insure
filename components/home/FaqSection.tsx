@@ -4,7 +4,7 @@ import { faq } from "@/content/faq";
 
 export function FaqSection() {
   return (
-    <section id="faq" aria-labelledby="faq-title" className="scroll-mt-24 bg-white pt-16 sm:pt-20">
+    <section id="faq" aria-labelledby="faq-title" className="scroll-mt-24 bg-white pt-4 sm:pt-6">
       <div className="container-page max-w-3xl">
         <SectionHeading id="faq-title" title="คำถามที่พบบ่อย" align="center" />
         <div className="space-y-3">

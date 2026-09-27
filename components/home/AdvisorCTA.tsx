@@ -10,7 +10,7 @@ export function AdvisorCTA() {
     <section aria-labelledby="advisor-title" className="bg-white pb-16 pt-24 sm:pb-20 lg:pt-28">
       <div className="container-page">
         <div className="relative rounded-[24px] bg-gradient-to-r from-brand-50 via-[#EAF0FD] to-brand-100/70">
-          <div className="relative grid gap-6 px-6 pt-8 sm:px-10 xl:min-h-[268px] xl:grid-cols-[1.2fr_0.8fr_1fr] xl:items-center xl:py-10 xl:pl-12 xl:pr-0">
+          <div className="relative grid gap-6 px-6 pt-8 sm:px-10 xl:min-h-[268px] xl:grid-cols-[1.5fr_0.8fr_0.8fr] xl:items-center xl:py-10 xl:pl-12 xl:pr-0">
             <div>
               <h2 id="advisor-title" className="text-[24px] font-bold leading-[1.4] text-navy-900 sm:text-[28px]">
                 {homeCopy.advisorTitle}

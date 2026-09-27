@@ -20,7 +20,7 @@ export function LineQuoteBand() {
           <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-center lg:gap-12">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-200">{band.eyebrow}</p>
-              <h2 id="line-quote-title" className="mt-3 text-[26px] font-bold leading-snug sm:text-[32px]">
+              <h2 id="line-quote-title" className="mt-3 text-[22px] font-bold leading-snug [text-wrap:wrap] min-[420px]:text-[26px] sm:text-[32px]">
                 {band.title}
               </h2>
               <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-navy-100 sm:text-base">{band.body}</p>

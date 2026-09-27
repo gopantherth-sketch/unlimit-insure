@@ -64,15 +64,15 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
         {quotes.map((q, i) => {
           const o = simulate(active, q);
           return (
-            <li key={q.id} className={cx("rounded-2xl border p-4", o.covered ? "border-success-600/20 bg-success-50" : "border-navy-100 bg-white")}>
-              <p className="text-xs font-semibold text-brand-600">{labels[i]}</p>
-              <p className="text-sm font-bold text-navy-900">{q.product.name}</p>
+            <li key={q.id} className={cx("rounded-2xl border p-4 sm:p-5", o.covered ? "border-success-600/20 bg-success-50" : "border-navy-100 bg-white")}>
+              <p className="text-xs font-semibold uppercase tracking-wide text-brand-600">{labels[i]}</p>
+              <p className="mt-0.5 font-display text-base font-semibold leading-snug text-navy-900">{q.product.name}</p>
               <p className={cx("mt-3 flex items-center gap-1.5 font-semibold", o.covered ? "text-success-700" : "text-navy-500")}>
                 {o.covered ? <CircleCheck aria-hidden className="h-5 w-5" /> : <CircleX aria-hidden className="h-5 w-5" />}
                 {o.covered ? "อยู่ในความคุ้มครอง" : "ไม่อยู่ในความคุ้มครอง"}
               </p>
               {o.covered && (
-                <dl className="mt-2 space-y-0.5 text-sm text-navy-600">
+                <dl className="mt-3 space-y-1 border-t border-success-600/15 pt-3 text-[15px] text-navy-700">
                   <div className="flex justify-between gap-2">
                     <dt>วงเงินสูงสุด</dt>
                     <dd className="tabular font-semibold">{formatBaht(o.maxAmount)}</dd>
@@ -89,7 +89,7 @@ export function CoverageSimulator({ quotes, labels, showEv = false }: Props) {
           );
         })}
       </ul>
-      <p className="mt-4 text-sm leading-relaxed text-navy-500">
+      <p className="mt-4 text-[15px] leading-relaxed text-navy-600">
         {quotes.some((q) => simulate(active, q).covered) ? copy.coveredText : copy.notCoveredText}
       </p>
       <p className="mt-2 text-xs text-navy-400">ผลลัพธ์นี้มาจากแผนตัวอย่าง ยังไม่ใช่เงื่อนไขกรมธรรม์จริง</p>

@@ -18,6 +18,8 @@
   h2,
   h3 {
     @apply font-display;
+    /* Even line lengths, so Thai headings don't leave one word on the last line. */
+    text-wrap: balance;
   }
   ::selection {
     @apply bg-brand-100 text-navy-900;
