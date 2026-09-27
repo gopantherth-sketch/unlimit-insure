@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     default: "Unlimit Insure — ประกันรถที่เข้าใจคุณ มากกว่าแค่ราคา",
     template: "%s | Unlimit Insure",
   },
-  description: "เปรียบเทียบประกันรถยนต์ให้เข้าใจก่อนเลือก ดูราคาและความคุ้มครองได้โดยยังไม่ต้องให้เบอร์โทร",
+  description: "เปรียบเทียบประกันรถยนต์ให้เข้าใจก่อนเลือก ดูความคุ้มครองได้โดยไม่ต้องให้เบอร์โทร แล้วขอราคาจริงทาง LINE",
   icons: {
     icon: [{ url: "/favicon-32.png", sizes: "32x32" }, { url: "/icon-192.png", sizes: "192x192" }],
     apple: "/apple-touch-icon.png",
