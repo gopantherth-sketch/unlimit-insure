@@ -100,8 +100,6 @@ export interface HomeCopy {
   partnersNote: string;
   whyBody: string;
   whyPoints: { title: string; body: string }[];
-  howTitle: string;
-  howItWorks: { title: string; body: string }[];
   compareDemoTitle: string;
   compareDemoBody: string;
   scenarioTitle: string;
