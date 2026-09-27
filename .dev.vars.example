@@ -1,3 +1,6 @@
 # Copy to .dev.vars for local development. Production: `npx wrangler secret put ADMIN_PASSWORD`.
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=change-me-to-12-plus-chars
+
+# Local preview only: skip the http/www -> https://unlimitinsure.com redirect (worker.ts). Never set in production.
+DISABLE_CANONICAL_REDIRECT=1

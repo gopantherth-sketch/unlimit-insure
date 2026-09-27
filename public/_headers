@@ -1,0 +1,4 @@
+# Workers static assets headers (Cloudflare review 2026-09-27, U3).
+# Next.js build files have content hashes in their names, so they never change: cache for a year.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
