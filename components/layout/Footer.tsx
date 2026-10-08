@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Mail, MessageCircle, Phone } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { LineButton } from "@/components/contact/ContactButtons";
+import { ContactLink, LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 import { lineAddUrl, telHref } from "@/lib/contact";
@@ -73,18 +73,18 @@ export function Footer() {
             <h2 className="font-display text-[15px] font-semibold text-navy-900">ติดต่อเรา</h2>
             <ul className="mt-2 space-y-1 text-[15px] sm:text-sm">
               <li>
-                <a href={telHref} className="flex items-center gap-2 py-1 text-navy-600 hover:text-brand-700">
+                <ContactLink kind="call" placement="footer" className="flex items-center gap-2 py-1 text-navy-600 hover:text-brand-700">
                   <Phone aria-hidden className="h-4 w-4 shrink-0 text-brand-600" />
                   <span className="sr-only">โทรศัพท์: </span>
                   <span className="tabular">{contact.phoneDisplay}</span>
-                </a>
+                </ContactLink>
               </li>
               <li>
-                <a href={lineAddUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 py-1 text-navy-600 hover:text-brand-700">
+                <ContactLink kind="line" placement="footer" className="flex items-center gap-2 py-1 text-navy-600 hover:text-brand-700">
                   <MessageCircle aria-hidden className="h-4 w-4 shrink-0 text-line-600" />
                   <span className="sr-only">LINE: </span>
                   {contact.lineId}
-                </a>
+                </ContactLink>
               </li>
               <li>
                 <a href={`mailto:${contact.email}`} className="flex items-center gap-2 py-1 text-navy-600 hover:text-brand-700">

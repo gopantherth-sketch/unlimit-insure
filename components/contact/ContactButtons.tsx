@@ -53,6 +53,34 @@ export function LineButton({
   );
 }
 
+/**
+ * Plain text link to LINE or the phone that still counts as a contact click. For places that are
+ * server components (the footer) and style their own link instead of using a button.
+ */
+export function ContactLink({
+  kind,
+  placement,
+  className,
+  children,
+}: {
+  kind: "line" | "call";
+  placement: ContactPlacement;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const isLine = kind === "line";
+  return (
+    <a
+      href={isLine ? lineAddUrl : telHref}
+      {...(isLine ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      onClick={() => track(isLine ? "contact_line" : "contact_call", placement)}
+      className={className}
+    >
+      {children}
+    </a>
+  );
+}
+
 /** Phone button; `showNumber` prints the number as the label. */
 export function CallButton({
   placement,
