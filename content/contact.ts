@@ -3,13 +3,23 @@
 
 const lineId = "@unlimit.insure";
 
-/** Broker licence (owner, 2026-09-27). Name and number only: never ID numbers. Expiry 03/11/2570 is tracked in the verify list, not shown. */
-const broker = { holder: "Nithi Apaisuwan", licenceNo: "6204049613" };
+/**
+ * Licensed non-life insurance brokers (owner-supplied). Name and licence number only: never ID numbers.
+ * Expiry dates are tracked in the verify list (content/legal.ts), not shown on the site.
+ * The first entry is the operator and data controller of the site.
+ */
+const brokers = [
+  { holder: "Nithi Apaisuwan", licenceNo: "6204049613", expires: "03/11/2570" }, // 2026-09-27
+  { holder: "นางสาววนาลี บุญเกิด", licenceNo: "6204049618", expires: "03/11/2570" }, // 2026-10-09, issued 04/11/2562
+];
+const broker = brokers[0]!;
 
 export const contact = {
+  /** Operator / data controller (individual, no company yet). */
   broker,
+  brokers,
   /** Licence line shown in the footer and legal pages. */
-  brokerLine: `นายหน้าประกันวินาศภัย ${broker.holder} ใบอนุญาตเลขที่ ${broker.licenceNo}`,
+  brokerLine: `นายหน้าประกันวินาศภัย ${brokers.map((b) => `${b.holder} ใบอนุญาตเลขที่ ${b.licenceNo}`).join(" · ")}`,
   lineId,
   phoneDisplay: "091-444-5542",
   /** Owner-supplied 2026-09-27: general and personal-data contact. */

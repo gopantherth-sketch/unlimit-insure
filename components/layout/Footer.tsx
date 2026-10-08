@@ -42,7 +42,16 @@ export function Footer() {
           <Logo />
           <p className="mt-4 text-[15px] leading-relaxed text-navy-600">{homeCopy.footerTagline}</p>
           <LineButton placement="footer" message={contact.messages.general} label={contact.labels.lineLong} className="mt-5" />
-          <p className="mt-3 text-xs leading-relaxed text-navy-400">{contact.brokerLine}</p>
+          <div className="mt-3 text-xs leading-relaxed text-navy-400">
+            <p>นายหน้าประกันวินาศภัย</p>
+            <ul>
+              {contact.brokers.map((b) => (
+                <li key={b.licenceNo}>
+                  {b.holder} <span className="whitespace-nowrap">ใบอนุญาตเลขที่ {b.licenceNo}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-[1fr_1.2fr_0.9fr_1.3fr]">
           {columns.map((col) => (
