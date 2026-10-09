@@ -15,8 +15,9 @@ export function canonicalRedirect(url: URL): string | null {
 }
 
 export const SECURITY_HEADERS: Record<string, string> = {
-  // Start at one day; raise to 31536000 after a week without problems (review plan, rollout step 5).
-  "Strict-Transport-Security": "max-age=86400; includeSubDomains",
+  // One year since 2026-10-09 (one day from 2026-09-27, no problems; review plan, rollout step 5).
+  // To withdraw: send max-age=0 for a while before removing the header.
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
   "X-Content-Type-Options": "nosniff",
   "X-Frame-Options": "DENY",
   "Referrer-Policy": "strict-origin-when-cross-origin",

@@ -14,4 +14,5 @@ Always:
 - No fake reviews, stats or insurer logos, and no invented contact or licence details (`[รอข้อมูล]`).
 - Secrets are never in chat or commits. Never commit personal data or ID documents.
 - Online purchase stays off (`PURCHASE_ENABLED=false`) until the owner decides.
+- Only Core pushes to `main` (it auto-deploys). Other sessions work on a `design/*` or `copy/*` branch in their own worktree and ask Core to merge.
 - Checks before pushing: `npx tsc --noEmit && npm test && npx next build`, plus the e2e scripts in `tests/e2e/README.md` that the change touches.
