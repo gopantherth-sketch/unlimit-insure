@@ -7,10 +7,8 @@ const sans = IBM_Plex_Sans_Thai({
   subsets: ["thai", "latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
-  // No <link rel=preload>: 17 high-priority font preloads delayed the CSS and hero image on mobile.
-  // Measured on the live page (Slow 4G, 4x CPU): LCP median 2.72 s -> 2.19 s; on a 400 kbps link
-  // 10.5 s -> 8.2 s. Cost: a font swap shift of about 0.012 CLS (limit for "good" is 0.1).
-  preload: false,
+  // Keep the default preload. Removing every font preload cut mobile LCP by about 0.5 s, but made
+  // /quote on desktop shift (CLS 0.19, footer pushed down when the fonts swap). Tried and reverted.
   variable: "--font-sans",
 });
 
@@ -20,7 +18,6 @@ const display = Prompt({
   // 800 is not used anywhere (no font-extrabold); dropping it saves two font files before first paint.
   weight: ["500", "600", "700"],
   display: "swap",
-  preload: false,
   variable: "--font-display",
 });
 
@@ -29,8 +26,6 @@ const script = Allura({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
-  // Decorative only: do not let it compete with the CSS and hero image during first paint.
-  preload: false,
   variable: "--font-script",
 });
 
