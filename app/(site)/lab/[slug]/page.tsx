@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd } from "@/lib/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -20,7 +22,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const a = labArticles.find((x) => x.slug === slug);
-  return a ? { title: a.title, description: a.summary } : { title: "ไม่พบบทความ" };
+  return a ? { title: a.title, description: a.summary, alternates: { canonical: `/lab/${a.slug}` } } : { title: "ไม่พบบทความ" };
 }
 
 export default async function LabArticlePage({ params }: { params: Params }) {
@@ -31,6 +33,7 @@ export default async function LabArticlePage({ params }: { params: Params }) {
   return (
     <article aria-labelledby="article-title" className="bg-canvas pb-16">
       <TrackView name="lab_viewed" dim={article.slug} />
+      <JsonLd data={breadcrumbLd([{ name: "Insurance Lab", path: "/lab" }, { name: article.title, path: `/lab/${article.slug}` }])} />
       <PageHero
         id="article-title"
         narrow

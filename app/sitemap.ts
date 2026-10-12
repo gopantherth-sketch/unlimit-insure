@@ -11,6 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((p) => models.find((m) => m.id === p.modelId))
     .filter((m) => m !== undefined)
     .map((m) => `/insurance/${m.brandId}/${m.id}`);
-  const paths = ["/", "/quote", "/lab", ...(SHOW_AFTER_PURCHASE ? ["/garage"] : []), "/claims", "/insurance", "/privacy", "/terms", ...labArticles.map((a) => `/lab/${a.slug}`), ...modelPaths];
+  const paths = ["/", "/quote", "/lab", ...(SHOW_AFTER_PURCHASE ? ["/garage"] : []), "/claims", "/advisor", "/insurance", "/privacy", "/terms", ...labArticles.map((a) => `/lab/${a.slug}`), ...modelPaths];
   return paths.map((p) => ({ url: `${SITE_URL}${p}`, changeFrequency: "weekly", priority: p === "/" ? 1 : 0.6 }));
 }

@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/seo/JsonLd";
+import { breadcrumbLd } from "@/lib/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -51,6 +53,7 @@ export default async function ModelPage({ params }: { params: Params }) {
   return (
     <div className="bg-canvas pb-16">
       <TrackView name="model_page_viewed" />
+      <JsonLd data={breadcrumbLd([{ name: "ประกันรถตามรุ่น", path: "/insurance" }, { name: `${vehicle.brand.name} ${vehicle.model.name}`, path: `/insurance/${brandId}/${modelId}` }])} />
       <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body={copy.intro}>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Link href={withJourney("/quote", { ...journey, step: "use" })} className={buttonClass("primary", "lg", "rounded-xl")}>

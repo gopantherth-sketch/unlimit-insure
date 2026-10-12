@@ -9,7 +9,12 @@ import type { RawParams } from "@/lib/params";
 import { getCatalog } from "@/lib/server/catalog";
 import { resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
-export const metadata: Metadata = seo("/advisor", { noindex: true });
+// The plain page is a real landing page ("free consultation") and is indexed. With journey params in the URL
+// it carries one visitor's car and plan picks, so those variants are noindex (canonical stays /advisor).
+export async function generateMetadata({ searchParams }: { searchParams: Promise<RawParams> }): Promise<Metadata> {
+  const sp = await searchParams;
+  return seo("/advisor", { noindex: Object.values(sp).some((v) => v !== undefined && v !== "") });
+}
 
 export default async function AdvisorPage({ searchParams }: { searchParams: Promise<RawParams> }) {
   const context = contextFromParams(await searchParams);
