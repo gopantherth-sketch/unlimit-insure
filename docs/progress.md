@@ -12,6 +12,13 @@ Snapshot of the live tracker (https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC)
 
 **2026-10-09 follow-up:** (1) the other session's font/footer work landed as `d001116` (pushed straight to main; reviewed afterwards by Core: OK, Prompt 800 unused, typecheck clean). (2) HSTS raised to one year. Still open: info@unlimitinsure.com (destination verification, then routing rule + test; DevOps DMARC), delete old `D:\Unlimit Insure\repo` after closing the app.
 
+**2026-10-12 SEO (Search Console):** merged `seo/indexing` (cloud session, `18106de`) as `4444129`. Changes:
+- `/advisor` is indexed and in the sitemap; it stays noindex only when it carries journey params.
+- Lab articles have canonical URLs.
+- JSON-LD: WebSite and Organization on the homepage (name, URL and logo only), BreadcrumbList on Lab articles and car-model pages.
+
+Local and live checks passed, and so did journey and a11y. Owner, in Search Console: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex".
+
 **Cloudflare review (Dev Report 2026-09-27), code items done:** `worker.ts` wraps the OpenNext handler: http and www → 301 `https://unlimitinsure.com` (U1/U4), security headers HSTS (1 day; raise to 1 year after a week), nosniff, X-Frame-Options DENY, Referrer-Policy (U5), shared-cacheable HTML → `s-maxage=300, stale-while-revalidate` (U3); `public/_headers` caches `/_next/static/*` for a year. `workers_dev: false` (the workers.dev address is off; use unlimitinsure.com). Local preview needs `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`. Open: U6 email DNS records (owner Q1), optional dashboard "Always Use HTTPS", U2 plan choice.
 
 **Marketing images, 2026-09-27:** Facebook cover and LINE OA cover uploaded by the owner; LINE rich menu skipped for now (image + button actions ready in `design/marketing/`). Site share image `public/og-image.jpg` live.
