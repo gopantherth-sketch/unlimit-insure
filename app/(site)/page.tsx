@@ -1,3 +1,5 @@
+import { JsonLd } from "@/components/seo/JsonLd";
+import { siteLd } from "@/lib/structured-data";
 import type { Metadata } from "next";
 import { pageSeo } from "@/content/seo";
 import { AdvisorCTA } from "@/components/home/AdvisorCTA";
@@ -34,6 +36,7 @@ export default async function HomePage() {
 
   return (
     <>
+      <JsonLd data={siteLd()} />
       <Hero catalog={{ brands: catalog.brands, models: catalog.models }} />
       <FeatureStrip />
       {/* Partner logos wait for licensed logos (D4); until then the LINE quote band takes the slot. */}
