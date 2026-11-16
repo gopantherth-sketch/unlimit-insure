@@ -19,7 +19,7 @@ Online purchase is intentionally OFF (`PURCHASE_ENABLED=false` in `wrangler.json
    - If `ADMIN_USERNAME` and `ADMIN_PASSWORD` already exist, ask the owner whether to keep them. Skip them if so; set `SESSION_SECRET` either way.
 4. Deploy: `npm run deploy`.
    - If it fails, send the exact error text back and stop.
-   - Separately, in the dashboard (Workers & Pages → unlimit-insure → Settings → Build), check the Git build settings: build command `npx opennextjs-cloudflare build`, deploy command `npx opennextjs-cloudflare deploy`, production branch `main`. Fix them if they differ.
+   - Separately, in the dashboard (Workers & Pages → unlimit-insure → Settings → Build), check the Git build settings: build command `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion`, deploy command `npx opennextjs-cloudflare deploy`, production branch `main`. Fix them if they differ.
 5. Check the live site at https://unlimit-insure.gopanther-th.workers.dev:
    - the homepage loads;
    - the quote journey (pick a car, then the next steps) reaches the results;

@@ -20,7 +20,7 @@ Run in the project folder on the PC (after `git pull` and `npm install`):
    - `npx wrangler secret put ADMIN_PASSWORD` (12+ characters)
    - `npx wrangler secret put SESSION_SECRET` (random, 32+ characters; recommended)
 3. Deploy, either way:
-   - Dashboard → Workers & Pages → unlimit-insure → Settings → Build: build command `npx opennextjs-cloudflare build`, deploy command `npx opennextjs-cloudflare deploy`, branch `main`, then retry the latest build; or
+   - Dashboard → Workers & Pages → unlimit-insure → Settings → Build: build command `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion`, deploy command `npx opennextjs-cloudflare deploy`, branch `main`, then retry the latest build; or
    - from the PC: `npm run deploy`.
 4. Check on the live URL: homepage loads; quote journey reaches results; "เลือกแผนนี้" opens the advisor form; submit a test advisor request; log in at `/admin/login` and see the lead; delete nothing.
 5. Report back: live URL, which checks passed, any error text.
@@ -45,7 +45,7 @@ Only when real products are imported and verified, the broker licence wording is
 
 The Worker is connected to `gopantherth-sketch/unlimit-insure`. In the dashboard (Workers & Pages → unlimit-insure → Settings → Build) set:
 
-- Build command: `npx opennextjs-cloudflare build`
+- Build command: `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion`
 - Deploy command: `npx opennextjs-cloudflare deploy`
 - Production branch: `main`
 
@@ -69,7 +69,7 @@ npm run preview                       # production build in the Workers runtime 
 3. Load the catalogue: mock for a preview (`npm run db:seed:remote`) or the real import once verified data exists.
 4. Document storage: only when switching on online purchase (see above).
 5. Secrets: `npx wrangler secret put ADMIN_USERNAME` and `npx wrangler secret put ADMIN_PASSWORD`. Optional `SESSION_SECRET` (32+ chars) signs admin and customer-tracking cookies; without it `ADMIN_PASSWORD` is used, so rotating the password also logs customers out of their tracking pages (their private link + phone check still works).
-6. Deploy: `npm run deploy`, or connect the GitHub repo in the dashboard (Workers & Pages → Create → Import a repository) with build command `npx opennextjs-cloudflare build` and deploy command `npx opennextjs-cloudflare deploy`.
+6. Deploy: `npm run deploy`, or connect the GitHub repo in the dashboard (Workers & Pages → Create → Import a repository) with build command `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion` and deploy command `npx opennextjs-cloudflare deploy`.
 7. Staff alerts (optional, later; either or both). Messages contain only the reference and an admin link.
    - LINE: create a LINE Official Account with Messaging API enabled (LINE Developers console), then `npx wrangler secret put LINE_CHANNEL_ACCESS_TOKEN` and `npx wrangler secret put LINE_ALERT_TO` (comma-separated user or group IDs; add the bot to the team group to get its group ID).
    - Email: a Resend account with a verified sending domain, then secrets `RESEND_API_KEY`, `ALERT_EMAIL_FROM` (e.g. `alerts@<domain>`) and `ALERT_EMAIL_TO` (comma-separated).
