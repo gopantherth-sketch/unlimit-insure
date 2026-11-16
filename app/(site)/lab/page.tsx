@@ -15,8 +15,8 @@ export const metadata: Metadata = seo("/lab");
 // Thumbnail photo (when a slot exists) and category chip per article, as in the homepage ContentRow.
 const cardMeta: Record<string, { photo?: PhotoSlot; tag: string }> = {
   "type1-vs-2plus": { photo: "articleSteering", tag: "ความรู้" },
-  "dealer-vs-garage": { tag: "การซ่อม" },
-  "what-is-excess": { tag: "คำศัพท์" },
+  "dealer-vs-garage": { photo: "articleRepair", tag: "การซ่อม" },
+  "what-is-excess": { photo: "articleExcess", tag: "คำศัพท์" },
   "flood-cover": { photo: "articleFlood", tag: "น้ำท่วม" },
   "ev-insurance": { photo: "articleEv", tag: "EV" },
 };
@@ -66,7 +66,8 @@ export default function LabIndexPage() {
               </li>
             );
           })}
-          {/* Fills the grid's last slot with the main action while the site is LINE-first. */}
+          {/* Fills the grid's last slot with the main action while the site is LINE-first.
+ */}
           <li className="flex">
             <div className="flex w-full flex-col justify-between gap-6 rounded-xl2 border border-line-100 bg-gradient-to-br from-line-50 via-white to-white p-6 shadow-card sm:p-7">
               <div>
