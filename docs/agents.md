@@ -53,12 +53,12 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 ### Core
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| C12 | **Deploy build broken.** `npm run cf:build` (also the first step of `npm run deploy`) stops with "Next.js version 15.5.26 is not supported by the Next.js team" (@opennextjs/cloudflare 1.20.6; Next 15 is past its two-year support window). Found 2026-11-16 while checking `design/article-images`; it fails on `main` too (the branch changes no dependencies). If the Cloudflare Git build runs the same step, pushes to `main` have not deployed since then: check the Workers Builds log. Fix: upgrade Next.js to a supported major with a matching OpenNext release (preferred), or add `--dangerouslyUseUnsupportedNextVersion` as a stop-gap. | To do | — |
 | C2 | Workers plan. Measured 2026-09-26 on **Workers Free** (10 ms CPU limit): live pages use 26–273 ms CPU (`/` 273 ms cold, `/quote/results` 62, `/lab` 51, `/quote` 43, `/advisor` 37, `/compare` 32, `/admin/login` 26), so real traffic risks error 1102 (exceeded CPU). Lowering PBKDF2 iterations would not fix it (~14 ms). Recommendation: Workers Paid ($5/month). No code change needed. Until then, watch for 1102 errors. | Blocked | **Owner: Workers Paid decision (O9)** |
 | C10 | Search Console follow-up after the SEO merge `4444129` (2026-10-12): once the owner has done O11, check the Pages report: `/advisor`, the homepage and the Lab articles indexed, "Excluded by noindex" fixed, sitemap read (28 URLs live on 2026-11-16). | Blocked | Owner steps (O11) |
 | C3 | Live QA: real phones (iOS Safari, Android Chrome), speed on the live URL, and `e2e:journey` / `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. Hand visual issues to the designer. Last live checks: journey + a11y passed on the live site 2026-10-12 (SEO merge); HTTP spot check 2026-11-16 (pages 200, www/http → 301 apex, HSTS 1 year, workers.dev off). Real-device and live speed tests not recorded yet. | In progress | — |
 | C11 | Email: route info@unlimitinsure.com once the destination is verified (routing rule + test), then DNS records / DMARC (Cloudflare review U6). Then the copywriter switches `contact.email` from the current Gmail address. | Blocked | O10 |
 | C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). Still open in code on 2026-11-16; purchase is off, so no live impact yet. Must be fixed before C6. | To do | — |
+| C13 | Upgrade Next.js 15 to a supported major with a matching `@opennextjs/cloudflare` release, then remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command. C12 used that flag as a stop-gap. | To do | — |
 | C4 | Import real products when the owner sends rate tables and quotation files: admin → นำเข้าข้อมูล (template in `/templates/unlimit-product-import.xlsx`). The owner verifies and publishes each version. Retire the mock catalogue; then set `CATALOG_FROM_CODE=false` and restore `force-dynamic` (see progress.md, "Stay on Workers Free"). | Blocked | Owner data (O4) |
 | C6 | Switch on online purchase: R2 bucket, uncomment `r2_buckets`, `PURCHASE_ENABLED=true`, owner enters the payment account in admin → ตั้งค่า, then run `e2e:purchase` locally first. | Blocked | C4, C8, O5, O8 |
 | C7 | Staff alerts via LINE (parked by the owner). The code is ready (`lib/notify`); it needs a LINE OA Messaging API token and `LINE_ALERT_TO` secrets. | Blocked | Owner decision |
@@ -66,6 +66,7 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | **Done** | | | |
 | C1 | Go live. Deployed 2026-09-26 (`59eb9a6`), migrations 0000–0003, secrets set, owner login confirmed, `main` auto-deploys. workers.dev is now off (`workers_dev: false`, returns 404); the site runs on unlimitinsure.com. | Done 2026-09-26 | — |
 | C5 | Domain. `unlimitinsure.com` and `www.unlimitinsure.com` are Worker custom domains (`wrangler.jsonc`); `worker.ts` 301-redirects www and http to https://unlimitinsure.com (2026-09-27). Sitemap, robots and canonicals use the apex (checked live 2026-11-16). | Done 2026-09-26 | — |
+| C12 | Deploy build fixed. `cf:build` and the Cloudflare Git build stopped at "Next.js version 15.5.26 is not supported"; Git builds failed from at least `2e99b99` until 2026-11-16 (last success before that: `29200b5`, 2026-10-12). Fix (stop-gap): PR #1 adds `--dangerouslyUseUnsupportedNextVersion` to `cf:build` / `preview` / `deploy` (merged `c06d641`), and Cursor added it to the dashboard build command. "Workers Builds: unlimit-insure" passed on `c06d641`. Real fix: C13. | Done 2026-11-16 | — |
 
 ### Codex
 Set up 2026-11-16. Worktree: `git worktree add ../unlimit-insure-codex origin/main` (detached), then `npm install` there and open Codex in that folder. First message: `docs/tasks/codex-onboarding.md`.
@@ -82,10 +83,11 @@ DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in th
 
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| Y1 | **Unblock deploys.** Get PR #1 (`cursor/x4-cache-delivery`) merged with Core, then confirm the Cloudflare Git build passes on `main` (C12). | To do | Core review of PR #1 |
-| Y2 | **Live CPU per page.** Measure with `wrangler tail` on `/`, `/lab`, `/quote`, `/advisor` and one car-model page, then update C2 and X4 with the numbers. | To do | Y1 (measure the build that is actually live) |
+| Y2 | **Live CPU per page.** Measure with `wrangler tail` on `/`, `/lab`, `/quote`, `/advisor` and one car-model page, then update C2 and X4 with the numbers. | To do | — |
 | Y3 | **CPU fixes.** Implement the parts of Codex's X4 proposal (`codex/x4-cpu`) that Core approves. | To do | X4 proposal, Core approval |
 | Y4 | **Deploy runbook.** Update `docs/deploy.md`. It must cover: the Next 15 support flag (C12), the Cloudflare account id (how to select it, not the id itself), untracked files that affect builds, and rollback with `wrangler rollback`. | To do | — |
+| **Done** | | | |
+| Y1 | Deploys unblocked. PR #1 (`cursor/x4-cache-delivery`, head `d3cad08`) merged `--no-ff` as `c06d641`; the dashboard build command now has the Next 15 flag; the Cloudflare Git build passed on `c06d641` (C12). | Done 2026-11-16 | — |
 
 ### Designer
 | # | Task | Status | Blocked on / note |
