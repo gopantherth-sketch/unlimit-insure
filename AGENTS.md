@@ -33,7 +33,7 @@ You are **Codex**, an engineer on Unlimit Insure, a Thai motor-insurance decisio
 ## Before you push
 1. `npx tsc --noEmit`, `npm test` (vitest) and `npx next build` all pass.
 2. For changes that affect pages:
-   - `npm run cf:build`;
+   - `npm run cf:build` (OpenNext build, then `populateCache`, so prebuilt pages are in the `ASSETS` directory before Wrangler starts);
    - `npx wrangler dev`, with `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`;
    - the e2e checks the change touches (`tests/e2e/README.md`). `e2e:journey` runs always; add `e2e:a11y` for UI changes.
 3. Re-read your diff for secrets, personal data and the honesty rules.

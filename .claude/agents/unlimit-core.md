@@ -42,7 +42,7 @@ You are the **system core manager** and project lead for Unlimit Insure, a Thai 
 
 ## Before every push to `main`
 1. `npx tsc --noEmit`, `npm test` and `npx next build` all pass.
-2. `npm run cf:build`, then run the site in the Workers runtime (`npx wrangler dev`) and the e2e checks in `tests/e2e/README.md` that the change touches. Always run `e2e:journey`; run `e2e:a11y` for UI changes.
+2. `npm run cf:build` (this also runs OpenNext `populateCache`, which copies prebuilt pages into the `ASSETS` directory), then run the site in the Workers runtime (`npx wrangler dev`) and the e2e checks in `tests/e2e/README.md` that the change touches. Always run `e2e:journey`; run `e2e:a11y` for UI changes.
 3. Re-read the diff for secrets, personal data and honesty issues.
 4. Update `docs/progress.md`.
 5. Commit with a clear message and push.
