@@ -93,7 +93,6 @@ DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in th
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
 | D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB. The article images moved to D8 (owner, 2026-11-16: no Canva). | Blocked | Owner photo (O7) |
-| D8 | Lab article graphics `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 3:2, 960 × 640, .webp ≤ 250 KB in `public/images/`. They replace the designed placeholder tiles on `/lab`; add the two `Photo.tsx` slots and the `cardMeta` photo keys in `app/(site)/lab/page.tsx`. Owner sent the two images on 2026-11-16; prepared on branch `design/article-images` (`da97c37`, cloud session). Reviewed 2026-11-16: 960 × 640 webp, 50 KB / 23 KB, no badges, plates or text; tsc, tests, next build and `e2e:journey` (on `next dev`) pass. **Not merged:** `cf:build` fails (C12), and the designer's look is pending (the repair photo shows a whole technician; the D8 brief said hands at most). | Blocked | C12, designer ok |
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
 | **Done** | | | |
@@ -101,6 +100,7 @@ DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in th
 | D6 | Full visual review of the live site (`design/visual-review`, merged `8badc5c`, follow-ups `71b19ef`). | Done 2026-09-27 | — |
 | D3 | Review the live site on phones and fix visual issues: covered by D6 (390 px / 1440 px on the live site). Real-device checks stay under C3. | Done 2026-09-27 | — |
 | D7 | Logo mark as a 7.6 KB webp (`design/logo-webp`, merged `920ad3b`). Not in the handover list. | Done 2026-09-27 | — |
+| D8 | Lab article photos `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 960 × 640 webp, 50 KB / 23 KB, replacing the placeholder tiles on `/lab`. Designer approved (including the full technician in the repair photo); `design/article-images` merged as `3b7246f`, live and checked 2026-11-17. | Done 2026-11-17 | — |
 
 ### Copywriter
 | # | Task | Status | Blocked on / note |
