@@ -23,6 +23,7 @@ export const CATALOG_FROM_CODE = true;
  * lead to the advisor page, duplicating the LINE button next to them (owner review 2026-09-27).
  */
 export const SHOW_SELECT_PLAN = false;
+export const SHOW_PUBLIC_PACKAGES = false;
 
 /**
  * Prototype-only UI: per-plan data-source badges and panel ("ข้อมูลตัวอย่าง"), the policy-document

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, Check, FileText, Headset } from "lucide-react";
 import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
@@ -13,7 +13,7 @@ import { CoverMark } from "@/components/ui/CoverMark";
 import { fieldGroupLabel, insuranceTypeLabel, repairTypeLabel, visibleFields, type FieldGroup } from "@/lib/coverageFields";
 import { PriceOnRequest } from "@/components/insurance/PriceOnRequest";
 import { contact } from "@/content/contact";
-import { SHOW_PRICES, SHOW_PROTOTYPE_EXTRAS, SHOW_SELECT_PLAN } from "@/lib/features";
+import { SHOW_PRICES, SHOW_PROTOTYPE_EXTRAS, SHOW_PUBLIC_PACKAGES, SHOW_SELECT_PLAN } from "@/lib/features";
 import { formatBaht, formatNumber } from "@/lib/format";
 import { buildMatchContext, matchQuote } from "@/lib/match";
 import { parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
@@ -32,6 +32,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 const groups: FieldGroup[] = ["core", "ownDamage", "thirdParty", "people", "services"];
 
 export default async function PlanPage({ params, searchParams }: { params: Params; searchParams: Promise<RawParams> }) {
+  if (!SHOW_PUBLIC_PACKAGES) {
+    const input = parseQuoteInput(await searchParams);
+    redirect(input ? withJourney("/advisor", input) : "/advisor");
+  }
   const { productId } = await params;
   const catalog = await getCatalog();
   const buyEnabled = await purchaseEnabled();

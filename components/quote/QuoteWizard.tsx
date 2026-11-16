@@ -107,7 +107,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
     if (!selection) return;
     const valid = priorities.filter((p) => availablePriorities.some((a) => a.id === p));
     for (const p of valid) track("priority_selected", p);
-    router.push(withJourney("/quote/results", { vehicle: selection, usage, priorities: valid }));
+    router.push(withJourney("/advisor", { vehicle: selection, usage, priorities: valid }));
   };
 
   const togglePriority = (id: PriorityId) =>

@@ -18,7 +18,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { homeCopy } from "@/content/home";
 import { getDemo } from "@/lib/demo";
 import { LineQuoteBand } from "@/components/home/LineQuoteBand";
-import { SHOW_AFTER_PURCHASE, SHOW_PARTNER_LOGOS, SHOW_PRICES } from "@/lib/features";
+import { SHOW_AFTER_PURCHASE, SHOW_PARTNER_LOGOS, SHOW_PRICES, SHOW_PUBLIC_PACKAGES } from "@/lib/features";
 import { getCatalog } from "@/lib/server/catalog";
 
 // Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const catalog = await getCatalog();
-  const demo = getDemo(catalog);
+  const demo = SHOW_PUBLIC_PACKAGES ? getDemo(catalog) : null;
   const labels = demo?.quotes.map((_, i) => `แผน ${String.fromCharCode(65 + i)}`) ?? [];
 
   return (
@@ -44,7 +44,7 @@ export default async function HomePage() {
       <WhyUnlimit />
       {/* The compare demo explains price differences, so it waits for real prices. */}
       {SHOW_PRICES && demo && demo.quotes.length > 1 && <SmartCompareDemo vehicle={demo.vehicle} quotes={demo.quotes} />}
-      {demo && demo.quotes.length > 0 && (
+      {SHOW_PUBLIC_PACKAGES && demo && demo.quotes.length > 0 && (
         <section aria-labelledby="sim-title" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16">
           <div className="container-page">
             <SectionHeading id="sim-title" eyebrow="Real-life coverage" title={homeCopy.scenarioTitle} body={homeCopy.scenarioBody} />

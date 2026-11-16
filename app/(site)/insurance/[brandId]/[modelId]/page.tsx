@@ -10,7 +10,7 @@ import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
 import { modelPages } from "@/content/models";
 import { models } from "@/lib/data/vehicles";
-import { SHOW_PRICES } from "@/lib/features";
+import { SHOW_PRICES, SHOW_PUBLIC_PACKAGES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
 import { withJourney, selectPlanHref } from "@/lib/params";
@@ -47,7 +47,7 @@ export default async function ModelPage({ params }: { params: Params }) {
   const year = yearsForModel(model, new Date().getFullYear())[1] ?? model.yearTo;
   const vehicle = resolveVehicle(catalog, { brandId, modelId, year });
   if (!vehicle) notFound();
-  const quotes = rankQuotes(generateQuotes(catalog, vehicle), [], vehicle).slice(0, 3);
+  const quotes = SHOW_PUBLIC_PACKAGES ? rankQuotes(generateQuotes(catalog, vehicle), [], vehicle).slice(0, 3) : [];
   const journey = { vehicle: { brandId, modelId, year } };
 
   return (
@@ -77,7 +77,7 @@ export default async function ModelPage({ params }: { params: Params }) {
           </ul>
         </section>
 
-        {quotes.length > 0 && (
+        {SHOW_PUBLIC_PACKAGES && quotes.length > 0 && (
           <section aria-labelledby="examples" className="mt-12">
             <h2 id="examples" className="h-section">ตัวอย่างแพ็กเกจสำหรับ {vehicleLabel(vehicle)}</h2>
             <p className="mt-2 text-navy-500">

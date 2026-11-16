@@ -11,7 +11,6 @@ const columns = [
     title: "ประกันรถ",
     links: [
       { href: "/quote", label: "เลือกแผนประกันรถ" },
-      { href: "/compare", label: "เปรียบเทียบแพ็กเกจ" },
       { href: "/lab/ev-insurance", label: "ประกันรถ EV" },
       { href: "/insurance", label: "ประกันรถตามรุ่น" },
     ],

@@ -1,12 +1,11 @@
 "use client";
 
 import { ClipboardList, MessageCircle } from "lucide-react";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId } from "react";
 import { CallButton, LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
 import { track } from "@/lib/analytics/track";
 import { lineAddUrl } from "@/lib/contact";
-import { readJourney } from "@/lib/journey";
 import type { LeadContext } from "@/lib/leads";
 import { qrSvg } from "@/lib/payment/qr";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
@@ -25,14 +24,11 @@ interface Props {
 export function AdvisorContact({ context, vehicleText, planNames }: Props) {
   const id = useId();
   const planName = (pid: string) => planNames[pid] ?? pid;
-  const [compared, setCompared] = useState<string[]>([]);
-
   useEffect(() => {
-    setCompared(readJourney().comparedPlanIds);
     track("advisor_viewed");
   }, []);
 
-  const plans = context.selectedPlanIds.length ? context.selectedPlanIds : compared;
+  const plans = context.selectedPlanIds;
   const message = contact.messages.plans(plans.map(planName), vehicleText, {
     usage: context.usage ? usageLabel(context.usage) : undefined,
     priorities: context.priorities.map(priorityLabel),
