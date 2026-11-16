@@ -7,9 +7,8 @@ import { cx } from "@/lib/cx";
  * photography, overwrite the file with the same name and size ratio (≤ 250 KB, .webp) — no code
  * change needed. If the ratio changes, update width/height here.
  *
- * hero, lifestyle and the three article photos are owner-supplied (2026-09-26; brand emblems and a
- * readable plate retouched out of the flood photo). advisor is still a placeholder. `canva` ids are
- * the earlier generated alternatives.
+ * hero, lifestyle and the article photos are owner-supplied (2026-09-26, repair and excess 2026-11-16; brand emblems and a
+ * readable plate retouched out of the flood photo). advisor is still a placeholder.
  * Never use real insurer logos, car brand badges or readable number plates.
  */
 export const photos = {
@@ -18,42 +17,36 @@ export const photos = {
     width: 1400,
     height: 1000,
     alt: "รถ SUV สีเงินจอดบนถนนโล่ง ท้องฟ้าสีฟ้าและตึกในเมืองอยู่ด้านหลัง",
-    canva: "MAHWOnIofOk",
   },
   lifestyle: {
     src: "/images/lifestyle-driver.webp",
     width: 1200,
     height: 771,
     alt: "ผู้หญิงยิ้มมองออกมาจากหน้าต่างฝั่งคนขับในวันที่แดดดี",
-    canva: "MAHWOqRfgFM",
   },
   advisor: {
     src: "/images/advisor.webp",
     width: 640,
     height: 800,
     alt: "ที่ปรึกษาของ Unlimit Insure สวมหูฟังพร้อมให้คำแนะนำ",
-    canva: "MAHWOmIS6lI",
   },
   articleFlood: {
     src: "/images/article-flood.webp",
     width: 960,
     height: 640,
     alt: "",
-    canva: "MAHWOqfOnkQ",
   },
   articleEv: {
     src: "/images/article-ev.webp",
     width: 960,
     height: 640,
     alt: "",
-    canva: "MAHWOk_eNcc",
   },
   articleSteering: {
     src: "/images/article-steering.webp",
     width: 960,
     height: 640,
     alt: "",
-    canva: "MAHWOgbskAk",
   },
   articleRepair: {
     src: "/images/article-repair.webp",
