@@ -161,7 +161,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
             <legend>
               <h1 className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">รถคันนี้ใช้แบบไหน?</h1>
             </legend>
-            <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">ช่วยให้เราแนะนำสิ่งที่ควรดู คำตอบนี้ไม่มีผลกับราคา</p>
+            <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">บอกลักษณะการใช้รถ เพื่อให้ที่ปรึกษาเข้าใจความต้องการของคุณ</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {usageDefinitions.map((u) => (
                 <OptionCard
@@ -184,7 +184,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
             <legend>
               <h1 className="font-display text-[28px] font-bold leading-tight text-navy-900 sm:text-[34px]">อะไรสำคัญกับคุณ?</h1>
             </legend>
-            <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">เลือกได้หลายข้อ เราจะบอกว่าแต่ละแผนตรงกับคุณกี่ข้อ และข้อไหนบ้าง</p>
+            <p className="mt-2 text-[15px] leading-relaxed text-navy-500 sm:text-base">เลือกได้หลายข้อ เราจะเตรียมข้อมูลนี้ไว้ในข้อความ LINE ให้คุณตรวจดูก่อนส่ง</p>
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {availablePriorities.map((p) => (
                 <OptionCard
@@ -234,7 +234,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
           )}
           {step === "needs" && (
             <button type="button" onClick={onFinish} className={buttonClass("primary", "lg", "min-w-0 flex-1 rounded-xl px-4 text-[15px] sm:flex-none sm:px-7 sm:text-base")}>
-              ดูแพ็กเกจที่เหมาะกับรถคันนี้
+              เตรียมข้อความเพื่อคุยทาง LINE
               <ArrowRight aria-hidden className="h-4 w-4 shrink-0" />
             </button>
           )}
@@ -243,7 +243,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
       <p className="mt-5 flex items-center justify-center gap-1.5 text-center text-[13px] text-navy-400">
         <LockKeyhole aria-hidden className="h-3.5 w-3.5 shrink-0" />
-        ฟรี ไม่ผูกมัด ดูแผนได้โดยไม่ต้องให้เบอร์โทร
+        เลือกรถและความต้องการได้โดยไม่ต้องให้เบอร์โทร
       </p>
     </div>
   );

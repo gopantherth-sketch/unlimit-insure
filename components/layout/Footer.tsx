@@ -10,7 +10,7 @@ const columns = [
   {
     title: "ประกันรถ",
     links: [
-      { href: "/quote", label: "เลือกแผนประกันรถ" },
+      { href: "/quote", label: "ขอราคาประกันรถ" },
       { href: "/lab/ev-insurance", label: "ประกันรถ EV" },
       { href: "/insurance", label: "ประกันรถตามรุ่น" },
     ],
@@ -123,7 +123,7 @@ export function Footer() {
         <div className="border-t border-white/10">
           <p className="container-page py-4 text-xs leading-relaxed text-navy-300">
             <span className="block max-w-3xl">
-              แพ็กเกจบนเว็บไซต์เป็นตัวอย่างเพื่ออธิบายความคุ้มครอง ยังไม่ใช่ข้อเสนอประกันภัยจริง ราคาและเงื่อนไขจริงสอบถามทาง LINE หรือโทรศัพท์
+              เว็บไซต์ไม่แสดงแพ็กเกจหรือเบี้ยประกัน กรุณาติดต่อทาง LINE หรือโทรศัพท์เพื่อขอใบเสนอราคาและตรวจสอบเงื่อนไขจริง
             </span>
           </p>
         </div>

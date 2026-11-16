@@ -15,7 +15,7 @@ import { cx } from "@/lib/cx";
 // customer accounts exist; contact goes through LINE and phone.
 const siteNav = [
   { href: "/insurance", label: "ประกันรถยนต์" },
-  { href: "/quote", label: "เลือกแผนประกัน" },
+  { href: "/quote", label: "ขอราคาทาง LINE" },
   { href: "/lab", label: "บทความ" },
   { href: "/claims", label: "เมื่อเกิดเหตุ" },
   { href: "/#why", label: "เกี่ยวกับเรา" },

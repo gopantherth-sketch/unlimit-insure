@@ -5,7 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
-import { LabTool } from "@/components/lab/LabTool";
+import { ExcessCalculator } from "@/components/lab/ExcessCalculator";
 import { TrackView } from "@/components/TrackView";
 import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
@@ -53,9 +53,7 @@ export default async function LabArticlePage({ params }: { params: Params }) {
         </p>
       </PageHero>
       <div className="container-page max-w-4xl">
-        <div>
-          <LabTool tool={article.tool} />
-        </div>
+        {article.tool === "excessCalculator" && <ExcessCalculator />}
 
         <div className="mt-10 space-y-8">
           {article.sections.map((s) => (
@@ -95,11 +93,11 @@ export default async function LabArticlePage({ params }: { params: Params }) {
 
         <div className="mt-12 flex flex-col items-start gap-4 rounded-xl2 border border-brand-100 bg-gradient-to-r from-brand-50 to-wash p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
-            <p className="font-display text-xl font-semibold text-navy-900">ดูความต่างนี้กับรถของคุณเอง</p>
-            <p className="mt-1 text-navy-600">เลือกรถแล้วลองเปรียบเทียบแผนสำหรับรถคันนั้น ยังไม่ต้องให้เบอร์โทร</p>
+            <p className="font-display text-xl font-semibold text-navy-900">ถามเรื่องนี้กับรถของคุณ</p>
+            <p className="mt-1 text-navy-600">บอกข้อมูลรถและสิ่งที่สำคัญ แล้วคุยกับที่ปรึกษาทาง LINE เพื่อขอใบเสนอราคา</p>
           </div>
           <Link href="/quote" className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>
-            เพิ่มรถของคุณ
+            บอกข้อมูลรถ
             <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>
         </div>

@@ -17,7 +17,7 @@ if ((await bar.getByRole("link", { name: /โทรหาเรา/ }).getAttrib
 if (!(await bar.getByRole("link", { name: /แอดไลน์/ }).getAttribute("href"))?.startsWith("https://line.me/R/ti/p/%40unlimit.insure")) throw new Error("mobile bar LINE link");
 step("mobile contact bar: LINE + tel");
 await noPrice("home");
-await p.getByRole("button", { name: /เริ่มเลือกแผน/ }).click();
+await p.getByRole("button", { name: /เริ่มบอกความต้องการ/ }).click();
 await p.waitForURL(/step=use/); step("hero → usage step");
 await p.getByText("รถครอบครัว").click();
 await p.getByRole("button", { name: "ถัดไป" }).click();
@@ -25,7 +25,7 @@ await p.waitForURL(/step=needs/);
 if ((await p.getByRole("navigation", { name: "ขั้นตอน" }).getByRole("listitem").count()) !== 3) throw new Error("package steps remain in journey");
 const checked = await p.locator('input[name="priorities"]:checked').count(); step(`needs step, ${checked} priorities preselected from usage`);
 await p.getByText("ไม่มีค่าเสียหายส่วนแรก").first().click();
-await p.getByRole("button", { name: /ดูแพ็กเกจ/ }).click();
+await p.getByRole("button", { name: /เตรียมข้อความเพื่อคุยทาง LINE/ }).click();
 await p.waitForURL(/\/advisor/); step("needs → advisor");
 const lineHref = await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href");
 const msg = decodeURIComponent(lineHref.split("?")[1] ?? "");
@@ -45,6 +45,10 @@ if ((await p.locator("main").innerText()).includes("ชั้น 1 ซ่อม�
 const directMessage = decodeURIComponent((await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href")).split("?")[1] ?? "");
 if (directMessage.includes("แผนที่สนใจ")) throw new Error("sample plan sent to LINE");
 step("direct advisor link ignores sample plan");
+await p.goto(B + "/lab/dealer-vs-garage");
+if ((await p.locator("main").innerText()).includes("ข้อมูลตัวอย่าง")) throw new Error("sample plan tool shown in article");
+if (!(await p.getByRole("link", { name: /บอกข้อมูลรถ/ }).getAttribute("href"))?.startsWith("/quote")) throw new Error("article CTA does not lead to quote journey");
+step("article → quote journey, no sample plan tool");
 await p.goto(B + "/garage"); if (!p.url().endsWith("/claims")) throw new Error("/garage should redirect to /claims");
 step("/garage → /claims");
 console.log(errs.length ? "PAGE ERRORS:\n" + errs.join("\n") : "no page errors");

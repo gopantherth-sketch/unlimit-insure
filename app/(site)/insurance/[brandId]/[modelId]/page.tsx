@@ -3,7 +3,7 @@ import { breadcrumbLd } from "@/lib/structured-data";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ChevronDown, ShieldCheck } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import { TrackView } from "@/components/TrackView";
 import { InsuranceCard } from "@/components/insurance/InsuranceCard";
 import { buttonClass } from "@/components/ui/button";
@@ -31,9 +31,9 @@ type Params = Promise<{ brandId: string; modelId: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { brandId, modelId } = await params;
-  const copy = modelPages.find((m) => m.modelId === modelId);
-  if (!copy) return { title: "ไม่พบรุ่นรถ" };
-  return { title: copy.seoTitle, description: copy.seoDescription, alternates: { canonical: `/insurance/${brandId}/${modelId}` } };
+  const model = models.find((m) => m.id === modelId && m.brandId === brandId);
+  if (!model) return { title: "ไม่พบรุ่นรถ" };
+  return { title: `ประกันรถ ${model.name}`, description: `ดูเรื่องที่ควรพิจารณาสำหรับ ${model.name} แล้วคุยกับที่ปรึกษาทาง LINE เพื่อขอใบเสนอราคา`, alternates: { canonical: `/insurance/${brandId}/${modelId}` } };
 }
 
 export default async function ModelPage({ params }: { params: Params }) {
@@ -54,7 +54,7 @@ export default async function ModelPage({ params }: { params: Params }) {
     <div className="bg-canvas pb-16">
       <TrackView name="model_page_viewed" />
       <JsonLd data={breadcrumbLd([{ name: "ประกันรถตามรุ่น", path: "/insurance" }, { name: `${vehicle.brand.name} ${vehicle.model.name}`, path: `/insurance/${brandId}/${modelId}` }])} />
-      <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body={copy.intro}>
+      <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body="ดูเรื่องที่ควรพิจารณาสำหรับรถรุ่นนี้ แล้วบอกการใช้งานและสิ่งที่สำคัญเพื่อคุยกับที่ปรึกษาทาง LINE">
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <Link href={withJourney("/quote", { ...journey, step: "use" })} className={buttonClass("primary", "lg", "rounded-xl")}>
             เช็กประกันสำหรับ {vehicle.model.name}
@@ -99,20 +99,6 @@ export default async function ModelPage({ params }: { params: Params }) {
           </section>
         )}
 
-        <section aria-labelledby="model-faq" className="mt-12 max-w-3xl">
-          <h2 id="model-faq" className="h-section">คำถามที่พบบ่อย</h2>
-          <div className="mt-5 space-y-3">
-            {copy.faq.map((f) => (
-              <details key={f.question} className="group card overflow-hidden rounded-2xl">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
-                  {f.question}
-                  <ChevronDown aria-hidden className="h-5 w-5 shrink-0 text-navy-400 transition-transform group-open:rotate-180" />
-                </summary>
-                <p className="px-5 pb-5 leading-relaxed text-navy-600">{f.answer}</p>
-              </details>
-            ))}
-          </div>
-        </section>
       </div>
     </div>
   );
