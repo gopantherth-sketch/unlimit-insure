@@ -13,8 +13,11 @@ async function scan(ctx, path, width) {
   const errs = []; p.on("pageerror", (e) => errs.push(e.message)); p.on("console", (m) => m.type() === "error" && errs.push(m.text()));
   let bytes = 0; p.on("response", async (r) => { const l = Number(r.headers()["content-length"] || 0); bytes += l; });
   const t = Date.now();
-  const res = await p.goto(B + path, { waitUntil: "networkidle" });
+  const res = await p.goto(B + path, { waitUntil: "load" });
   const ms = Date.now() - t;
+  // Don't require "networkidle": once an RSC prefetch is in the browser cache, Chrome's background
+  // stale-while-revalidate request never reports "finished" to DevTools, so networkidle never fires.
+  await p.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
   const overflow = await p.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   await p.addScriptTag({ content: axe });
   const r = await p.evaluate(async () => (await axe.run(document, { runOnly: ["wcag2a", "wcag2aa", "wcag21aa", "best-practice"] })).violations.map((v) => ({ id: v.id, impact: v.impact, n: v.nodes.length, sample: v.nodes.slice(0, 2).map((x) => x.target.join(" ")).join(" ; ") })));
