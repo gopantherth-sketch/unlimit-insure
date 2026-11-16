@@ -1,6 +1,6 @@
 # Team: local agents and task split
 
-Three Claude Code agents and Codex work on the project, each in its own folder (a git worktree) and terminal:
+Three Claude Code agents, Codex and Cursor work on the project, each in its own folder (a git worktree) and terminal:
 
 | Agent | Brief | Folder | Owns | Git |
 |---|---|---|---|---|
@@ -8,12 +8,16 @@ Three Claude Code agents and Codex work on the project, each in its own folder (
 | **Designer** | `.claude/agents/unlimit-designer.md` | `unlimit-insure-design` | Visuals, layout, colour, type, icons, images, responsive and accessibility polish | Branch `design/*`, pushed; Core merges |
 | **Copywriter** | `.claude/agents/unlimit-copywriter.md` | `unlimit-insure-copy` | Every customer-facing word, SEO text, disclosures, the verify list | Branch `copy/*`, pushed; Core merges |
 | **Codex** (engineer) | `AGENTS.md` (Codex reads it automatically) | `unlimit-insure-codex` | Engineering tasks Core assigns: fixes, tests, performance, tooling, live checks, second-opinion reviews | Branch `codex/*`, pushed; Core merges |
+| **Cursor** (DevOps) | `AGENTS.md` (Cursor follows it too) | its own worktree | Build and deploy tooling; Cloudflare (Workers, caching, headers, Builds); performance and CPU; live checks after deploys | Branch `cursor/*`, pushed; Core merges |
 
 **Boundaries**
 - The designer never changes wording. It leaves `TODO(copy)` notes for the copywriter.
 - The copywriter never changes layout or styles.
 - Both hand logic changes to Core.
 - Codex takes only tasks listed under **Codex** below (or assigned by Core). It never changes wording or visuals and never deploys; it reports to Core.
+- Cursor takes the tasks under **Cursor** below (or assigned by Core). Deploys:
+  - production deploys run only from `main`, after Core has merged; Cursor may run them when the owner asks;
+  - a hotfix deploy from a branch needs the owner's yes in chat, and a PR opened at the same time that Core merges the same day.
 - Core never changes wording or visuals without the owning agent, except for emergencies. If it has to, it notes this in the commit message.
 
 ## Setup (Windows, once)
@@ -72,6 +76,16 @@ Set up 2026-11-16. Worktree: `git worktree add ../unlimit-insure-codex origin/ma
 | X2 | **C8: payment-slip guard.** After staff sends a slip back (`payment_submitted` → `awaiting_payment`), the old slip still passes the "slip uploaded" check. Change `moveApplication` in `lib/db/applications.ts`: moving to `payment_submitted` needs a `payment_slip` uploaded **after** the latest move into `awaiting_payment`. Add vitest cases in `lib/applications/applications.test.ts`: first payment, slip sent back without a new upload (refused), with a new upload (allowed). Purchase stays off. Branch `codex/x2-slip-guard`. | To do | — |
 | X3 | **Live checks.** Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. These create one test advisor lead, so tell the owner and mark it ไม่สำเร็จ "test lead" afterwards via Core. Record page timings. Report failures with exact output; send visual findings to the designer via Core. Feeds C3. | To do | — |
 | X4 | **CPU budget (Workers Free).** C2 measured 26–273 ms CPU per page against a 10 ms limit. Investigate without changing behaviour: which routes still render per request with `CATALOG_FROM_CODE=true`, what more can be prebuilt or cached (`open-next.config.ts`, `worker.ts` cache headers), and the cold-start cost of `/`. Deliver a short ranked proposal with expected savings in `docs/tasks/x4-cpu-proposal.md` on branch `codex/x4-cpu`. Core decides what to implement. | To do | — |
+
+### Cursor
+DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in the team table and boundaries above. Branch `cursor/*`; Core merges.
+
+| # | Task | Status | Blocked on / note |
+|---|---|---|---|
+| Y1 | **Unblock deploys.** Get PR #1 (`cursor/x4-cache-delivery`) merged with Core, then confirm the Cloudflare Git build passes on `main` (C12). | To do | Core review of PR #1 |
+| Y2 | **Live CPU per page.** Measure with `wrangler tail` on `/`, `/lab`, `/quote`, `/advisor` and one car-model page, then update C2 and X4 with the numbers. | To do | Y1 (measure the build that is actually live) |
+| Y3 | **CPU fixes.** Implement the parts of Codex's X4 proposal (`codex/x4-cpu`) that Core approves. | To do | X4 proposal, Core approval |
+| Y4 | **Deploy runbook.** Update `docs/deploy.md`. It must cover: the Next 15 support flag (C12), the Cloudflare account id (how to select it, not the id itself), untracked files that affect builds, and rollback with `wrangler rollback`. | To do | — |
 
 ### Designer
 | # | Task | Status | Blocked on / note |
