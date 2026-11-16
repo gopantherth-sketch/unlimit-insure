@@ -17,11 +17,11 @@ Cursor follows this file too; its lane is DevOps (see docs/agents.md → Cursor)
 - **Not yours:**
   - wording (copywriter, `content/**`);
   - visual design (designer);
-  - deploys, Cloudflare settings, secrets, merges to `main` (Core).
+  - deploys, Cloudflare settings, secrets, merges to `main` (Core). Exception: Cursor owns deploy tooling and Cloudflare settings (not secrets or merges) under the deploy rules in docs/agents.md → Cursor.
   If a task needs one of these, say so in your report.
 
 ## Rules
-- **Git:** start each task with `git fetch origin && git checkout -b codex/<task-id>-<short-topic> origin/main`. Commit there and push the branch. **Never push to `main`, never merge, never deploy.** `main` auto-deploys to production; Core reviews and merges.
+- **Git:** start each task with `git fetch origin && git checkout -b codex/<task-id>-<short-topic> origin/main`. Commit there and push the branch. **Never push to `main`, never merge, never deploy.** `main` auto-deploys to production; Core reviews and merges. Exception for Cursor only: it may deploy, but only as docs/agents.md → Cursor allows (from `main` after Core merges, when the owner asks; a branch hotfix only with the owner's yes in chat and a PR Core merges the same day). Cursor's branches are `cursor/*`.
 - **Honesty:** no fake reviews, stats, awards or insurer logos; no invented contact, licence or insurer details (use `[รอข้อมูล]`). Coverage and prices come from the engine and data only.
 - **Secrets:** never ask for them, print them, or commit them. `.dev.vars` is local only.
 - **Personal data:** never commit ID cards, licence images, national ID numbers or customer data.
