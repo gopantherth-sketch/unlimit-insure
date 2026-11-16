@@ -1,17 +1,19 @@
 # Team: local agents and task split
 
-Three Claude Code agents run locally on the owner's PC, each in its own folder (a git worktree) and terminal:
+Three Claude Code agents and Codex work on the project, each in its own folder (a git worktree) and terminal:
 
 | Agent | Brief | Folder | Owns | Git |
 |---|---|---|---|---|
 | **Core** (system core manager, project lead) | `.claude/agents/unlimit-core.md` | `unlimit-insure` (has `main`) | Code, data, database, admin, APIs, security, tests, deploys, Cloudflare, merging, `docs/progress.md` | Commits and pushes `main` |
 | **Designer** | `.claude/agents/unlimit-designer.md` | `unlimit-insure-design` | Visuals, layout, colour, type, icons, images, responsive and accessibility polish | Branch `design/*`, pushed; Core merges |
 | **Copywriter** | `.claude/agents/unlimit-copywriter.md` | `unlimit-insure-copy` | Every customer-facing word, SEO text, disclosures, the verify list | Branch `copy/*`, pushed; Core merges |
+| **Codex** (engineer) | `AGENTS.md` (Codex reads it automatically) | `unlimit-insure-codex` | Engineering tasks Core assigns: fixes, tests, performance, tooling, live checks, second-opinion reviews | Branch `codex/*`, pushed; Core merges |
 
 **Boundaries**
 - The designer never changes wording. It leaves `TODO(copy)` notes for the copywriter.
 - The copywriter never changes layout or styles.
 - Both hand logic changes to Core.
+- Codex takes only tasks listed under **Codex** below (or assigned by Core). It never changes wording or visuals and never deploys; it reports to Core.
 - Core never changes wording or visuals without the owning agent, except for emergencies. If it has to, it notes this in the commit message.
 
 ## Setup (Windows, once)
@@ -60,11 +62,21 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | C1 | Go live. Deployed 2026-09-26 (`59eb9a6`), migrations 0000–0003, secrets set, owner login confirmed, `main` auto-deploys. workers.dev is now off (`workers_dev: false`, returns 404); the site runs on unlimitinsure.com. | Done 2026-09-26 | — |
 | C5 | Domain. `unlimitinsure.com` and `www.unlimitinsure.com` are Worker custom domains (`wrangler.jsonc`); `worker.ts` 301-redirects www and http to https://unlimitinsure.com (2026-09-27). Sitemap, robots and canonicals use the apex (checked live 2026-11-16). | Done 2026-09-26 | — |
 
+### Codex
+Set up 2026-11-16. Worktree: `git worktree add ../unlimit-insure-codex origin/main` (detached), then `npm install` there and open Codex in that folder. First message: `docs/tasks/codex-onboarding.md`.
+
+| # | Task | Status | Blocked on |
+|---|---|---|---|
+| X1 | **Onboarding check.** Read `AGENTS.md`, `HANDOVER.md`, `docs/progress.md` and this file. Set up locally (`npm install`, `.dev.vars` from the example: the owner types the password, local D1 migrate + seed). Run `npx tsc --noEmit`, `npm test`, `npx next build`, `npm run cf:build`, then `npx wrangler dev` with `npm run e2e:journey`. Report results and anything in the docs that is unclear or out of date. No code changes. | To do | — |
+| X2 | **C8: payment-slip guard.** After staff sends a slip back (`payment_submitted` → `awaiting_payment`), the old slip still passes the "slip uploaded" check. Change `moveApplication` in `lib/db/applications.ts`: moving to `payment_submitted` needs a `payment_slip` uploaded **after** the latest move into `awaiting_payment`. Add vitest cases in `lib/applications/applications.test.ts`: first payment, slip sent back without a new upload (refused), with a new upload (allowed). Purchase stays off. Branch `codex/x2-slip-guard`. | To do | — |
+| X3 | **Live checks.** Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. These create one test advisor lead, so tell the owner and mark it ไม่สำเร็จ "test lead" afterwards via Core. Record page timings. Report failures with exact output; send visual findings to the designer via Core. Feeds C3. | To do | — |
+| X4 | **CPU budget (Workers Free).** C2 measured 26–273 ms CPU per page against a 10 ms limit. Investigate without changing behaviour: which routes still render per request with `CATALOG_FROM_CODE=true`, what more can be prebuilt or cached (`open-next.config.ts`, `worker.ts` cache headers), and the cold-start cost of `/`. Deliver a short ranked proposal with expected savings in `docs/tasks/x4-cpu-proposal.md` on branch `codex/x4-cpu`. Core decides what to implement. | To do | — |
+
 ### Designer
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
 | D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB. The article images moved to D8 (owner, 2026-11-16: no Canva). | Blocked | Owner photo (O7) |
-| D8 | Lab article graphics `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 3:2, 960 × 640, .webp ≤ 250 KB in `public/images/`. They replace the designed placeholder tiles on `/lab`; add the two `Photo.tsx` slots and the `cardMeta` photo keys in `app/(site)/lab/page.tsx`. **Owner: Codex** (owner, 2026-11-16, replaces the Canva images). Designer reviews before Core merges. | To do | — |
+| D8 | Lab article graphics `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 3:2, 960 × 640, .webp ≤ 250 KB in `public/images/`. They replace the designed placeholder tiles on `/lab`; add the two `Photo.tsx` slots and the `cardMeta` photo keys in `app/(site)/lab/page.tsx`. Owner sent the two images on 2026-11-16; prepared on branch `design/article-images` (`da97c37`, cloud session). Designer reviews, then Core merges. | In review | Core merge |
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
 | **Done** | | | |
