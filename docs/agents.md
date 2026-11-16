@@ -39,52 +39,64 @@ First messages:
 3. The designer and copywriter push branches and report back.
 4. Core reviews, runs the checks, merges, deploys and updates `docs/progress.md`.
 
-## Backlog at handover (2026-09-26)
-Order is priority. Status and history: `docs/progress.md`.
+## Backlog (updated 2026-11-16)
+Reconciled with the repo, `docs/progress.md` and the live site on 2026-11-16. The site is live on https://unlimitinsure.com (LINE-first; prices and online purchase off). Open rows are in priority order: CPU risk and the Search Console follow-up first, then the copy and design work on the live site, then the real-data work (C4, C6). Done rows sit at the bottom of each table with their dates. Status and history: `docs/progress.md`.
+
+Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on someone else).
 
 ### Core
-| # | Task | Blocked on |
-|---|---|---|
-| C1 | **Go live on workers.dev.** See `docs/tasks/deploy-go-live.md`: pull, `npm run db:migrate:remote` (0001–0003), secrets `ADMIN_USERNAME` / `ADMIN_PASSWORD` / `SESSION_SECRET`, `npm run deploy`, fix the dashboard Git build settings, run the live checks. | Owner types the secrets |
-| C2 | Check the Workers plan. Personal-account admin login hashes with PBKDF2 at 100k iterations; on the Free plan (10 ms CPU) it may fail with "exceeded CPU". If so, the options are Workers Paid or lowering iterations (stored per hash; see `lib/admin/password.ts`). The break-glass env login is unaffected. | C1 |
-| C3 | Live QA: real phones (iOS Safari, Android Chrome), speed on the live URL, and `e2e:journey` / `e2e:a11y` against the live URL (`BASE_URL=...`). Hand visual issues to the designer. | C1 |
-| C4 | Import real products when the owner sends rate tables and quotation files: admin → นำเข้าข้อมูล (template in `/templates/unlimit-product-import.xlsx`). The owner verifies and publishes each version. Retire the mock catalogue. | Owner data |
-| C5 | Domain: add the custom domain in Workers → Domains & Routes, set the `NEXT_PUBLIC_SITE_URL` build variable, redeploy; check the sitemap, robots and canonical URLs. | Owner picks domain |
-| C6 | Switch on online purchase: R2 bucket, uncomment `r2_buckets`, `PURCHASE_ENABLED=true`, owner enters the payment account in admin → ตั้งค่า, then run `e2e:purchase` locally first. | Real products, licence, account |
-| C7 | Staff alerts via LINE (parked by the owner). The code is ready (`lib/notify`); it needs a LINE OA Messaging API token and `LINE_ALERT_TO` secrets. | Owner decision |
-| C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). | — |
-| C9 | Phase 4: renewal reminders and renewal compare (roadmap P4). | Real policies |
+| # | Task | Status | Blocked on / note |
+|---|---|---|---|
+| C2 | Workers plan. Measured 2026-09-26 on **Workers Free** (10 ms CPU limit): live pages use 26–273 ms CPU (`/` 273 ms cold, `/quote/results` 62, `/lab` 51, `/quote` 43, `/advisor` 37, `/compare` 32, `/admin/login` 26), so real traffic risks error 1102 (exceeded CPU). Lowering PBKDF2 iterations would not fix it (~14 ms). Recommendation: Workers Paid ($5/month). No code change needed. Until then, watch for 1102 errors. | Blocked | **Owner: Workers Paid decision (O9)** |
+| C10 | Search Console follow-up after the SEO merge `4444129` (2026-10-12): once the owner has done O11, check the Pages report: `/advisor`, the homepage and the Lab articles indexed, "Excluded by noindex" fixed, sitemap read (28 URLs live on 2026-11-16). | Blocked | Owner steps (O11) |
+| C3 | Live QA: real phones (iOS Safari, Android Chrome), speed on the live URL, and `e2e:journey` / `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. Hand visual issues to the designer. Last live checks: journey + a11y passed on the live site 2026-10-12 (SEO merge); HTTP spot check 2026-11-16 (pages 200, www/http → 301 apex, HSTS 1 year, workers.dev off). Real-device and live speed tests not recorded yet. | In progress | — |
+| C11 | Email: route info@unlimitinsure.com once the destination is verified (routing rule + test), then DNS records / DMARC (Cloudflare review U6). Then the copywriter switches `contact.email` from the current Gmail address. | Blocked | O10 |
+| C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). Still open in code on 2026-11-16; purchase is off, so no live impact yet. Must be fixed before C6. | To do | — |
+| C4 | Import real products when the owner sends rate tables and quotation files: admin → นำเข้าข้อมูล (template in `/templates/unlimit-product-import.xlsx`). The owner verifies and publishes each version. Retire the mock catalogue; then set `CATALOG_FROM_CODE=false` and restore `force-dynamic` (see progress.md, "Stay on Workers Free"). | Blocked | Owner data (O4) |
+| C6 | Switch on online purchase: R2 bucket, uncomment `r2_buckets`, `PURCHASE_ENABLED=true`, owner enters the payment account in admin → ตั้งค่า, then run `e2e:purchase` locally first. | Blocked | C4, C8, O5, O8 |
+| C7 | Staff alerts via LINE (parked by the owner). The code is ready (`lib/notify`); it needs a LINE OA Messaging API token and `LINE_ALERT_TO` secrets. | Blocked | Owner decision |
+| C9 | Phase 4: renewal reminders and renewal compare (roadmap P4). | Blocked | Real policies |
+| **Done** | | | |
+| C1 | Go live. Deployed 2026-09-26 (`59eb9a6`), migrations 0000–0003, secrets set, owner login confirmed, `main` auto-deploys. workers.dev is now off (`workers_dev: false`, returns 404); the site runs on unlimitinsure.com. | Done 2026-09-26 | — |
+| C5 | Domain. `unlimitinsure.com` and `www.unlimitinsure.com` are Worker custom domains (`wrangler.jsonc`); `worker.ts` 301-redirects www and http to https://unlimitinsure.com (2026-09-27). Sitemap, robots and canonicals use the apex (checked live 2026-11-16). | Done 2026-09-26 | — |
 
 ### Designer
-| # | Task | Blocked on |
-|---|---|---|
-| D1 | Advisor and repair photos: the owner re-sends them as files (they were shown in chat only). Crop, compress to .webp ≤ 250 KB, place in `public/images/` for the slots in `design/photo-briefs.md` (advisor 4:5, article-repair 3:2). | Owner files |
-| D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". | — |
-| D3 | Review the live site on phones after C1/C3 and fix visual issues. | C1 |
-| D4 | Insurer logo strip: keep the neutral placeholders until the owner supplies licensed logos with permission; then design the tiles. | Owner logos |
-| D5 | **Priority (website-first launch).** Polish the LINE-first look: `components/contact/ContactButtons.tsx` (LINE green is `#06803b` for AA contrast, don't go lighter), `components/layout/MobileContactBar.tsx`, `components/insurance/PriceOnRequest.tsx`, `components/insurance/AdvisorContact.tsx`, header and footer. Make the homepage more engaging now that the price demo and My Garage sections are hidden. Done = checked at 360 px and 1280 px, public-page axe scan clean. | — |
-| D6 | **Owner request 2026-09-27.** Full visual review of the LIVE site (https://unlimitinsure.com), every public page at 390 px and 1440 px: type scale and font sizes (body readability, heading hierarchy, Thai line-height), font choice and weights (Prompt / IBM Plex Sans Thai / Allura), all graphics (icons, illustrations, photos, hero, cards, the LINE band, empty states), spacing and colour consistency. First send Core a short findings list ranked by impact, then fix on `design/visual-review`. Done = before/after screenshots, axe clean, 0 overflow, tsc/test/build pass. Flag any photo or illustration that needs owner files or new assets. | — |
+| # | Task | Status | Blocked on / note |
+|---|---|---|---|
+| D1 | Photos (status from progress.md, 2026-09-27): (1) advisor portrait 4:5 must be a **real photo of the owner/advisor** (no AI person); until then the LineChatPreview graphic stays on `/advisor` and the homepage. (2) `article-repair` and (3) `article-excess` (3:2): AI images made in the owner's Canva; the owner saves them to `D:\Unlimit Insure` as `article-repair.jpg` / `article-excess.jpg` (not there on 2026-11-16). Then convert to .webp ≤ 250 KB in `public/images/` and replace the Lab placeholder tiles (`design/photo-briefs.md`). | Blocked | Owner files (O7) |
+| D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
+| D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
+| **Done** | | | |
+| D5 | LINE-first look polished (`design/line-first-polish`, merged `4a4dae9`). | Done 2026-09-27 | — |
+| D6 | Full visual review of the live site (`design/visual-review`, merged `8badc5c`, follow-ups `71b19ef`). | Done 2026-09-27 | — |
+| D3 | Review the live site on phones and fix visual issues: covered by D6 (390 px / 1440 px on the live site). Real-device checks stay under C3. | Done 2026-09-27 | — |
+| D7 | Logo mark as a 7.6 KB webp (`design/logo-webp`, merged `920ad3b`). Not in the handover list. | Done 2026-09-27 | — |
 
 ### Copywriter
-| # | Task | Blocked on |
-|---|---|---|
-| W1 | Broker licence line (footer, purchase disclosures): replace `[สถานะนายหน้า/เลขที่ใบอนุญาต]` / `[รอข้อมูล]`. Needs:<br>- the current (renewed) licence numbers; the cards seen at handover expired 03/11/2563;<br>- consent from each named person;<br>- whether a company (juristic) broker licence exists.<br>Name and licence number only, never ID numbers. Update the verify items. | Owner |
-| W2 | Contact placeholders (phone, LINE, email) in the footer and advisor pages once the owner supplies the real channels. | Owner |
-| W3 | Review the Phase 3 strings the PM wrote in `content/purchase.ts`: `tracking.yourTurn`, `tracking.waiting`, `tracking.stepOf`, `prepareTitle`, `prepareBody`, plus the inline admin-facing messages if needed. | — |
-| W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`, 140 items) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. | — |
-| W5 | Per-insurer claims guidance (roadmap P3.8) once real insurers are known. | C4 |
-| W6 | SEO titles and descriptions final pass once the domain is chosen (`content/seo.ts`, `docs/seo-plan.md`). | C5 |
-| W7 | **Priority (website-first launch).** Review Core's emergency copy edits for the LINE-first launch: `content/home.ts` (hero CTA, trust points, how-it-works, promises), `content/faq.ts`, `content/contact.ts` (button labels, prefilled LINE messages), and the no-price wording in `PriceOnRequest` / `AdvisorContact`. Remove any remaining "check prices / buy online / My Garage" promises (`content/home.ts` afterPoints, `content/seo.ts` descriptions such as "พร้อมเบี้ยโดยประมาณ"). Then `npm run content:verify`. | — |
-| W8 | **Owner request 2026-09-27.** Read the LIVE site (https://unlimitinsure.com) end to end as a customer on a phone: headline strength, clarity, length and rhythm of every section, button labels, repetition, anything that sounds like a prototype. Work with the designer on type size and line length where copy length is the cause. First send Core a short findings list ranked by impact, then fix on `copy/live-review`. Done = content:verify run, tsc/test/build pass. | — |
+| # | Task | Status | Blocked on / note |
+|---|---|---|---|
+| W6 | SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`). Unblocked: the domain is unlimitinsure.com. Build on the 2026-10-12 SEO merge `4444129` (`/advisor` indexed, canonicals on Lab articles, JSON-LD). | To do | — |
+| W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. Feeds O8. | To do | — |
+| W3 | Review the Phase 3 strings in `content/purchase.ts`: `tracking.yourTurn`, `tracking.waiting`, `tracking.stepOf`, `prepareTitle`, `prepareBody`, plus inline admin-facing messages if needed. Purchase is off, so before C6. | To do | — |
+| W5 | Per-insurer claims guidance (roadmap P3.8) once real insurers are known. | Blocked | C4 |
+| **Done** | | | |
+| W1 | Broker licence line. Footer, terms and purchase disclosures show both brokers from `content/contact.ts`: Nithi Apaisuwan 6204049613 (operator; 2026-09-27) and นางสาววนาลี บุญเกิด 6204049618 (`084b494`, 2026-10-09); both on the live site 2026-11-16, no placeholder left. Company answer: no company yet, individual operator (owner, 2026-09-27). Still open as verify items, not copy: consent to display from each named broker and name spelling (O3). | Done 2026-10-09 | — |
+| W2 | Contact channels: LINE `@unlimit.insure`, phone 091-444-5542, Facebook `Unlimit.th` and email in `content/contact.ts` (2026-09-26/27). Except info@unlimitinsure.com: the site shows the owner's Gmail address until email routing works (C11, O10). | Done 2026-09-27 | — |
+| W7 | Review of Core's LINE-first copy edits (`copy/line-first-review`, merged `90c9ab6`). | Done 2026-09-27 | — |
+| W8 | Live-site copy review on a phone (`copy/live-review`, merged `76e55f3`, follow-up `5487c4f`). | Done 2026-09-27 | — |
 
-### Owner (Dave)
-| # | Needed | Unblocks |
-|---|---|---|
-| O1 | Type the secrets during C1 | Go live |
-| O2 | Domain name | C5, W6 |
-| O3 | Current broker licence details + consent; company licence answer | W1, C6 |
-| O4 | Real rate tables and quotation files from insurers | C4, W5 |
-| O5 | Receiving account for premiums (name, PromptPay or bank) | C6 |
-| O6 | Contact channels (phone, LINE OA, email) | W2 |
-| O7 | Advisor and repair photos as files | D1 |
-| O8 | Legal / licensed review of the verify list | Launch sign-off |
+### Owner (Nithi)
+| # | Needed | Status | Unblocks |
+|---|---|---|---|
+| O9 | Workers Free vs Paid ($5/month) | To do | C2 |
+| O11 | Search Console, after the 2026-10-12 SEO merge: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex". Not recorded as done. | To do | C10 |
+| O10 | info@unlimitinsure.com destination verification | To do | C11 |
+| O7 | Real advisor portrait (no AI person); save the two Canva article images to `D:\Unlimit Insure` as `article-repair.jpg` / `article-excess.jpg` | To do | D1 |
+| O3 | Consent to display from each named broker (recorded for Nithi; needed for นางสาววนาลี บุญเกิด); confirm name spelling. Licence numbers and the company answer are in. | In progress | Verify list, C6 |
+| O8 | Legal / licensed review of the verify list | To do | Launch sign-off, C6 |
+| O4 | Real rate tables and quotation files from insurers | To do | C4, W5 |
+| O5 | Receiving account for premiums (name, PromptPay or bank) | To do | C6 |
+| **Done** | | | |
+| O1 | Secrets typed during C1 | Done 2026-09-26 | Go live |
+| O2 | Domain: unlimitinsure.com | Done 2026-09-26 | C5, W6 |
+| O6 | Contact channels (LINE, phone, Facebook, contact email); except info@unlimitinsure.com (O10) | Done 2026-09-27 | W2 |

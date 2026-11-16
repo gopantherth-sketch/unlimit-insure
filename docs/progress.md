@@ -19,6 +19,18 @@ Snapshot of the live tracker (https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC)
 
 Local and live checks passed, and so did journey and a11y. Owner, in Search Console: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex".
 
+**2026-11-16 backlog reconciled:** `docs/agents.md` now has "Backlog (updated 2026-11-16)": a Status column, done rows at the bottom of each table, open work re-ordered for the live LINE-first site (C2 CPU risk and the Search Console follow-up first). Checked against the repo, this file and the live site (HTTP check today: `/` 200, www and http → 301 apex, workers.dev 404, sitemap 28 URLs, robots and canonicals on the apex, HSTS 1 year, both broker licences in the footer). New rows: C10 Search Console follow-up, C11 info@ email routing, D7 (logo webp, done 2026-09-27), O9 Workers Free vs Paid, O10 info@ destination verification, O11 Search Console steps. Things that did not match the old backlog:
+- C1 said "go live on workers.dev"; workers.dev is now off (`workers_dev: false`) and the site runs on unlimitinsure.com.
+- D3, D5, D6, W7 and W8 were all done on 2026-09-27 (merged `design/*` / `copy/*` branches; those branches are deleted now), but the backlog still listed them as open.
+- W1: no placeholder is left, but the verify item "each named broker consents to display" is still open for the second broker (นางสาววนาลี บุญเกิด, added `084b494`). The company question is answered (individual operator, 2026-09-27).
+- W2: the site's email is the owner's Gmail address, not info@unlimitinsure.com; info@ waits for email routing.
+- D1: the two Canva article images are not in `D:\Unlimit Insure` yet (no `article-repair.jpg` / `article-excess.jpg`); the real advisor portrait is still missing.
+- C2 vs the 2026-09-26 "Stay on Workers Free" decision: measurements show every page is 3–27× the Free CPU limit, so the plan choice is back with the owner (O9).
+- C8 (old payment slip satisfies the guard) is still open in `lib/db/applications.ts`; D2, W3 and W4 not started.
+- The Search Console steps from 2026-10-12 are not recorded as done (O11).
+- The old `D:\Unlimit Insure\repo` folder (to delete, 2026-10-09 note) still exists.
+- The owner table was headed "Owner (Dave)"; renamed "Owner (Nithi)".
+
 **Cloudflare review (Dev Report 2026-09-27), code items done:** `worker.ts` wraps the OpenNext handler: http and www → 301 `https://unlimitinsure.com` (U1/U4), security headers HSTS (1 day; raise to 1 year after a week), nosniff, X-Frame-Options DENY, Referrer-Policy (U5), shared-cacheable HTML → `s-maxage=300, stale-while-revalidate` (U3); `public/_headers` caches `/_next/static/*` for a year. `workers_dev: false` (the workers.dev address is off; use unlimitinsure.com). Local preview needs `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`. Open: U6 email DNS records (owner Q1), optional dashboard "Always Use HTTPS", U2 plan choice.
 
 **Marketing images, 2026-09-27:** Facebook cover and LINE OA cover uploaded by the owner; LINE rich menu skipped for now (image + button actions ready in `design/marketing/`). Site share image `public/og-image.jpg` live.
