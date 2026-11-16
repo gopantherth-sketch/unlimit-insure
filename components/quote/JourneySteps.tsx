@@ -1,21 +1,23 @@
 import { Check } from "lucide-react";
 import { cx } from "@/lib/cx";
+import { SHOW_PUBLIC_PACKAGES } from "@/lib/features";
 
-export const journeySteps = ["รถของคุณ", "การใช้งาน", "สิ่งที่สำคัญ", "แพ็กเกจ", "เปรียบเทียบ"] as const;
+const journeySteps = ["รถของคุณ", "การใช้งาน", "สิ่งที่สำคัญ", "แพ็กเกจ", "เปรียบเทียบ"] as const;
 
 export function JourneySteps({ current }: { current: number }) {
-  const total = journeySteps.length;
+  const steps = SHOW_PUBLIC_PACKAGES ? journeySteps : journeySteps.slice(0, 3);
+  const total = steps.length;
   return (
     <nav aria-label="ขั้นตอน" className="mx-auto w-full max-w-3xl">
       {/* Mobile: compact "step n of 5" line + progress bar; the list below carries the semantics. */}
       <div aria-hidden className="mb-3 flex items-baseline justify-between gap-3 sm:hidden">
-        <span className="font-display text-[15px] font-semibold text-navy-900">{journeySteps[current]}</span>
+        <span className="font-display text-[15px] font-semibold text-navy-900">{steps[current]}</span>
         <span className="tabular text-xs font-medium text-navy-400">
           ขั้นที่ {current + 1} จาก {total}
         </span>
       </div>
       <ol className="flex items-center">
-        {journeySteps.map((label, i) => {
+        {steps.map((label, i) => {
           const done = i < current;
           const active = i === current;
           return (
