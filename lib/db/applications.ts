@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, or, sql } from "drizzle-orm";
 import {
   canMove,
   requiredCustomerDocuments,
@@ -188,7 +188,17 @@ export async function moveApplication(
 
   const docs = await db.select({ kind: applicationDocuments.kind }).from(applicationDocuments).where(eq(applicationDocuments.applicationId, id));
   if (to === "submitted" && missingRequiredDocuments(docs).length > 0) return { ok: false, error: "missing_documents" };
-  if (to === "payment_submitted" && !docs.some((d) => d.kind === "payment_slip")) return { ok: false, error: "missing_payment_slip" };
+  if (to === "payment_submitted") {
+    const [latestPaymentEvent] = await db.select({ type: applicationEvents.type }).from(applicationEvents)
+      .where(and(eq(applicationEvents.applicationId, id), or(
+        and(eq(applicationEvents.type, "status_changed"), eq(applicationEvents.toStatus, "awaiting_payment")),
+        and(eq(applicationEvents.type, "document_added"), eq(applicationEvents.note, "payment_slip")),
+      )))
+      .orderBy(desc(sql`rowid`)).limit(1);
+    if (!docs.some((d) => d.kind === "payment_slip") || latestPaymentEvent?.type !== "document_added") {
+      return { ok: false, error: "missing_payment_slip" };
+    }
+  }
   if (to === "policy_issued" && (!app.policyNumber || !app.policyStart || !app.policyEnd || !docs.some((d) => d.kind === "policy"))) {
     return { ok: false, error: "missing_policy" };
   }

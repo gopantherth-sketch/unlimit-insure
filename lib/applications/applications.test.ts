@@ -140,6 +140,22 @@ describe("applications", () => {
     expect(visible).toEqual(expect.arrayContaining(["created", "status_changed", "premium_changed"]));
     expect(d.events.some((e) => e.type === "status_changed" && e.actorUserId === "u1")).toBe(true);
   });
+
+  it("requires a new slip after staff sends a payment back", async () => {
+    const { id } = await make();
+    await doc(id, "registration");
+    await doc(id, "driving_license");
+    await doc(id, "id_card");
+    expect(await moveApplication(db, id, "submitted", "customer", customer)).toEqual({ ok: true });
+    expect(await moveApplication(db, id, "awaiting_payment", "staff", staff)).toEqual({ ok: true });
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: false, error: "missing_payment_slip" });
+    await doc(id, "payment_slip");
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: true });
+    expect(await moveApplication(db, id, "awaiting_payment", "staff", staff, { message: "Please upload a new slip" })).toEqual({ ok: true });
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: false, error: "missing_payment_slip" });
+    await doc(id, "payment_slip");
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: true });
+  });
 });
 
 describe("buy form validation", () => {
