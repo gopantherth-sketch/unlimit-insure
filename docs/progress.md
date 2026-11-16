@@ -24,7 +24,7 @@ Local and live checks passed, and so did journey and a11y. Owner, in Search Cons
 - D3, D5, D6, W7 and W8 were all done on 2026-09-27 (merged `design/*` / `copy/*` branches; those branches are deleted now), but the backlog still listed them as open.
 - W1: no placeholder is left, but the verify item "each named broker consents to display" is still open for the second broker (นางสาววนาลี บุญเกิด, added `084b494`). The company question is answered (individual operator, 2026-09-27).
 - W2: the site's email is the owner's Gmail address, not info@unlimitinsure.com; info@ waits for email routing.
-- D1: the two Canva article images are not in `D:\Unlimit Insure` yet (no `article-repair.jpg` / `article-excess.jpg`); the real advisor portrait is still missing.
+- D1: the two Canva article images were never saved to `D:\Unlimit Insure` (no `article-repair.jpg` / `article-excess.jpg`); the real advisor portrait is still missing. **Owner change, 2026-11-16:** no Canva; Codex makes the two article graphics (new row D8, owner Codex, To do). D1 is now the advisor portrait only (from the owner).
 - C2 vs the 2026-09-26 "Stay on Workers Free" decision: measurements show every page is 3–27× the Free CPU limit, so the plan choice is back with the owner (O9).
 - C8 (old payment slip satisfies the guard) is still open in `lib/db/applications.ts`; D2, W3 and W4 not started.
 - The Search Console steps from 2026-10-12 are not recorded as done (O11).

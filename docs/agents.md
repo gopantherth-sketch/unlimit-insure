@@ -63,7 +63,8 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 ### Designer
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| D1 | Photos (status from progress.md, 2026-09-27): (1) advisor portrait 4:5 must be a **real photo of the owner/advisor** (no AI person); until then the LineChatPreview graphic stays on `/advisor` and the homepage. (2) `article-repair` and (3) `article-excess` (3:2): AI images made in the owner's Canva; the owner saves them to `D:\Unlimit Insure` as `article-repair.jpg` / `article-excess.jpg` (not there on 2026-11-16). Then convert to .webp ≤ 250 KB in `public/images/` and replace the Lab placeholder tiles (`design/photo-briefs.md`). | Blocked | Owner files (O7) |
+| D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB. The article images moved to D8 (owner, 2026-11-16: no Canva). | Blocked | Owner photo (O7) |
+| D8 | Lab article graphics `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 3:2, 960 × 640, .webp ≤ 250 KB in `public/images/`. They replace the designed placeholder tiles on `/lab`; add the two `Photo.tsx` slots and the `cardMeta` photo keys in `app/(site)/lab/page.tsx`. **Owner: Codex** (owner, 2026-11-16, replaces the Canva images). Designer reviews before Core merges. | To do | — |
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
 | **Done** | | | |
@@ -91,7 +92,7 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | O9 | Workers Free vs Paid ($5/month) | To do | C2 |
 | O11 | Search Console, after the 2026-10-12 SEO merge: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex". Not recorded as done. | To do | C10 |
 | O10 | info@unlimitinsure.com destination verification | To do | C11 |
-| O7 | Real advisor portrait (no AI person); save the two Canva article images to `D:\Unlimit Insure` as `article-repair.jpg` / `article-excess.jpg` | To do | D1 |
+| O7 | Real advisor portrait (no AI person). The article images no longer need the owner: Codex makes them (D8). | To do | D1 |
 | O3 | Consent to display from each named broker (recorded for Nithi; needed for นางสาววนาลี บุญเกิด); confirm name spelling. Licence numbers and the company answer are in. | In progress | Verify list, C6 |
 | O8 | Legal / licensed review of the verify list | To do | Launch sign-off, C6 |
 | O4 | Real rate tables and quotation files from insurers | To do | C4, W5 |
