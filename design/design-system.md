@@ -97,7 +97,7 @@ Photo slots are defined once in `components/brand/Photo.tsx` (`photos` map + `<P
 | advisor | `advisor.webp` 640×800 | Smiling Thai female advisor, headset, navy polo, plain light or transparent background; overlaps the advisor panel's top edge |
 | articleFlood / articleEv / articleSteering | `article-*.webp` 480×320 | Flooded street with cars / EV charging plug / hands on a steering wheel |
 
-The shipped files are original placeholder illustrations. Original photos for every slot were generated in Canva (media ids in `photos`) but could not be downloaded from the build environment; export them from Canva, compress to ≤ 250 KB `.webp`, and overwrite the files with the same names. Images are served pre-sized with `unoptimized` (no image optimiser binding on Workers); only the hero uses `priority`. Never use real insurer logos, car brand badges or readable number plates. Partner tiles stay neutral placeholders until logos are authorised.
+To replace a slot's image, compress the new file to ≤ 250 KB `.webp` and overwrite the file with the same name. The owner no longer uses Canva (2026-11-16): new graphics come from the owner's own photos or from Codex (see `docs/agents.md`). The old `canva` ids in `photos` are unused history. Images are served pre-sized with `unoptimized` (no image optimiser binding on Workers); only the hero uses `priority`. Never use real insurer logos, car brand badges or readable number plates. Partner tiles stay neutral placeholders until logos are authorised.
 
 ## Honesty in layout
 
