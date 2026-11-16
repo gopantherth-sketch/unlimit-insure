@@ -55,6 +55,18 @@ export const photos = {
     alt: "",
     canva: "MAHWOgbskAk",
   },
+  articleRepair: {
+    src: "/images/article-repair.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
+  articleExcess: {
+    src: "/images/article-excess.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
 } as const;
 
 export type PhotoSlot = keyof typeof photos;
