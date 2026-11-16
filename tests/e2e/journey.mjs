@@ -40,6 +40,11 @@ for (const legacy of ["/quote/results", "/compare", "/plans/a-type1-dealer"]) {
   if (!p.url().includes("brand=toyota")) throw new Error("lost car context from " + legacy);
 }
 step("legacy package URLs → advisor with car context");
+await p.goto(B + "/advisor" + contextUrl.search + "&plans=a-type1-dealer");
+if ((await p.locator("main").innerText()).includes("ชั้น 1 ซ่อมศูนย์ Plus")) throw new Error("sample plan shown on advisor");
+const directMessage = decodeURIComponent((await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href")).split("?")[1] ?? "");
+if (directMessage.includes("แผนที่สนใจ")) throw new Error("sample plan sent to LINE");
+step("direct advisor link ignores sample plan");
 await p.goto(B + "/garage"); if (!p.url().endsWith("/claims")) throw new Error("/garage should redirect to /claims");
 step("/garage → /claims");
 console.log(errs.length ? "PAGE ERRORS:\n" + errs.join("\n") : "no page errors");

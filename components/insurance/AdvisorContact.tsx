@@ -11,25 +11,22 @@ import { qrSvg } from "@/lib/payment/qr";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 
 interface Props {
-  context: Omit<LeadContext, "viewedPlanIds" | "comparedPlanIds">;
+  context: Pick<LeadContext, "vehicle" | "usage" | "priorities">;
   vehicleText: string | null;
-  planNames: Record<string, string>;
 }
 
 /**
- * Advisor page while the back office is parked: no form, no stored lead. The customer's car and plans
+ * Advisor page while the back office is parked: no form, no stored lead. The customer's car and needs
  * go into a prefilled LINE message they can edit and send themselves. (The lead form is kept in
  * AdvisorHandoff.tsx for when the back office returns.)
  */
-export function AdvisorContact({ context, vehicleText, planNames }: Props) {
+export function AdvisorContact({ context, vehicleText }: Props) {
   const id = useId();
-  const planName = (pid: string) => planNames[pid] ?? pid;
   useEffect(() => {
     track("advisor_viewed");
   }, []);
 
-  const plans = context.selectedPlanIds;
-  const message = contact.messages.plans(plans.map(planName), vehicleText, {
+  const message = contact.messages.plans([], vehicleText, {
     usage: context.usage ? usageLabel(context.usage) : undefined,
     priorities: context.priorities.map(priorityLabel),
   });
@@ -38,7 +35,6 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
     ...(vehicleText ? [{ label: "รถ", value: vehicleText }] : []),
     ...(context.usage ? [{ label: "การใช้งาน", value: usageLabel(context.usage) }] : []),
     ...(context.priorities.length ? [{ label: "สิ่งที่สำคัญ", value: context.priorities.map(priorityLabel).join(", ") }] : []),
-    ...(plans.length ? [{ label: "แผนที่สนใจ", value: plans.map(planName).join(", ") }] : []),
   ];
 
   return (
