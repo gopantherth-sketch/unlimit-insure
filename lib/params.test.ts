@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { contact } from "@/content/contact";
 import { vehicleForm } from "@/content/vehicle-form";
 import { TRIM_MAX, buildQuery, cleanTrim, parseTrim } from "@/lib/params";
 
@@ -39,7 +38,6 @@ describe("trim (X8 sub-model / engine size)", () => {
   it("appears after the car in the LINE message", () => {
     const text = vehicleForm.withTrim("Toyota Corolla Cross 2022", "1.8 Hybrid Premium");
     expect(text).toBe("Toyota Corolla Cross 2022 · 1.8 Hybrid Premium");
-    expect(contact.messages.plans([], text)).toContain("ประกันรถ Toyota Corolla Cross 2022 · 1.8 Hybrid Premium");
     expect(vehicleForm.withTrim("Toyota Corolla Cross 2022", undefined)).toBe("Toyota Corolla Cross 2022");
   });
 });

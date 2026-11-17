@@ -56,14 +56,40 @@ export const contact = {
     general: "สวัสดี สนใจปรึกษาเรื่องประกันรถ",
     plan: (plan: string, vehicle?: string | null) =>
       `สวัสดี ขอราคาประกันแผน ${plan}${vehicle ? ` สำหรับ ${vehicle}` : ""}`,
-    plans: (plans: string[], vehicle?: string | null, details?: { usage?: string; priorities?: string[] }) =>
+    /**
+     * Advisor page message, one detail per line so admins can read it at a glance (owner, 2026-11-17).
+     * The first line is fixed so admins can tag or filter website chats in LINE OA Manager.
+     * Lines ending in ": " are blanks the customer can fill before sending.
+     */
+    quoteRequest: (q: {
+      car?: string | null;
+      ev?: boolean;
+      year?: number | null;
+      trim?: string | null;
+      usage?: string;
+      priorities?: string[];
+      plans?: string[];
+      from?: string | null;
+    }) =>
       [
-        `สวัสดี ขอราคาและคำแนะนำประกันรถ${vehicle ? ` ${vehicle}` : ""}`,
-        details?.usage ? `การใช้งาน: ${details.usage}` : null,
-        details?.priorities?.length ? `สิ่งที่สำคัญ: ${details.priorities.join(", ")}` : null,
-        plans.length ? `แผนที่สนใจ: ${plans.join(", ")}` : null,
+        "ขอราคาประกันรถยนต์ (จากเว็บไซต์)",
+        `รถ: ${q.car ?? ""}${q.car && q.ev ? " (EV)" : ""}`,
+        `ปี: ${q.year ?? ""}`,
+        `รุ่นย่อย/เครื่องยนต์: ${q.trim ?? ""}`,
+        q.usage ? `การใช้งาน: ${q.usage}` : null,
+        q.priorities?.length ? `สิ่งที่สำคัญ: ${q.priorities.join(", ")}` : null,
+        q.plans?.length ? `แผนที่สนใจ: ${q.plans.join(", ")}` : null,
+        "ประเภทประกันที่สนใจ: ",
+        "ซ่อมห้างหรืออู่: ",
+        "ประกันเดิมหมดวันที่: ",
+        q.from ? `(จากหน้า: ${q.from})` : null,
       ]
-        .filter(Boolean)
+        .filter((line) => line !== null)
         .join("\n"),
+    /** Where the customer came from, for the last line of quoteRequest. */
+    from: {
+      home: "หน้าแรก",
+      model: (car: string) => car,
+    },
   },
 };
