@@ -60,7 +60,7 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
 | C2 | Workers plan. Measured 2026-09-26 on **Workers Free** (10 ms CPU limit): live pages use 26–273 ms CPU (`/` 273 ms cold, `/quote/results` 62, `/lab` 51, `/quote` 43, `/advisor` 37, `/compare` 32, `/admin/login` 26), so real traffic risks error 1102 (exceeded CPU). Lowering PBKDF2 iterations would not fix it (~14 ms). Recommendation: Workers Paid ($5/month). No code change needed. Until then, watch for 1102 errors. | Blocked | **Owner: Workers Paid decision (O9)** |
-| C10 | Search Console follow-up after the SEO merge `4444129` (2026-10-12): once the owner has done O11, check the Pages report: `/advisor`, the homepage and the Lab articles indexed, "Excluded by noindex" fixed, sitemap read (28 URLs live on 2026-11-16). | Blocked | Owner steps (O11) |
+| C10 | Search Console follow-up after the SEO merge `4444129` (2026-10-12). **Reviewed 2026-11-17** (progress.md):<br>- 41 pages indexed, 33 not; 31 of the 33 are intended (noindex journey URLs, `/plans` canonicals, redirects, a font file).<br>- The homepage and Lab articles are indexed; the sitemap was read 2026-11-13 (Success).<br>- Fixed the same day: `/quote` dropped from the sitemap (`829fa9a`, 27 URLs), and the hidden-product redirects made permanent 308 (`6fe828b`).<br>- Left to do: around **2026-11-24**, re-check the Pages report and confirm `/advisor` and `/insurance/honda/honda-city` are indexed (both were "Discovered, currently not indexed"; indexing requested 2026-11-17).<br>- Do not "Validate fix" the intended states. | In progress | Google crawl |
 | C3 | Live QA: real phones (iOS Safari, Android Chrome), speed on the live URL, and `e2e:journey` / `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. Hand visual issues to the designer. Last live checks: journey + a11y passed on the live site 2026-10-12 (SEO merge); HTTP spot check 2026-11-16 (pages 200, www/http → 301 apex, HSTS 1 year, workers.dev off). Real-device and live speed tests not recorded yet. | In progress | — |
 | C11 | Email: route info@unlimitinsure.com once the destination is verified (routing rule + test), then DNS records / DMARC (Cloudflare review U6). Then the copywriter switches `contact.email` from the current Gmail address. | Blocked | O10 |
 | C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). Still open in code on 2026-11-16; purchase is off, so no live impact yet. Must be fixed before C6. Back with Core since Codex retired (2026-11-17, was X2). Add vitest cases in `lib/applications/applications.test.ts` for first payment, slip sent back without a new upload (refused), with a new upload (allowed). | To do | — |
@@ -142,7 +142,6 @@ Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets th
 | # | Needed | Status | Unblocks |
 |---|---|---|---|
 | O9 | Workers Free vs Paid ($5/month) | To do | C2 |
-| O11 | Search Console, after the 2026-10-12 SEO merge: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex". Not recorded as done. | To do | C10 |
 | O10 | info@unlimitinsure.com destination verification | To do | C11 |
 | O7 | Real advisor portrait (no AI person). Real people, cars and places always come from the owner's photos. | To do | D1 |
 | O3 | Consent to display from each named broker (recorded for Nithi; needed for นางสาววนาลี บุญเกิด); confirm name spelling. Licence numbers and the company answer are in. | In progress | Verify list, C6 |
@@ -150,6 +149,7 @@ Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets th
 | O4 | Real rate tables and quotation files from insurers | To do | C4, W5 |
 | O5 | Receiving account for premiums (name, PromptPay or bank) | To do | C6 |
 | **Done** | | | |
+| O11 | Search Console steps after the 2026-10-12 SEO merge, done on 2026-11-17 from the owner account by Core, at the owner's request in chat:<br>- The sitemap was already submitted (2026-09-27).<br>- Indexing requested for `/advisor`, `/insurance/honda/honda-city`, `/lab/dealer-vs-garage` and `/lab/what-is-excess`; the homepage was already indexed.<br>- "Validate fix" dropped: the noindex, canonical and redirect states are intended. | Done 2026-11-17 | C10 |
 | O1 | Secrets typed during C1 | Done 2026-09-26 | Go live |
 | O2 | Domain: unlimitinsure.com | Done 2026-09-26 | C5, W6 |
 | O6 | Contact channels (LINE, phone, Facebook, contact email); except info@unlimitinsure.com (O10) | Done 2026-09-27 | W2 |
