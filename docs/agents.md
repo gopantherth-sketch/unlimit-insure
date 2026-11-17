@@ -11,7 +11,7 @@
 | ~~Codex~~ | Retired 2026-11-17 | — | Open tasks moved: X2 → Core (C8), X3 → Cursor (Y5), X4 → Cursor (Y6) | — |
 
 **Images (all projects)**
-- Generated images → **Grok**.
+- Generated images → **Gemini** (owner, 2026-11-17: Grok was not good at graphics). Grok stays the copywriter.
 - Diagrams, icons, infographics → **Claude** (Core), as SVG in the repo.
 - Real cars, places and people → the **owner's photos**.
 - Never Canva or Codex.
@@ -105,7 +105,7 @@ DevOps engineer, added 2026-11-16; also designer and copy-applier from 2026-11-1
 | Y1 | Deploys unblocked. PR #1 (`cursor/x4-cache-delivery`, head `d3cad08`) merged `--no-ff` as `c06d641`; the dashboard build command now has the Next 15 flag; the Cloudflare Git build passed on `c06d641` (C12). | Done 2026-11-16 | — |
 
 ### Designer (Cursor, from 2026-11-17)
-Images follow the image rule in the team section: generated images from Grok, SVG diagrams/icons from Core, real photos from the owner.
+Images follow the image rule in the team section: generated images from Gemini, SVG diagrams/icons from Core, real photos from the owner.
 
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
