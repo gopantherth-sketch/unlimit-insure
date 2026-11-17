@@ -181,3 +181,18 @@ Owners: **Core** = system core manager (code, data, deploy) · **Designer** · *
   - **Live LINE message:** reads "ปีรถ: …" and has the bracketed options.
   - **Checks before the merge:** tsc, 62 tests, cf:build, `e2e:journey`, `e2e:a11y` (54 pages, 0 violations).
   - **Layout:** the hint wraps to two lines at 1024 px; that is for D9.
+- **C10 / O11, Search Console review, 2026-11-17 (read only; nothing clicked in Search Console):** property `sc-domain:unlimitinsure.com`, read from the owner's Google account.
+  - **Pages:** 41 indexed, 33 not indexed. Reasons, all with validation "Not started":
+    - Excluded by noindex (19, Website): `/advisor?brand=…&plans=…`, `/compare?…` and `/quote/results?…` journey URLs, last crawled 8–20 Oct. **Expected:** noindex on purpose; live `/advisor?…` returns `noindex, follow` with canonical `/advisor`.
+    - Alternate page with proper canonical tag (7, Website): `/plans/<id>?brand=…&model=…&year=2025` (BYD Dolphin, Corolla Cross), crawled 17–18 Oct. **Expected:** these now 307 to `/advisor`.
+    - Page with redirect (4, Website): `https://www.`, `http://www.`, `http://` home, `/quote/results`. **Expected** (301 to apex; `/quote/results` 307).
+    - Discovered, currently not indexed (2, Google): **`/advisor`** and `/insurance/honda/honda-city`, never crawled. **Needs the owner:** request indexing.
+    - Crawled, currently not indexed (1, Google): `http://unlimitinsure.com/_next/static/media/…woff2` (a font file, Oct 1). **Expected**, harmless.
+  - URL inspection: `/` is on Google (indexed).
+  - **Sitemaps:** `https://unlimitinsure.com/sitemap.xml`, submitted 2026-09-27, last read 2026-11-13, Success, 28 pages discovered. The "submit sitemap" step in O11 is already done.
+  - **Performance, last 3 months (web):** 2 clicks, 350 impressions, CTR 0.6%, average position 58.7. The clicks came from `/insurance/mg/mg-4` and `/insurance/toyota/toyota-corolla-cross`. Top pages by impressions: `/insurance/byd/byd-dolphin` (111), `/lab/type1-vs-2plus` (77), `/lab/ev-insurance` (51), `/insurance/byd/byd-atto-3` (31), `/insurance/isuzu/isuzu-d-max` (22). Top queries (39 in all, 0 clicks each): "ประกัน ชั้น 1 กับ 2+ ต่างกันอย่างไร" (51), "ประกันรถไฟฟ้า byd" (32), "ประกัน byd dolphin" (28), "ประกันรถ ev ต่างจากรถน้ำมันอย่างไร" (25), plus Indonesian "asuransi mobil byd …" queries.
+  - **Repo and live check (curl):** www and http 301 to the apex (`worker.ts` → `lib/edge.ts`). `/quote`, `/compare`, `/plans/*`, `/buy/*` 307 to `/advisor` (Next `redirect()` in the page files). Robots disallows `/admin` and `/api` only. Canonicals are correct. 27 of 28 sitemap URLs return 200.
+  - **Needs a code fix (not made; waiting for the owner's OK):**
+    1. `app/sitemap.ts` hardcodes `/quote`, which redirects to `/advisor` while products are hidden. Leave it out while there are no products, as `/garage` is gated today.
+    2. Optional: if products stay hidden for long, make the hidden-product redirects permanent (`permanentRedirect`, 308) so Google drops the old `/plans`, `/compare` and `/quote` URLs sooner.
+  - **Owner steps (O11, updated):** sitemap already submitted, nothing to do there. Request indexing for `/advisor` (not indexed yet), `/insurance/honda/honda-city`, and 2–3 Lab articles that aren't showing yet (e.g. `/lab/dealer-vs-garage`, `/lab/flood-cover`). Do **not** click "Validate fix" on noindex, alternate canonical or redirect: those states are intended, so validation would fail or prove nothing.
