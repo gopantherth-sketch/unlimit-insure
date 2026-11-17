@@ -8,7 +8,7 @@ export default function NotFound() {
     <div className="container-page max-w-xl py-24 text-center">
       <p className="eyebrow">404</p>
       <h1 className="mt-3 text-3xl font-bold">ไม่พบหน้าที่คุณต้องการ</h1>
-      <p className="mt-3 text-navy-500">ลิงก์อาจเปลี่ยนไปแล้ว หรือแพ็กเกจนี้ไม่มีให้บริการ</p>
+      <p className="mt-3 text-navy-500">ลิงก์อาจเปลี่ยนไปแล้ว เริ่มจากหน้าแรกหรือคุยกับที่ปรึกษาทาง LINE ได้</p>
       <Link href="/" className={buttonClass("primary", "md", "mt-8")}>
         กลับหน้าแรก
       </Link>
