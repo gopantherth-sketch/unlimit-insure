@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { QuoteWizard } from "@/components/quote/QuoteWizard";
 import { getPublicCatalog } from "@/lib/server/catalog";
+import { parseTrim, parseVehicle, withJourney } from "@/lib/params";
 
 export const metadata: Metadata = seo("/quote");
 export const dynamic = "force-dynamic";
@@ -22,7 +23,7 @@ type SearchParams = Record<string, string | string[] | undefined>;
 
 export default async function QuotePage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const [catalog, sp] = await Promise.all([getPublicCatalog(), searchParams]);
-  if (catalog.products.length === 0) redirect("/advisor");
+  if (catalog.products.length === 0) redirect(withJourney("/advisor", { vehicle: parseVehicle(sp), trim: parseTrim(sp) }));
   const step = typeof sp.step === "string" ? sp.step : "car";
   const hasCar = typeof sp.brand === "string" && typeof sp.model === "string" && typeof sp.year === "string";
   const reserved = hasCar && step in RESERVED ? RESERVED[step] : RESERVED.car;

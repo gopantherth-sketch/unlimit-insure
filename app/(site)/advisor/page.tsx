@@ -5,7 +5,8 @@ import { LineChatPreview } from "@/components/brand/LineChatPreview";
 import { homeCopy } from "@/content/home";
 import { AdvisorContact } from "@/components/insurance/AdvisorContact";
 import { contextFromParams } from "@/lib/leads";
-import type { RawParams } from "@/lib/params";
+import { parseTrim, type RawParams } from "@/lib/params";
+import { vehicleForm } from "@/content/vehicle-form";
 import { getPublicCatalog } from "@/lib/server/catalog";
 import { resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
@@ -17,7 +18,10 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 }
 
 export default async function AdvisorPage({ searchParams }: { searchParams: Promise<RawParams> }) {
-  const context = contextFromParams(await searchParams);
+  const raw = await searchParams;
+  const context = contextFromParams(raw);
+  // X8: the optional sub-model only goes into the on-screen summary and the LINE message, never the stored lead.
+  const trim = parseTrim(raw);
   const catalog = await getPublicCatalog();
   const vehicle = context.vehicle ? resolveVehicle(catalog, context.vehicle) : null;
   const planNames = Object.fromEntries(catalog.products.map((p) => [p.id, p.name]));
@@ -49,7 +53,7 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
         </div>
       </section>
       <div className="container-page mt-6 sm:mt-8">
-        <AdvisorContact context={safeContext} planNames={planNames} vehicleText={vehicle ? vehicleLabel(vehicle) : null} />
+        <AdvisorContact context={safeContext} planNames={planNames} vehicleText={vehicle ? vehicleForm.withTrim(vehicleLabel(vehicle), trim) : null} />
       </div>
     </div>
   );
