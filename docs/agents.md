@@ -69,6 +69,8 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | C6 | Switch on online purchase: R2 bucket, uncomment `r2_buckets`, `PURCHASE_ENABLED=true`, owner enters the payment account in admin → ตั้งค่า, then run `e2e:purchase` locally first. | Blocked | C4, C8, O5, O8 |
 | C7 | Staff alerts via LINE (parked by the owner). The code is ready (`lib/notify`); it needs a LINE OA Messaging API token and `LINE_ALERT_TO` secrets. | Blocked | Owner decision |
 | C9 | Phase 4: renewal reminders and renewal compare (roadmap P4). | Blocked | Real policies |
+| C14 | **Shop build (Option 1: order on LINE, pay by PromptPay; owner 2026-11-17).** Brief: `docs/tasks/shop-option1.md`. Behind `SHOW_SHOP=false`: `/shop` and product pages with real prices, a prefilled LINE order message, an admin Orders page (status, stock, PromptPay QR with the exact amount via `lib/payment`), migration `0004_shop.sql`, vitest and `e2e:shop`. No address, phone or slip stored on the site. Can start before O12 with `[รอข้อมูล]` placeholders. | To do | — |
+| C15 | **Shop launch.** Turn on `SHOW_SHOP`, add the footer link and the sitemap entry, request indexing, place one real test order. | Blocked | C14, W13, D10, O12, O13 |
 | **Done** | | | |
 | C1 | Go live. Deployed 2026-09-26 (`59eb9a6`), migrations 0000–0003, secrets set, owner login confirmed, `main` auto-deploys. workers.dev is now off (`workers_dev: false`, returns 404); the site runs on unlimitinsure.com. | Done 2026-09-26 | — |
 | C5 | Domain. `unlimitinsure.com` and `www.unlimitinsure.com` are Worker custom domains (`wrangler.jsonc`); `worker.ts` 301-redirects www and http to https://unlimitinsure.com (2026-09-27). Sitemap, robots and canonicals use the apex (checked live 2026-11-16). | Done 2026-09-26 | — |
@@ -113,6 +115,7 @@ Images follow the image rule in the team section: generated images from Gemini, 
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
 | D9 | **X8 review (Cursor).** Brief: `docs/tasks/cursor-d9.md`. Live since `39bea62` (owner chose to deploy before review), check two things at 390 px and 1440 px:<br>- the selector row with four fields on the homepage `QuickQuote` (`/quote` now redirects to `/advisor`);<br>- the trim text on `/advisor`.<br>Axe scan clean, no overflow. Send findings to Core; no wording changes. | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
+| D10 | **Shop design review (Cursor).** After C14: product card and page at 390/1440 px, variant and quantity picker, out-of-stock state, admin Orders page. Axe clean, no overflow. Brief: `docs/tasks/shop-option1.md`. | Blocked | C14 |
 | **Done** | | | |
 | D5 | LINE-first look polished (`design/line-first-polish`, merged `4a4dae9`). | Done 2026-09-27 | — |
 | D6 | Full visual review of the live site (`design/visual-review`, merged `8badc5c`, follow-ups `71b19ef`). | Done 2026-09-27 | — |
@@ -126,6 +129,7 @@ Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets th
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
 | W12 | **Content plan from Search Console (2026-11-17).** More LINE leads instead of ads. Three rounds, A first:<br>- A: better Google titles and descriptions for the 5 pages with impressions but no clicks (BYD Dolphin, BYD Atto 3, Isuzu D-Max, Lab type 1 vs 2+, Lab EV).<br>- B: two new Lab articles, EV claims and a BYD EV guide.<br>- C: four new EV model pages (BYD Seal, Sealion 7, Tesla Model Y, ORA Good Cat).<br>Brief: `docs/tasks/w12-content-plan.md`. Gemini drafts, the owner approves, Cursor applies on `copy/w12-a`/`-b`/`-c`, Core merges, then requests indexing. | To do | Owner pastes round A into Gemini |
+| W13 | **Shop copy.** `/shop` intro and SEO text, product names and descriptions (owner facts only), prefilled order message labels (keep the first line), status names, delivery and returns, shop sections in `/privacy` and `/terms`. Brief: `docs/tasks/shop-option1.md`. | Blocked | O12 |
 | W10 | **Review Core's X5 copy edits** ([PR #4](https://github.com/gopantherth-sketch/unlimit-insure/pull/4)). The x5 copy said the site asks about usage and priorities, but under the direct flow it asks only for the car. Core edited 6 sentences in `content/faq.ts`, `lab.ts`, `legal.ts`, `models.ts` and `seo.ts`, plus `SYSTEM.md`. Check the wording on `copy/x5-review` (live since `b372b3f`). | To do | — |
 | W6 | SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`). Unblocked: the domain is unlimitinsure.com. Build on the 2026-10-12 SEO merge `4444129` (`/advisor` indexed, canonicals on Lab articles, JSON-LD). | To do | — |
 | W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. Feeds O8. | To do | — |
@@ -149,6 +153,8 @@ Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets th
 | O8 | Legal / licensed review of the verify list | To do | Launch sign-off, C6 |
 | O4 | Real rate tables and quotation files from insurers | To do | C4, W5 |
 | O5 | Receiving account for premiums (name, PromptPay or bank) | To do | C6 |
+| O12 | **Shop details:** seller name and details (and tax ID if any), products, variants, prices and starting stock, own product photos, courier and shipping fee, return policy, shop PromptPay ID (typed into admin by the owner). List in `docs/tasks/shop-option1.md`. | To do | C15, W13 |
+| O13 | **Shop checks:** accountant (DBD e-commerce registration, VAT, receipts); licensed reviewer (selling products on the broker site, no gifts tied to policies); privacy shop section with O8. | To do | C15 |
 | **Done** | | | |
 | O11 | Search Console steps after the 2026-10-12 SEO merge, done on 2026-11-17 from the owner account by Core, at the owner's request in chat:<br>- The sitemap was already submitted (2026-09-27).<br>- Indexing requested for `/advisor`, `/insurance/honda/honda-city`, `/lab/dealer-vs-garage` and `/lab/what-is-excess`; the homepage was already indexed.<br>- "Validate fix" dropped: the noindex, canonical and redirect states are intended. | Done 2026-11-17 | C10 |
 | O1 | Secrets typed during C1 | Done 2026-09-26 | Go live |

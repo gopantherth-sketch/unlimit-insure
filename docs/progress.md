@@ -215,3 +215,5 @@ Owners: **Core** = system core manager (code, data, deploy) · **Designer** · *
 - Ads would need a PDPA consent banner, and their scripts would slow pages and add CPU on Workers Free (C2).
 
 Focus instead on more leads: car-model pages and Lab articles for the queries people already search (type 1 vs 2+, BYD/EV insurance). Revisit only with steady traffic in the thousands of visits a month, and then only on Lab articles, never on `/advisor` or quote pages.
+
+**Shop, Option 1 (owner, 2026-11-17):** sell car-care products (microfiber cloths first) as real sales on the site. Customers order on LINE and pay by PromptPay; admins confirm the slip and ship. No on-site checkout or payment provider. Brief `docs/tasks/shop-option1.md`; new rows C14 (build behind `SHOW_SHOP=false`), C15 (launch), D10, W13, O12 (shop details), O13 (accountant and licensed-reviewer checks). `CLAUDE.md` has a shop rule: the shop shows real prices, `PURCHASE_ENABLED` / `SHOW_PRICES` stay insurance-only, and no gifts tied to policies.
