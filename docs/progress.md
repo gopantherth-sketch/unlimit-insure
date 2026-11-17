@@ -49,6 +49,12 @@ Local and live checks passed, and so did journey and a11y. Owner, in Search Cons
     - `/advisor?…&trim=1.8 Hybrid <b>Premium` gives the LINE message "…Toyota Corolla Cross 2022 · 1.8 Hybrid b Premium" (`<` `>` removed) and is noindex.
     - `/quote?…&trim=1.8` redirects (307) to `/advisor?…&trim=1.8`.
     - D9 and W9 will follow as small changes.
+- **Advisor LINE message for admins, 2026-11-17 (owner request, recommended format):** PR #6, merged as `2006483`. "Workers Builds: unlimit-insure" passed at 08:00 UTC.
+  - **Format:** one detail per line under a fixed first line "ขอราคาประกันรถยนต์ (จากเว็บไซต์)" (for tagging in LINE OA Manager).
+  - **Details:** car (with " (EV)" for electric models), year, sub-model, and three blanks for the customer (type of cover, dealer or garage repair, current policy end date).
+  - **Source page:** shown on the last line, from an allow-listed `from` param (`home`, `model`). Model-page links leave the year blank, because that page picks a default year.
+  - **Checks:** tsc, 62 tests, cf:build, `e2e:journey`, `e2e:a11y` (54 pages, 0 violations). Live `/advisor` messages checked with and without a car.
+  - **Copy review:** W11.
 - Playwright's bundled headless shell is missing on this PC; e2e ran with `CHROMIUM` set to an installed Playwright Chromium.
 
 **Cloudflare review (Dev Report 2026-09-27), code items done:** `worker.ts` wraps the OpenNext handler: http and www → 301 `https://unlimitinsure.com` (U1/U4), security headers HSTS (1 day; raise to 1 year after a week), nosniff, X-Frame-Options DENY, Referrer-Policy (U5), shared-cacheable HTML → `s-maxage=300, stale-while-revalidate` (U3); `public/_headers` caches `/_next/static/*` for a year. `workers_dev: false` (the workers.dev address is off; use unlimitinsure.com). Local preview needs `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`. Open: U6 email DNS records (owner Q1), optional dashboard "Always Use HTTPS", U2 plan choice.
