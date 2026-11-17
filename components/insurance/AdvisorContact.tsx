@@ -4,6 +4,7 @@ import { ClipboardList, MessageCircle } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { CallButton, LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
+import { vehicleForm } from "@/content/vehicle-form";
 import { track } from "@/lib/analytics/track";
 import { lineAddUrl } from "@/lib/contact";
 import { readJourney } from "@/lib/journey";
@@ -11,9 +12,19 @@ import type { LeadContext } from "@/lib/leads";
 import { qrSvg } from "@/lib/payment/qr";
 import { priorityLabel, usageLabel } from "@/lib/priorities";
 
+/** The customer's car as shown on /advisor. Year is null when the customer did not pick one. */
+export interface AdvisorCar {
+  name: string;
+  ev: boolean;
+  year: number | null;
+  trim: string | null;
+}
+
 interface Props {
   context: Omit<LeadContext, "viewedPlanIds" | "comparedPlanIds">;
-  vehicleText: string | null;
+  car: AdvisorCar | null;
+  /** Page the customer came from, for the LINE message. */
+  fromText: string | null;
   planNames: Record<string, string>;
 }
 
@@ -22,7 +33,7 @@ interface Props {
  * go into a prefilled LINE message they can edit and send themselves. (The lead form is kept in
  * AdvisorHandoff.tsx for when the back office returns.)
  */
-export function AdvisorContact({ context, vehicleText, planNames }: Props) {
+export function AdvisorContact({ context, car, fromText, planNames }: Props) {
   const id = useId();
   const planName = (pid: string) => planNames[pid] ?? pid;
   const [compared, setCompared] = useState<string[]>([]);
@@ -33,10 +44,17 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
   }, []);
 
   const plans = (context.selectedPlanIds.length ? context.selectedPlanIds : compared).filter((id) => id in planNames);
-  const message = contact.messages.plans(plans.map(planName), vehicleText, {
+  const message = contact.messages.quoteRequest({
+    car: car?.name,
+    ev: car?.ev,
+    year: car?.year,
+    trim: car?.trim,
     usage: context.usage ? usageLabel(context.usage) : undefined,
     priorities: context.priorities.map(priorityLabel),
+    plans: plans.map(planName),
+    from: fromText,
   });
+  const vehicleText = car ? vehicleForm.withTrim([car.name, car.year].filter(Boolean).join(" "), car.trim) : null;
 
   const summary: { label: string; value: string }[] = [
     ...(vehicleText ? [{ label: "รถ", value: vehicleText }] : []),

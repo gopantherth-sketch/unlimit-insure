@@ -56,7 +56,7 @@ export default async function ModelPage({ params }: { params: Params }) {
       <JsonLd data={breadcrumbLd([{ name: "ประกันรถตามรุ่น", path: "/insurance" }, { name: `${vehicle.brand.name} ${vehicle.model.name}`, path: `/insurance/${brandId}/${modelId}` }])} />
       <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body={copy.intro}>
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Link href={withJourney("/advisor", journey)} className={buttonClass("primary", "lg", "rounded-xl")}>
+          <Link href={withJourney("/advisor", { ...journey, from: "model" })} className={buttonClass("primary", "lg", "rounded-xl")}>
             ถามประกันสำหรับ {vehicle.model.name}
             <ArrowRight aria-hidden className="h-5 w-5" />
           </Link>

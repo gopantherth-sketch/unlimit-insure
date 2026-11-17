@@ -41,6 +41,15 @@ export function parseTrim(raw: RawParams): string | undefined {
   return cleanTrim(first(raw.trim));
 }
 
+/** Which page sent the customer to /advisor (shown on the LINE message's last line). Allow-listed. */
+export const fromIds = ["home", "model"] as const;
+export type FromId = (typeof fromIds)[number];
+
+export function parseFrom(raw: RawParams): FromId | undefined {
+  const f = first(raw.from);
+  return fromIds.find((id) => id === f);
+}
+
 export function parseUsage(raw: RawParams): UsageId | undefined {
   const u = first(raw.use);
   return usageIds.find((id) => id === u);
@@ -73,6 +82,7 @@ export interface JourneyState {
   priorities?: PriorityId[];
   plans?: string[];
   step?: string;
+  from?: FromId;
 }
 
 export function buildQuery(state: JourneyState): string {
@@ -88,6 +98,7 @@ export function buildQuery(state: JourneyState): string {
   if (state.priorities && state.priorities.length > 0) sp.set("p", state.priorities.join(","));
   if (state.plans && state.plans.length > 0) sp.set("plans", state.plans.join(","));
   if (state.step) sp.set("step", state.step);
+  if (state.from) sp.set("from", state.from);
   const s = sp.toString();
   return s ? `?${s}` : "";
 }
