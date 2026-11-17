@@ -5,7 +5,7 @@ import { pageSeo } from "@/content/seo";
 import { AdvisorCTA } from "@/components/home/AdvisorCTA";
 import { AfterPurchase } from "@/components/home/AfterPurchase";
 import { ContentRow } from "@/components/home/ContentRow";
-import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
+import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { FaqSection } from "@/components/home/FaqSection";
 import { FeatureStrip } from "@/components/home/FeatureStrip";
 import { Hero } from "@/components/home/Hero";
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const catalog = await getCatalog();
   const demo = getDemo(catalog);
-  const labels = demo?.quotes.map((_, i) => `แผน ${String.fromCharCode(65 + i)}`) ?? [];
 
   return (
     <>
@@ -44,14 +43,12 @@ export default async function HomePage() {
       <WhyUnlimit />
       {/* The compare demo explains price differences, so it waits for real prices. */}
       {SHOW_PRICES && demo && demo.quotes.length > 1 && <SmartCompareDemo vehicle={demo.vehicle} quotes={demo.quotes} />}
-      {demo && demo.quotes.length > 0 && (
-        <section aria-labelledby="sim-title" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16">
-          <div className="container-page">
-            <SectionHeading id="sim-title" eyebrow="Real-life coverage" title={homeCopy.scenarioTitle} body={homeCopy.scenarioBody} />
-            <CoverageSimulator quotes={demo.quotes} labels={labels} />
-          </div>
-        </section>
-      )}
+      <section aria-labelledby="sim-title" className="bg-white pb-16 pt-14 sm:pb-20 sm:pt-16">
+        <div className="container-page">
+          <SectionHeading id="sim-title" eyebrow="Real-life coverage" title={homeCopy.scenarioTitle} body={homeCopy.scenarioBody} />
+          <ScenarioGuide placement="home" />
+        </div>
+      </section>
       <LifestyleBanner />
       {/* Articles only: the type table repeated the simulator on sample data (W8 review). */}
       <ContentRow />

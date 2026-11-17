@@ -1,4 +1,4 @@
-import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
+import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { CompareTable } from "@/components/insurance/CompareTable";
 import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { ExcessCalculator } from "@/components/lab/ExcessCalculator";
@@ -76,13 +76,6 @@ function PairCompare({ catalog, selection, ids }: { catalog: Catalog; selection:
   );
 }
 
-function FloodSimulator({ catalog }: { catalog: Catalog }) {
-  const data = quotesFor(catalog, defaultVehicle);
-  if (!data) return null;
-  const quotes = pick(data.quotes, ["a-type1-dealer", "c-type1-garage", "a-type2plus"]);
-  return <CoverageSimulator quotes={quotes} labels={quotes.map((_, i) => `แผน ${String.fromCharCode(65 + i)}`)} />;
-}
-
 export async function LabTool({ tool }: { tool: LabToolId }) {
   const catalog = await getCatalog();
   switch (tool) {
@@ -93,7 +86,7 @@ export async function LabTool({ tool }: { tool: LabToolId }) {
     case "excessCalculator":
       return <ExcessCalculator />;
     case "floodCheck":
-      return <FloodSimulator catalog={catalog} />;
+      return <ScenarioGuide placement="lab" />;
     case "evCoverage":
       return <PairCompare catalog={catalog} selection={defaultEvVehicle} ids={["c-ev-type1", "a-type1-dealer"]} />;
   }

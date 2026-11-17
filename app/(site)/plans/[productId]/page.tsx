@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, Check, FileText, Headset } from "lucide-react";
-import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
+import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
 import { MatchBadge, MatchList } from "@/components/insurance/MatchSummary";
@@ -162,14 +162,12 @@ export default async function PlanPage({ params, searchParams }: { params: Param
               )}
             </section>
 
-            {quote && (
-              <section aria-labelledby="sim-title">
-                <h2 id="sim-title" className="mb-4 text-[22px] font-bold text-navy-900">
-                  เกิดแบบนี้ แผนนี้คุ้มครองไหม?
-                </h2>
-                <CoverageSimulator quotes={[quote]} labels={["แผนนี้"]} showEv={vehicle ? isElectric(vehicle) : false} />
-              </section>
-            )}
+            <section aria-labelledby="sim-title">
+              <h2 id="sim-title" className="mb-4 text-[22px] font-bold text-navy-900">
+                เกิดเหตุแบบนี้ ต้องตรวจอะไรในกรมธรรม์?
+              </h2>
+              <ScenarioGuide placement="plan" showEv={vehicle ? isElectric(vehicle) : false} vehicle={vehicle ? vehicleLabel(vehicle) : undefined} />
+            </section>
 
             <section aria-labelledby="terms-title" className="card rounded-xl2 p-6 sm:p-8">
               <h2 id="terms-title" className="text-[22px] font-bold text-navy-900">

@@ -16,6 +16,13 @@ if ((await bar.getByRole("link", { name: /โทรหาเรา/ }).getAttrib
 if (!(await bar.getByRole("link", { name: /แอดไลน์/ }).getAttribute("href"))?.startsWith("https://line.me/R/ti/p/%40unlimit.insure")) throw new Error("mobile bar LINE link");
 step("mobile contact bar: LINE + tel");
 await noPrice("home");
+const guide = p.locator('section[aria-labelledby="sim-title"]');
+await guide.locator("label").filter({ hasText: "น้ำท่วม" }).click();
+const guideText = await guide.innerText();
+if (/890,000|850,000|930,000|2,000|อยู่ในความคุ้มครอง|วงเงินสูงสุด/.test(guideText)) throw new Error("mock coverage result shown in event guide");
+const eventHref = await guide.getByRole("link", { name: /ถามเรื่องนี้ทาง LINE/ }).getAttribute("href");
+if (!eventHref || !decodeURIComponent(eventHref).includes("น้ำท่วม")) throw new Error("event missing from LINE message");
+step("event guide: no mock verdict; selected event in LINE message");
 await p.getByRole("button", { name: /เริ่มเลือกแผน/ }).click();
 await p.waitForURL(/step=use/); step("hero → usage step");
 await p.getByText("รถครอบครัว").click();
