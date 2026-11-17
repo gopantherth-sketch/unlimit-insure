@@ -1,4 +1,4 @@
-> **Superseded 2026-11-17:** the copywriter role moved to Grok. Use `docs/tasks/grok-w9-w11.md`.
+> **Superseded 2026-11-17:** the copywriter role moved to Gemini. Use `docs/tasks/gemini-w9-w11.md`.
 
 # UNL W9: text for the sub-model / engine-size field (copywriter)
 

@@ -1,6 +1,6 @@
-# Grok brief: W9 + W11 (car-detail field and LINE message text)
+# Gemini brief: W9 + W11 (car-detail field and LINE message text)
 
-Paste everything below the line into Grok. The owner approves Grok's answer, then hands it to Cursor (see "For Cursor" at the end).
+Paste everything below the line into Gemini. The owner approves Gemini's answer, then hands it to Cursor (see "For Cursor" at the end).
 
 ---
 

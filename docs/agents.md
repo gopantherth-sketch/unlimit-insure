@@ -1,17 +1,17 @@
 # Team: who does what
 
-**Owner decision, 2026-11-17:** to save Claude quota, Claude is Core only. The designer and copywriter roles moved off Claude, and Codex is retired (ChatGPT cancelled).
+**Owner decision, 2026-11-17:** to save Claude quota, Claude is Core only. Later the same day the owner moved copywriting and generated graphics from Gemini to **Gemini**. The designer and copywriter roles moved off Claude, and Codex is retired (ChatGPT cancelled).
 
 | Role | Who | Folder | Owns | Git |
 |---|---|---|---|---|
 | **Core** (project lead) | Claude Code, brief `.claude/agents/unlimit-core.md` | `unlimit-insure` (has `main`) | Code, data, database, admin, APIs, security, tests, merging, deploys, Cloudflare, `docs/progress.md`, SVG diagrams/icons/infographics | Commits and pushes `main` |
-| **Copywriter** | **Grok** drafts; **Cursor** applies | Grok: chat only. Cursor: `unlimit-insure-copy` | Every customer-facing word (Thai and English), SEO text, disclosures, LINE prefilled messages, the verify list. The owner approves the wording. | Grok can't edit the repo. Cursor puts the approved text into `content/**` on `copy/*`, pushes; Core merges |
+| **Copywriter** | **Gemini** drafts; **Cursor** applies | Gemini: chat only. Cursor: `unlimit-insure-copy` | Every customer-facing word (Thai and English), SEO text, disclosures, LINE prefilled messages, the verify list. The owner approves the wording. | Gemini can't edit the repo. Cursor puts the approved text into `content/**` on `copy/*`, pushes; Core merges |
 | **Designer** | **Cursor** | `unlimit-insure-design` | Layout, colour, type, responsive and accessibility polish | Branch `design/*`, pushed; Core merges |
 | **DevOps** | **Cursor**, brief `AGENTS.md` | its own worktree | Build and deploy tooling; Cloudflare (Workers, caching, headers, Builds); performance and CPU; live checks | Branch `cursor/*`, pushed; Core merges |
 | ~~Codex~~ | Retired 2026-11-17 | — | Open tasks moved: X2 → Core (C8), X3 → Cursor (Y5), X4 → Cursor (Y6) | — |
 
 **Images (all projects)**
-- Generated images → **Gemini** (owner, 2026-11-17: Grok was not good at graphics). Grok stays the copywriter.
+- Generated images → **Gemini** (owner, 2026-11-17: Gemini was not good at graphics).
 - Diagrams, icons, infographics → **Claude** (Core), as SVG in the repo.
 - Real cars, places and people → the **owner's photos**.
 - Never Canva or Codex.
@@ -42,12 +42,12 @@ Run it again to reopen the windows. Each agent can run on its own too: open `cla
 
 First messages:
 - **Core:** "Use the unlimit-core agent brief in .claude/agents/unlimit-core.md. Read HANDOVER.md and docs/progress.md, then tell me the top 3 next steps."
-- The designer and copywriter windows are no longer used (2026-11-17). Keep the two worktrees: Cursor uses them for `design/*` and `copy/*` branches. The `.claude/agents/unlimit-designer.md` and `unlimit-copywriter.md` briefs still hold the house rules (tone, design system) for Cursor and Grok to follow.
+- The designer and copywriter windows are no longer used (2026-11-17). Keep the two worktrees: Cursor uses them for `design/*` and `copy/*` branches. The `.claude/agents/unlimit-designer.md` and `unlimit-copywriter.md` briefs still hold the house rules (tone, design system) for Cursor and Gemini to follow.
 
 ## How work flows
 1. The owner gives a request to Core.
 2. Core splits it into tasks with one owner each. Each task gets the goal, the files and what "done" looks like, and Core writes a paste-ready brief in `docs/tasks/`.
-3. Copy: the owner pastes the brief into Grok, approves the text, then hands it to Cursor, who applies it on `copy/*`.
+3. Copy: the owner pastes the brief into Gemini, approves the text, then hands it to Cursor, who applies it on `copy/*`.
 4. Design and DevOps: Cursor works on `design/*` or `cursor/*` and reports back.
 5. Core reviews, runs the checks, merges, deploys and updates `docs/progress.md`.
 
@@ -120,14 +120,14 @@ Images follow the image rule in the team section: generated images from Gemini, 
 | D7 | Logo mark as a 7.6 KB webp (`design/logo-webp`, merged `920ad3b`). Not in the handover list. | Done 2026-09-27 | — |
 | D8 | Lab article photos `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 960 × 640 webp, 50 KB / 23 KB, replacing the placeholder tiles on `/lab`. Designer approved (including the full technician in the repair photo); `design/article-images` merged as `3b7246f`, live and checked 2026-11-17. | Done 2026-11-17 | — |
 
-### Copywriter (Grok drafts, owner approves, Cursor applies, from 2026-11-17)
-Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets the text from Grok and approves it. Cursor puts it into `content/**` on `copy/*`, and Core merges.
+### Copywriter (Gemini drafts, owner approves, Cursor applies, from 2026-11-17)
+Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets the text from Gemini and approves it. Cursor puts it into `content/**` on `copy/*`, and Core merges.
 
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| W9 | **X8 field text.** Label, placeholder and hint for the optional sub-model / engine-size field. Owner's draft: label "รุ่นย่อย / ขนาดเครื่องยนต์ (ไม่บังคับ)", placeholder "เช่น 1.8 Hybrid Premium", hint "ช่วยให้ที่ปรึกษาเช็กราคาได้ตรงขึ้น". Also the joiner in LINE messages (" · "). X8 is live (`39bea62`). Grok brief (with W11): `docs/tasks/grok-w9-w11.md`. Cursor applies the approved text to `content/vehicle-form.ts` on `copy/w9-w11`. | To do | — |
+| W9 | **X8 field text.** Label, placeholder and hint for the optional sub-model / engine-size field. Owner's draft: label "รุ่นย่อย / ขนาดเครื่องยนต์ (ไม่บังคับ)", placeholder "เช่น 1.8 Hybrid Premium", hint "ช่วยให้ที่ปรึกษาเช็กราคาได้ตรงขึ้น". Also the joiner in LINE messages (" · "). X8 is live (`39bea62`). Gemini brief (with W11): `docs/tasks/gemini-w9-w11.md`. Cursor applies the approved text to `content/vehicle-form.ts` on `copy/w9-w11`. | To do | — |
 | W10 | **Review Core's X5 copy edits** ([PR #4](https://github.com/gopantherth-sketch/unlimit-insure/pull/4)). The x5 copy said the site asks about usage and priorities, but under the direct flow it asks only for the car. Core edited 6 sentences in `content/faq.ts`, `lab.ts`, `legal.ts`, `models.ts` and `seo.ts`, plus `SYSTEM.md`. Check the wording on `copy/x5-review` (live since `b372b3f`). | To do | — |
-| W11 | **Review the advisor LINE message** (`content/contact.ts` `messages.quoteRequest` / `messages.from`). The owner chose a one-detail-per-line format for admins, and Core wrote it ([PR #6](https://github.com/gopantherth-sketch/unlimit-insure/pull/6), live 2026-11-17).<br>- Fixed first line "ขอราคาประกันรถยนต์ (จากเว็บไซต์)".<br>- Car, year and sub-model lines, plus blanks for type of cover, dealer or garage repair, and current policy end date.<br>- Last line names the page the customer came from.<br>Wording only; keep the first line fixed (admins filter on it). Grok brief: `docs/tasks/grok-w9-w11.md`; Cursor applies it to `content/contact.ts` on `copy/w9-w11`. | To do | — |
+| W11 | **Review the advisor LINE message** (`content/contact.ts` `messages.quoteRequest` / `messages.from`). The owner chose a one-detail-per-line format for admins, and Core wrote it ([PR #6](https://github.com/gopantherth-sketch/unlimit-insure/pull/6), live 2026-11-17).<br>- Fixed first line "ขอราคาประกันรถยนต์ (จากเว็บไซต์)".<br>- Car, year and sub-model lines, plus blanks for type of cover, dealer or garage repair, and current policy end date.<br>- Last line names the page the customer came from.<br>Wording only; keep the first line fixed (admins filter on it). Gemini brief: `docs/tasks/gemini-w9-w11.md`; Cursor applies it to `content/contact.ts` on `copy/w9-w11`. | To do | — |
 | W6 | SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`). Unblocked: the domain is unlimitinsure.com. Build on the 2026-10-12 SEO merge `4444129` (`/advisor` indexed, canonicals on Lab articles, JSON-LD). | To do | — |
 | W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. Feeds O8. | To do | — |
 | W3 | Review the Phase 3 strings in `content/purchase.ts`: `tracking.yourTurn`, `tracking.waiting`, `tracking.stepOf`, `prepareTitle`, `prepareBody`, plus inline admin-facing messages if needed. Purchase is off, so before C6. | To do | — |

@@ -60,7 +60,8 @@ Local and live checks passed, and so did journey and a11y. Owner, in Search Cons
   - **Designer:** Cursor, on `design/*`.
   - **Images:** generated images come from Grok, SVG diagrams and icons from Core, real photos from the owner. Never Canva or Codex.
   - **Codex:** retired (ChatGPT cancelled). X1 dropped; X2 → Core C8; X3 → Cursor Y5; X4 → Cursor Y6.
-  - **Briefs:** `docs/tasks/grok-w9-w11.md` (W9 and W11) and `docs/tasks/cursor-d9.md` (D9). The old Claude brief `docs/tasks/w9-trim-text.md` is superseded.
+  - **Briefs:** `docs/tasks/gemini-w9-w11.md` (was `grok-w9-w11.md`) (W9 and W11) and `docs/tasks/cursor-d9.md` (D9). The old Claude brief `docs/tasks/w9-trim-text.md` is superseded.
+- **Gemini replaces Grok, 2026-11-17 (owner):** first generated images (Grok was not good at graphics), then copywriting too. Gemini drafts all customer-facing text and generated images; the owner approves; Cursor applies copy on `copy/*`. The brief was renamed to `docs/tasks/gemini-w9-w11.md`. The Grok lines above are history.
 - Playwright's bundled headless shell is missing on this PC; e2e ran with `CHROMIUM` set to an installed Playwright Chromium.
 
 **Cloudflare review (Dev Report 2026-09-27), code items done:** `worker.ts` wraps the OpenNext handler: http and www → 301 `https://unlimitinsure.com` (U1/U4), security headers HSTS (1 day; raise to 1 year after a week), nosniff, X-Frame-Options DENY, Referrer-Policy (U5), shared-cacheable HTML → `s-maxage=300, stale-while-revalidate` (U3); `public/_headers` caches `/_next/static/*` for a year. `workers_dev: false` (the workers.dev address is off; use unlimitinsure.com). Local preview needs `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`. Open: U6 email DNS records (owner Q1), optional dashboard "Always Use HTTPS", U2 plan choice.
