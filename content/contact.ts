@@ -9,8 +9,8 @@ const lineId = "@unlimit.insure";
  * The first entry is the operator and data controller of the site.
  */
 const brokers = [
-  { holder: "Nithi Apaisuwan", licenceNo: "6204049613", expires: "03/11/2570" }, // 2026-09-27
-  { holder: "นางสาววนาลี บุญเกิด", licenceNo: "6204049618", expires: "03/11/2570" }, // 2026-10-09, issued 04/11/2562
+  { holder: "นิธิ อภัยสุวรรณ (Nithi Apaisuwan)", licenceNo: "6204049613", expires: "03/11/2570" }, // 2026-09-27
+  { holder: "นางสาววนาลี บุญเกิด (Wanalee Boonkoed)", licenceNo: "6204049618", expires: "03/11/2570" }, // 2026-10-09, issued 04/11/2562
 ];
 const broker = brokers[0]!;
 
