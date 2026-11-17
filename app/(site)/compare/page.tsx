@@ -2,7 +2,7 @@ import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Headset } from "lucide-react";
-import { CoverageSimulator } from "@/components/home/CoverageSimulatorDemo";
+import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { CompareTable } from "@/components/insurance/CompareTable";
 import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { InsurerMark } from "@/components/insurance/InsurerMark";
@@ -79,9 +79,9 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
             </section>
             <section aria-labelledby="sim-title">
               <h2 id="sim-title" className="mb-4 text-[22px] font-bold text-navy-900 sm:text-2xl">
-                เกิดแบบนี้ แผนไหนคุ้มครอง?
+                เกิดเหตุแบบนี้ ต้องตรวจอะไรในกรมธรรม์?
               </h2>
-              <CoverageSimulator quotes={quotes} labels={labels} showEv={isElectric(vehicle)} />
+              <ScenarioGuide placement="compare" showEv={isElectric(vehicle)} vehicle={vehicleLabel(vehicle)} />
             </section>
             <section aria-labelledby="pick-title">
               <h2 id="pick-title" className="mb-4 text-[22px] font-bold text-navy-900 sm:text-2xl">

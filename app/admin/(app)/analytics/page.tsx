@@ -43,7 +43,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
     { title: "คำที่เปิดอ่านคำอธิบาย", items: breakdown(byDim.explain_opened, (d) => glossary[d as GlossaryKey]?.term ?? d) },
     { title: "สิ่งที่ลูกค้าเลือกว่าสำคัญ", items: breakdown(byDim.priority_selected, (d) => priorityLabel(d as PriorityId)) },
     { title: "การใช้รถ", items: breakdown(byDim.usage_selected, (d) => usageLabel(d as UsageId)) },
-    { title: "เหตุการณ์ที่จำลอง", items: breakdown(byDim.simulator_used, (d) => scenarioCopy[d as ScenarioId]?.label ?? d) },
+    { title: "เหตุการณ์ที่เลือก", items: breakdown(byDim.simulator_used, (d) => scenarioCopy[d as ScenarioId]?.label ?? d) },
     { title: "ประเภทแพ็กเกจที่ดูรายละเอียด", items: breakdown(byDim.plan_viewed, (d) => insuranceTypeLabel[d as InsuranceType] ?? d) },
     { title: "บทความ Insurance Lab", items: breakdown(byDim.lab_viewed, (d) => labArticles.find((a) => a.slug === d)?.title ?? d) },
   ];

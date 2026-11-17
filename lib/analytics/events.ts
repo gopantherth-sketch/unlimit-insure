@@ -25,7 +25,7 @@ export const eventDefs = {
   contact_line: { label: "กดติดต่อทาง LINE", dims: [...CONTACT_PLACEMENTS] as string[] },
   contact_call: { label: "กดโทรหาเรา", dims: [...CONTACT_PLACEMENTS] as string[] },
   explain_opened: { label: "เปิดคำอธิบาย", dims: terms },
-  simulator_used: { label: "ใช้เครื่องจำลอง", dims: scenarios },
+  simulator_used: { label: "เลือกเหตุการณ์", dims: scenarios },
   lab_viewed: { label: "อ่าน Insurance Lab", dims: labArticles.map((a) => a.slug) },
   model_page_viewed: { label: "ดูหน้ารุ่นรถ", dims: [] as string[] },
   buy_viewed: { label: "เปิดหน้าสมัคร", dims: [] as string[] },
