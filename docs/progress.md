@@ -176,3 +176,8 @@ Owners: **Core** = system core manager (code, data, deploy) · **Designer** · *
 | P5.3 | Travel insurance | Core | To do |  |
 | P5.4 | Health insurance | Core | To do |  |
 | P5.5 | Advanced personalisation | Core | To do |  |
+- **W9 + W11 live, 2026-11-17:** Gemini drafted the text and the owner approved it. Core applied it because the Cursor branch was not pushed (owner: "You do it"). PR #9, merged as `9f31ec2`. "Workers Builds" passed at 15:05 UTC.
+  - **Live homepage:** the field shows "รุ่นย่อย (ไม่บังคับ)" with the example "เช่น 1.8 Sport".
+  - **Live LINE message:** reads "ปีรถ: …" and has the bracketed options.
+  - **Checks before the merge:** tsc, 62 tests, cf:build, `e2e:journey`, `e2e:a11y` (54 pages, 0 violations).
+  - **Layout:** the hint wraps to two lines at 1024 px; that is for D9.
