@@ -1,24 +1,30 @@
-# Team: local agents and task split
+# Team: who does what
 
-Three Claude Code agents, Codex and Cursor work on the project, each in its own folder (a git worktree) and terminal:
+**Owner decision, 2026-11-17:** to save Claude quota, Claude is Core only. The designer and copywriter roles moved off Claude, and Codex is retired (ChatGPT cancelled).
 
-| Agent | Brief | Folder | Owns | Git |
+| Role | Who | Folder | Owns | Git |
 |---|---|---|---|---|
-| **Core** (system core manager, project lead) | `.claude/agents/unlimit-core.md` | `unlimit-insure` (has `main`) | Code, data, database, admin, APIs, security, tests, deploys, Cloudflare, merging, `docs/progress.md` | Commits and pushes `main` |
-| **Designer** | `.claude/agents/unlimit-designer.md` | `unlimit-insure-design` | Visuals, layout, colour, type, icons, images, responsive and accessibility polish | Branch `design/*`, pushed; Core merges |
-| **Copywriter** | `.claude/agents/unlimit-copywriter.md` | `unlimit-insure-copy` | Every customer-facing word, SEO text, disclosures, the verify list | Branch `copy/*`, pushed; Core merges |
-| **Codex** (engineer) | `AGENTS.md` (Codex reads it automatically) | `unlimit-insure-codex` | Engineering tasks Core assigns: fixes, tests, performance, tooling, live checks, second-opinion reviews | Branch `codex/*`, pushed; Core merges |
-| **Cursor** (DevOps) | `AGENTS.md` (Cursor follows it too) | its own worktree | Build and deploy tooling; Cloudflare (Workers, caching, headers, Builds); performance and CPU; live checks after deploys | Branch `cursor/*`, pushed; Core merges |
+| **Core** (project lead) | Claude Code, brief `.claude/agents/unlimit-core.md` | `unlimit-insure` (has `main`) | Code, data, database, admin, APIs, security, tests, merging, deploys, Cloudflare, `docs/progress.md`, SVG diagrams/icons/infographics | Commits and pushes `main` |
+| **Copywriter** | **Grok** drafts; **Cursor** applies | Grok: chat only. Cursor: `unlimit-insure-copy` | Every customer-facing word (Thai and English), SEO text, disclosures, LINE prefilled messages, the verify list. The owner approves the wording. | Grok can't edit the repo. Cursor puts the approved text into `content/**` on `copy/*`, pushes; Core merges |
+| **Designer** | **Cursor** | `unlimit-insure-design` | Layout, colour, type, responsive and accessibility polish | Branch `design/*`, pushed; Core merges |
+| **DevOps** | **Cursor**, brief `AGENTS.md` | its own worktree | Build and deploy tooling; Cloudflare (Workers, caching, headers, Builds); performance and CPU; live checks | Branch `cursor/*`, pushed; Core merges |
+| ~~Codex~~ | Retired 2026-11-17 | — | Open tasks moved: X2 → Core (C8), X3 → Cursor (Y5), X4 → Cursor (Y6) | — |
+
+**Images (all projects)**
+- Generated images → **Grok**.
+- Diagrams, icons, infographics → **Claude** (Core), as SVG in the repo.
+- Real cars, places and people → the **owner's photos**.
+- Never Canva or Codex.
 
 **Boundaries**
 - The designer never changes wording. It leaves `TODO(copy)` notes for the copywriter.
-- The copywriter never changes layout or styles.
-- Both hand logic changes to Core.
-- Codex takes only tasks listed under **Codex** below (or assigned by Core). It never changes wording or visuals and never deploys; it reports to Core.
-- Cursor takes the tasks under **Cursor** below (or assigned by Core). Deploys:
+- The copywriter never changes layout or styles. When Cursor applies copy, it changes `content/**` text only, exactly as approved.
+- Cursor keeps design, copy and DevOps work on separate branches (`design/*`, `copy/*`, `cursor/*`), one role per branch.
+- Logic changes go to Core.
+- Cursor deploys:
   - production deploys run only from `main`, after Core has merged; Cursor may run them when the owner asks;
   - a hotfix deploy from a branch needs the owner's yes in chat, and a PR opened at the same time that Core merges the same day.
-- Core never changes wording or visuals without the owning agent, except for emergencies. If it has to, it notes this in the commit message.
+- Core never changes wording or visuals itself, except in emergencies or when the owner asks it directly. If it does, it says so in the commit message and adds a review row for the copywriter or designer.
 
 ## Setup (Windows, once)
 In the `unlimit-insure` folder, run:
@@ -36,16 +42,16 @@ Run it again to reopen the windows. Each agent can run on its own too: open `cla
 
 First messages:
 - **Core:** "Use the unlimit-core agent brief in .claude/agents/unlimit-core.md. Read HANDOVER.md and docs/progress.md, then tell me the top 3 next steps."
-- **Designer:** "Use the unlimit-designer agent brief in .claude/agents/unlimit-designer.md. Wait for tasks."
-- **Copywriter:** "Use the unlimit-copywriter agent brief in .claude/agents/unlimit-copywriter.md. Wait for tasks."
+- The designer and copywriter windows are no longer used (2026-11-17). Keep the two worktrees: Cursor uses them for `design/*` and `copy/*` branches. The `.claude/agents/unlimit-designer.md` and `unlimit-copywriter.md` briefs still hold the house rules (tone, design system) for Cursor and Grok to follow.
 
 ## How work flows
-1. The owner gives a request to Core, or straight to the designer or copywriter for small things.
-2. Core splits it into tasks, one owner each, with the goal, the files involved and what "done" looks like. It pastes each task into that agent's window, or the owner does.
-3. The designer and copywriter push branches and report back.
-4. Core reviews, runs the checks, merges, deploys and updates `docs/progress.md`.
+1. The owner gives a request to Core.
+2. Core splits it into tasks with one owner each. Each task gets the goal, the files and what "done" looks like, and Core writes a paste-ready brief in `docs/tasks/`.
+3. Copy: the owner pastes the brief into Grok, approves the text, then hands it to Cursor, who applies it on `copy/*`.
+4. Design and DevOps: Cursor works on `design/*` or `cursor/*` and reports back.
+5. Core reviews, runs the checks, merges, deploys and updates `docs/progress.md`.
 
-## Backlog (updated 2026-11-16)
+## Backlog (updated 2026-11-17)
 Reconciled with the repo, `docs/progress.md` and the live site on 2026-11-16. The site is live on https://unlimitinsure.com (LINE-first; prices and online purchase off). Open rows are in priority order: CPU risk and the Search Console follow-up first, then the copy and design work on the live site, then the real-data work (C4, C6). Done rows sit at the bottom of each table with their dates. Status and history: `docs/progress.md`.
 
 Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on someone else).
@@ -57,7 +63,7 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | C10 | Search Console follow-up after the SEO merge `4444129` (2026-10-12): once the owner has done O11, check the Pages report: `/advisor`, the homepage and the Lab articles indexed, "Excluded by noindex" fixed, sitemap read (28 URLs live on 2026-11-16). | Blocked | Owner steps (O11) |
 | C3 | Live QA: real phones (iOS Safari, Android Chrome), speed on the live URL, and `e2e:journey` / `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. Hand visual issues to the designer. Last live checks: journey + a11y passed on the live site 2026-10-12 (SEO merge); HTTP spot check 2026-11-16 (pages 200, www/http → 301 apex, HSTS 1 year, workers.dev off). Real-device and live speed tests not recorded yet. | In progress | — |
 | C11 | Email: route info@unlimitinsure.com once the destination is verified (routing rule + test), then DNS records / DMARC (Cloudflare review U6). Then the copywriter switches `contact.email` from the current Gmail address. | Blocked | O10 |
-| C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). Still open in code on 2026-11-16; purchase is off, so no live impact yet. Must be fixed before C6. | To do | — |
+| C8 | Small fix: after staff sends a payment slip back (payment_submitted → awaiting_payment), the old slip still satisfies the "slip uploaded" guard. Require a slip uploaded after the last move to awaiting_payment (`lib/db/applications.ts` `moveApplication`). Still open in code on 2026-11-16; purchase is off, so no live impact yet. Must be fixed before C6. Back with Core since Codex retired (2026-11-17, was X2). Add vitest cases in `lib/applications/applications.test.ts` for first payment, slip sent back without a new upload (refused), with a new upload (allowed). | To do | — |
 | C13 | Upgrade Next.js 15 to a supported major with a matching `@opennextjs/cloudflare` release, then remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command. C12 used that flag as a stop-gap. | To do | — |
 | C4 | Import real products when the owner sends rate tables and quotation files: admin → นำเข้าข้อมูล (template in `/templates/unlimit-product-import.xlsx`). The owner verifies and publishes each version. Retire the mock catalogue; then set `CATALOG_FROM_CODE=false` and restore `force-dynamic` (see progress.md, "Stay on Workers Free"). | Blocked | Owner data (O4) |
 | C6 | Switch on online purchase: R2 bucket, uncomment `r2_buckets`, `PURCHASE_ENABLED=true`, owner enters the payment account in admin → ตั้งค่า, then run `e2e:purchase` locally first. | Blocked | C4, C8, O5, O8 |
@@ -68,15 +74,17 @@ Status: **Done** · **In progress** · **To do** · **Blocked** (waiting on some
 | C5 | Domain. `unlimitinsure.com` and `www.unlimitinsure.com` are Worker custom domains (`wrangler.jsonc`); `worker.ts` 301-redirects www and http to https://unlimitinsure.com (2026-09-27). Sitemap, robots and canonicals use the apex (checked live 2026-11-16). | Done 2026-09-26 | — |
 | C12 | Deploy build fixed. `cf:build` and the Cloudflare Git build stopped at "Next.js version 15.5.26 is not supported"; Git builds failed from at least `2e99b99` until 2026-11-16 (last success before that: `29200b5`, 2026-10-12). Fix (stop-gap): PR #1 adds `--dangerouslyUseUnsupportedNextVersion` to `cf:build` / `preview` / `deploy` (merged `c06d641`), and Cursor added it to the dashboard build command. "Workers Builds: unlimit-insure" passed on `c06d641`. Real fix: C13. | Done 2026-11-16 | — |
 
-### Codex
-Set up 2026-11-16. Worktree: `git worktree add ../unlimit-insure-codex origin/main` (detached), then `npm install` there and open Codex in that folder. First message: `docs/tasks/codex-onboarding.md`.
+### Codex (retired 2026-11-17)
+ChatGPT was cancelled on 2026-11-17, so Codex takes no new work. Its open rows moved:
+- X1 (onboarding): dropped.
+- X2 (slip guard): Core, C8.
+- X3 (live checks): Cursor, Y5.
+- X4 (CPU proposal): Cursor, Y6.
+
+The `codex/*` branch names below are history.
 
 | # | Task | Status | Blocked on |
 |---|---|---|---|
-| X1 | **Onboarding check.** Read `AGENTS.md`, `HANDOVER.md`, `docs/progress.md` and this file. Set up locally (`npm install`, `.dev.vars` from the example: the owner types the password, local D1 migrate + seed). Run `npx tsc --noEmit`, `npm test`, `npx next build`, `npm run cf:build`, then `npx wrangler dev` with `npm run e2e:journey`. Report results and anything in the docs that is unclear or out of date. No code changes. | To do | — |
-| X2 | **C8: payment-slip guard.** After staff sends a slip back (`payment_submitted` → `awaiting_payment`), the old slip still passes the "slip uploaded" check. Change `moveApplication` in `lib/db/applications.ts`: moving to `payment_submitted` needs a `payment_slip` uploaded **after** the latest move into `awaiting_payment`. Add vitest cases in `lib/applications/applications.test.ts`: first payment, slip sent back without a new upload (refused), with a new upload (allowed). Purchase stays off. Branch `codex/x2-slip-guard`. | To do | — |
-| X3 | **Live checks.** Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. These create one test advisor lead, so tell the owner and mark it ไม่สำเร็จ "test lead" afterwards via Core. Record page timings. Report failures with exact output; send visual findings to the designer via Core. Feeds C3. | To do | — |
-| X4 | **CPU budget (Workers Free).** C2 measured 26–273 ms CPU per page against a 10 ms limit. Investigate without changing behaviour: which routes still render per request with `CATALOG_FROM_CODE=true`, what more can be prebuilt or cached (`open-next.config.ts`, `worker.ts` cache headers), and the cold-start cost of `/`. Deliver a short ranked proposal with expected savings in `docs/tasks/x4-cpu-proposal.md` on branch `codex/x4-cpu`. Core decides what to implement. | To do | — |
 | X5 | **Rebase `codex/x5-line-chat-journey` onto `main`.** The branch (4 commits, last `8c02e47`, no PR yet) was cut before X6 and X7 merged. It now conflicts with `main` in 11 files: `advisor`, `compare`, `insurance`, `lab/[slug]`, home `page.tsx`, `quote/results`, `QuickQuote`, `AdvisorContact`, `Footer`, `Header`, and `LabTool.tsx` (deleted on x5, changed on main). Rebase it, keep only what X6/X7 do not already cover, list what you dropped and why, then open a PR. **Merge before X8** (both change `QuickQuote`, `QuoteWizard`, `AdvisorContact` and `tests/e2e/journey.mjs`). Brief: `docs/tasks/x5-rebase.md`. **2026-11-17:** done by Core instead of Codex. The owner kept `main`'s direct car → `/advisor` flow, so X5 shrank to copy + `SYSTEM.md` + the regenerated verify list. Branch `codex/x5-rebase` (`a1e375e`), [PR #4](https://github.com/gopantherth-sketch/unlimit-insure/pull/4); the PR lists what was dropped. All checks pass. Merged 2026-11-17 as `b372b3f` (owner OK); Workers Build success 07:23 UTC; live `/`, `/advisor`, `/lab`, `/claims` 200, `/quote` → `/advisor`. | Done 2026-11-17 | — |
 | X8 | **Optional sub-model / engine size (tester feedback 2026-11-17).** Branch `codex/x8-trim-field`, cut from `main` **after X5 is merged**. In detail:<br>- An optional free-text field after "ปีรถ" in `components/insurance/VehicleSelector.tsx`, so it shows wherever the selector is used: homepage `QuickQuote` and `/quote` (`QuoteWizard`). `/advisor` has no selector; it shows the car from the URL, so carry the value there and show it with the car.<br>- URL param `trim` in `lib/params.ts` (parse + `buildQuery`): trimmed, max 60 characters, plain text only (strip control characters and angle brackets), empty → absent.<br>- Add it to every LINE prefilled message that names the car, e.g. "Toyota Corolla Cross 2022 · 1.8 Hybrid Premium": `contact.messages.plan` / `plans`, the `vehicleLabel` calls behind `plans/[productId]`, `compare`, `ResultsView`, `AdvisorContact`. `InsuranceCard` passes no car today; add it.<br>- Not stored server-side; not used for pricing or matching. Pages carrying it stay noindex like the other journey params.<br>- Label, placeholder and hint come from `content/` (new keys), filled with the owner's draft until the copywriter's W9 text arrives.<br>- Tests: vitest for parsing (trim, 60-character cap, unsafe characters, empty) and for the message text; update `tests/e2e/journey.mjs`.<br>- Checks: tsc, test, next build, cf:build, `e2e:journey`, and `e2e:a11y` (UI change).<br>Designer D9 reviews before Core merges. Brief: `docs/tasks/x8-trim-field.md`. **2026-11-17:** done by Core. Branch `codex/x8-trim-field` (`b47f870`), [PR #5](https://github.com/gopantherth-sketch/unlimit-insure/pull/5), now based on `main` (PR #4 merged). Because `/quote` redirects to `/advisor`, the field shows on the homepage only. `/advisor` shows "car · trim" in the summary and the LINE message, and the `/quote`, `/quote/results` and `/compare` redirects keep it. Not done: `/plans/[id]` redirects to bare `/advisor`. The ResultsView, compare and InsuranceCard messages are unreachable while public products are off. Checks: tsc, 56 tests, cf:build, `e2e:journey`, `e2e:a11y` (54 pages, 0 violations). Merged 2026-11-17 as `39bea62` before D9/W9 (owner: deploy now); Workers Build success 07:34 UTC; live field on `/`, LINE message with "car · trim" (sanitised) and noindex on `/advisor`, `/quote` redirect keeps `trim`. | Done 2026-11-17 | D9 / W9 follow as small changes |
 | **Done** | | | |
@@ -84,22 +92,26 @@ Set up 2026-11-16. Worktree: `git worktree add ../unlimit-insure-codex origin/ma
 | X7 | Public product data gated behind the advisor flow (`lib/public-catalog.ts` + test). PR #3, merged on GitHub as `cc9b594`; Workers Build passed. Not in this table before 2026-11-17. | Done 2026-11-17 | — |
 
 ### Cursor
-DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in the team table and boundaries above. Branch `cursor/*`; Core merges.
+DevOps engineer, added 2026-11-16; also designer and copy-applier from 2026-11-17 (see the Designer and Copywriter tables). Brief: `AGENTS.md` plus the team table and boundaries above. Branch `cursor/*`; Core merges.
 
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| Y2 | **Live CPU per page.** Measure with `wrangler tail` on `/`, `/lab`, `/quote`, `/advisor` and one car-model page, then update C2 and X4 with the numbers. | To do | — |
-| Y3 | **CPU fixes.** Implement the parts of Codex's X4 proposal (`codex/x4-cpu`) that Core approves. | To do | X4 proposal, Core approval |
+| Y2 | **Live CPU per page.** Measure with `wrangler tail` on `/`, `/lab`, `/quote`, `/advisor` and one car-model page, then update C2 and Y6 with the numbers. | To do | — |
+| Y5 | **Live checks** (was Codex X3). Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com`. Admin credentials come from the owner and are never written to chat or files. Record page timings and report failures with the exact output. Feeds C3. | To do | — |
+| Y6 | **CPU proposal** (was Codex X4). C2 measured 26–273 ms CPU per page against a 10 ms limit. Investigate without changing behaviour:<br>- which routes still render per request with `CATALOG_FROM_CODE=true`;<br>- what more can be prebuilt or cached (`open-next.config.ts`, `worker.ts` cache headers);<br>- the cold-start cost of `/`.<br>Deliver a short ranked proposal with expected savings in `docs/tasks/y6-cpu-proposal.md` on `cursor/y6-cpu`. Core decides what to implement. | To do | — |
+| Y3 | **CPU fixes.** Implement the parts of the Y6 proposal that Core approves. | To do | Y6 proposal, Core approval |
 | Y4 | **Deploy runbook.** Update `docs/deploy.md`. It must cover: the Next 15 support flag (C12), the Cloudflare account id (how to select it, not the id itself), untracked files that affect builds, and rollback with `wrangler rollback`. | To do | — |
 | **Done** | | | |
 | Y1 | Deploys unblocked. PR #1 (`cursor/x4-cache-delivery`, head `d3cad08`) merged `--no-ff` as `c06d641`; the dashboard build command now has the Next 15 flag; the Cloudflare Git build passed on `c06d641` (C12). | Done 2026-11-16 | — |
 
-### Designer
+### Designer (Cursor, from 2026-11-17)
+Images follow the image rule in the team section: generated images from Grok, SVG diagrams/icons from Core, real photos from the owner.
+
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB. The article images moved to D8 (owner, 2026-11-16: no Canva). | Blocked | Owner photo (O7) |
+| D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB (Cursor). | Blocked | Owner photo (O7) |
 | D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
-| D9 | **X8 review.** Live since `39bea62` (owner chose to deploy before review), check two things at 390 px and 1440 px:<br>- the selector row with four fields on the homepage `QuickQuote` (`/quote` now redirects to `/advisor`);<br>- the trim text on `/advisor`.<br>Axe scan clean, no overflow. Send findings to Core; no wording changes. | To do | — |
+| D9 | **X8 review (Cursor).** Brief: `docs/tasks/cursor-d9.md`. Live since `39bea62` (owner chose to deploy before review), check two things at 390 px and 1440 px:<br>- the selector row with four fields on the homepage `QuickQuote` (`/quote` now redirects to `/advisor`);<br>- the trim text on `/advisor`.<br>Axe scan clean, no overflow. Send findings to Core; no wording changes. | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
 | **Done** | | | |
 | D5 | LINE-first look polished (`design/line-first-polish`, merged `4a4dae9`). | Done 2026-09-27 | — |
@@ -108,12 +120,14 @@ DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in th
 | D7 | Logo mark as a 7.6 KB webp (`design/logo-webp`, merged `920ad3b`). Not in the handover list. | Done 2026-09-27 | — |
 | D8 | Lab article photos `article-repair.webp` (dealer-vs-garage) and `article-excess.webp` (what-is-excess), 960 × 640 webp, 50 KB / 23 KB, replacing the placeholder tiles on `/lab`. Designer approved (including the full technician in the repair photo); `design/article-images` merged as `3b7246f`, live and checked 2026-11-17. | Done 2026-11-17 | — |
 
-### Copywriter
+### Copywriter (Grok drafts, owner approves, Cursor applies, from 2026-11-17)
+Core writes a paste-ready brief in `docs/tasks/` for each row. The owner gets the text from Grok and approves it. Cursor puts it into `content/**` on `copy/*`, and Core merges.
+
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
-| W9 | **X8 field text.** Label, placeholder and hint for the optional sub-model / engine-size field. Owner's draft: label "รุ่นย่อย / ขนาดเครื่องยนต์ (ไม่บังคับ)", placeholder "เช่น 1.8 Hybrid Premium", hint "ช่วยให้ที่ปรึกษาเช็กราคาได้ตรงขึ้น". Also the joiner in LINE messages (" · "). Send the final text to Core now. X8 is live (`39bea62`): edit `content/vehicle-form.ts` on `copy/x8-trim-text`. Brief: `docs/tasks/w9-trim-text.md`. | To do | — |
+| W9 | **X8 field text.** Label, placeholder and hint for the optional sub-model / engine-size field. Owner's draft: label "รุ่นย่อย / ขนาดเครื่องยนต์ (ไม่บังคับ)", placeholder "เช่น 1.8 Hybrid Premium", hint "ช่วยให้ที่ปรึกษาเช็กราคาได้ตรงขึ้น". Also the joiner in LINE messages (" · "). X8 is live (`39bea62`). Grok brief (with W11): `docs/tasks/grok-w9-w11.md`. Cursor applies the approved text to `content/vehicle-form.ts` on `copy/w9-w11`. | To do | — |
 | W10 | **Review Core's X5 copy edits** ([PR #4](https://github.com/gopantherth-sketch/unlimit-insure/pull/4)). The x5 copy said the site asks about usage and priorities, but under the direct flow it asks only for the car. Core edited 6 sentences in `content/faq.ts`, `lab.ts`, `legal.ts`, `models.ts` and `seo.ts`, plus `SYSTEM.md`. Check the wording on `copy/x5-review` (live since `b372b3f`). | To do | — |
-| W11 | **Review the advisor LINE message** (`content/contact.ts` `messages.quoteRequest` / `messages.from`). The owner chose a one-detail-per-line format for admins, and Core wrote it ([PR #6](https://github.com/gopantherth-sketch/unlimit-insure/pull/6), live 2026-11-17).<br>- Fixed first line "ขอราคาประกันรถยนต์ (จากเว็บไซต์)".<br>- Car, year and sub-model lines, plus blanks for type of cover, dealer or garage repair, and current policy end date.<br>- Last line names the page the customer came from.<br>Wording only; keep the first line fixed (admins filter on it). | To do | — |
+| W11 | **Review the advisor LINE message** (`content/contact.ts` `messages.quoteRequest` / `messages.from`). The owner chose a one-detail-per-line format for admins, and Core wrote it ([PR #6](https://github.com/gopantherth-sketch/unlimit-insure/pull/6), live 2026-11-17).<br>- Fixed first line "ขอราคาประกันรถยนต์ (จากเว็บไซต์)".<br>- Car, year and sub-model lines, plus blanks for type of cover, dealer or garage repair, and current policy end date.<br>- Last line names the page the customer came from.<br>Wording only; keep the first line fixed (admins filter on it). Grok brief: `docs/tasks/grok-w9-w11.md`; Cursor applies it to `content/contact.ts` on `copy/w9-w11`. | To do | — |
 | W6 | SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`). Unblocked: the domain is unlimitinsure.com. Build on the 2026-10-12 SEO merge `4444129` (`/advisor` indexed, canonicals on Lab articles, JSON-LD). | To do | — |
 | W4 | Turn the pre-launch checklist (`docs/verify-before-launch.md`) into a question sheet grouped by reviewer: licensed broker, lawyer/DPO, owner. Feeds O8. | To do | — |
 | W3 | Review the Phase 3 strings in `content/purchase.ts`: `tracking.yourTurn`, `tracking.waiting`, `tracking.stepOf`, `prepareTitle`, `prepareBody`, plus inline admin-facing messages if needed. Purchase is off, so before C6. | To do | — |
@@ -130,7 +144,7 @@ DevOps engineer, added 2026-11-16. Brief: `AGENTS.md` plus the Cursor rows in th
 | O9 | Workers Free vs Paid ($5/month) | To do | C2 |
 | O11 | Search Console, after the 2026-10-12 SEO merge: submit the sitemap, request indexing for `/advisor`, the homepage and 2–3 Lab articles, then "Validate fix" on "Excluded by noindex". Not recorded as done. | To do | C10 |
 | O10 | info@unlimitinsure.com destination verification | To do | C11 |
-| O7 | Real advisor portrait (no AI person). The article images no longer need the owner: Codex makes them (D8). | To do | D1 |
+| O7 | Real advisor portrait (no AI person). Real people, cars and places always come from the owner's photos. | To do | D1 |
 | O3 | Consent to display from each named broker (recorded for Nithi; needed for นางสาววนาลี บุญเกิด); confirm name spelling. Licence numbers and the company answer are in. | In progress | Verify list, C6 |
 | O8 | Legal / licensed review of the verify list | To do | Launch sign-off, C6 |
 | O4 | Real rate tables and quotation files from insurers | To do | C4, W5 |

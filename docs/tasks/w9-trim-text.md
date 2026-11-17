@@ -1,3 +1,5 @@
+> **Superseded 2026-11-17:** the copywriter role moved to Grok. Use `docs/tasks/grok-w9-w11.md`.
+
 # UNL W9: text for the sub-model / engine-size field (copywriter)
 
 Send to the copywriter now (in parallel with X5):
