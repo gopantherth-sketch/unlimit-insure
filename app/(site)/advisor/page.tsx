@@ -6,7 +6,7 @@ import { homeCopy } from "@/content/home";
 import { AdvisorContact } from "@/components/insurance/AdvisorContact";
 import { contextFromParams } from "@/lib/leads";
 import type { RawParams } from "@/lib/params";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import { resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
 // The plain page is a real landing page ("free consultation") and is indexed. With journey params in the URL
@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }: { searchParams: Promise
 
 export default async function AdvisorPage({ searchParams }: { searchParams: Promise<RawParams> }) {
   const context = contextFromParams(await searchParams);
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
   const vehicle = context.vehicle ? resolveVehicle(catalog, context.vehicle) : null;
   const planNames = Object.fromEntries(catalog.products.map((p) => [p.id, p.name]));
   const safeContext = { ...context, vehicle: vehicle ? context.vehicle : null };

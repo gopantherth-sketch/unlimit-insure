@@ -92,8 +92,8 @@ export default function ClaimsPage() {
         </section>
 
         <div className="mt-10 flex flex-col items-start gap-4 rounded-xl2 border border-brand-100 bg-gradient-to-r from-brand-50 to-wash p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8">
-          <p className="font-display text-lg font-semibold text-navy-900">อยากรู้ว่าแผนไหนคุ้มครองเหตุการณ์แบบนี้ ลองเปรียบเทียบกับรถของคุณ</p>
-          <Link href="/quote" className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>เพิ่มรถของคุณ</Link>
+          <p className="font-display text-lg font-semibold text-navy-900">อยากรู้ว่าแผนไหนคุ้มครองเหตุการณ์แบบนี้ บอกรถและเหตุการณ์ให้เราช่วยตรวจ</p>
+          <Link href="/advisor" className={buttonClass("primary", "md", "shrink-0 rounded-xl px-6")}>คุยกับที่ปรึกษา</Link>
         </div>
       </div>
     </div>

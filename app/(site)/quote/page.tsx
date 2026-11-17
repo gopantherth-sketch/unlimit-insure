@@ -1,8 +1,9 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { QuoteWizard } from "@/components/quote/QuoteWizard";
-import { getVehicleCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 
 export const metadata: Metadata = seo("/quote");
 export const dynamic = "force-dynamic";
@@ -20,14 +21,15 @@ const RESERVED: Record<string, string> = {
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export default async function QuotePage({ searchParams }: { searchParams: Promise<SearchParams> }) {
-  const [catalog, sp] = await Promise.all([getVehicleCatalog(), searchParams]);
+  const [catalog, sp] = await Promise.all([getPublicCatalog(), searchParams]);
+  if (catalog.products.length === 0) redirect("/advisor");
   const step = typeof sp.step === "string" ? sp.step : "car";
   const hasCar = typeof sp.brand === "string" && typeof sp.model === "string" && typeof sp.year === "string";
   const reserved = hasCar && step in RESERVED ? RESERVED[step] : RESERVED.car;
   return (
     <div className={`bg-gradient-to-b from-wash via-wash to-white ${reserved}`}>
       <Suspense>
-        <QuoteWizard catalog={catalog} />
+        <QuoteWizard catalog={{ brands: catalog.brands, models: catalog.models }} />
       </Suspense>
     </div>
   );

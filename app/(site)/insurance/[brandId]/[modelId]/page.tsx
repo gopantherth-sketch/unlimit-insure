@@ -15,7 +15,7 @@ import { formatBaht } from "@/lib/format";
 import { rankQuotes } from "@/lib/match";
 import { withJourney, selectPlanHref } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import { purchaseEnabled } from "@/lib/server/features";
 import { resolveVehicle, vehicleLabel, yearsForModel } from "@/lib/vehicle";
 
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 export default async function ModelPage({ params }: { params: Params }) {
   const { brandId, modelId } = await params;
   const copy = modelPages.find((m) => m.modelId === modelId);
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
   const buyEnabled = await purchaseEnabled();
   const model = catalog.models.find((m) => m.id === modelId && m.brandId === brandId);
   if (!copy || !model) notFound();
@@ -56,11 +56,11 @@ export default async function ModelPage({ params }: { params: Params }) {
       <JsonLd data={breadcrumbLd([{ name: "ประกันรถตามรุ่น", path: "/insurance" }, { name: `${vehicle.brand.name} ${vehicle.model.name}`, path: `/insurance/${brandId}/${modelId}` }])} />
       <PageHero id="model-title" eyebrow={vehicle.brand.name} title={copy.h1} body={copy.intro}>
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <Link href={withJourney("/quote", { ...journey, step: "use" })} className={buttonClass("primary", "lg", "rounded-xl")}>
-            เช็กประกันสำหรับ {vehicle.model.name}
+          <Link href={withJourney("/advisor", journey)} className={buttonClass("primary", "lg", "rounded-xl")}>
+            ถามประกันสำหรับ {vehicle.model.name}
             <ArrowRight aria-hidden className="h-5 w-5" />
           </Link>
-          <span className="text-sm text-navy-500">เปลี่ยนปีรถได้ภายหลัง · ไม่ต้องให้เบอร์โทร</span>
+          <span className="text-sm text-navy-500">บอกรุ่นและปีรถเพิ่มเติมทาง LINE ได้</span>
         </div>
       </PageHero>
       <div className="container-page">

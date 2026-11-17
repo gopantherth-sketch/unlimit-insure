@@ -20,7 +20,7 @@ export function LifestyleBanner() {
             <p id="lifestyle-quote" className="mt-5 font-display text-[24px] font-semibold leading-[1.5] text-navy-900 sm:text-[30px]">
               {homeCopy.lifestyleQuote}
             </p>
-            <Link href="/quote" className={buttonClass("primary", "lg", "mt-8")}>
+            <Link href="/advisor" className={buttonClass("primary", "lg", "mt-8")}>
               {homeCopy.lifestyleCta}
               <ArrowRight aria-hidden className="h-5 w-5" />
             </Link>

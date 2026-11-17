@@ -1,4 +1,5 @@
 import { ScenarioGuide } from "@/components/home/ScenarioGuide";
+import { LineButton } from "@/components/contact/ContactButtons";
 import { CompareTable } from "@/components/insurance/CompareTable";
 import { DifferenceSummary } from "@/components/insurance/DifferenceSummary";
 import { ExcessCalculator } from "@/components/lab/ExcessCalculator";
@@ -8,7 +9,7 @@ import type { LabToolId } from "@/content/types";
 import { insuranceTypeLabel } from "@/lib/coverageFields";
 import { generateQuotes } from "@/lib/quote";
 import { scenarioRules, simulate } from "@/lib/scenarios";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import type { Catalog, Quote, VehicleSelection } from "@/lib/types";
 import { defaultEvVehicle, defaultVehicle, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
@@ -77,7 +78,17 @@ function PairCompare({ catalog, selection, ids }: { catalog: Catalog; selection:
 }
 
 export async function LabTool({ tool }: { tool: LabToolId }) {
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
+  if (catalog.products.length === 0) {
+    if (tool === "floodCheck") return <ScenarioGuide placement="lab" />;
+    return (
+      <div className="card rounded-xl2 p-6 sm:p-8">
+        <h2 className="text-xl font-bold text-navy-900">ถามเรื่องนี้กับที่ปรึกษา</h2>
+        <p className="mt-2 text-navy-600">บอกรถและสิ่งที่คุณอยากรู้ เราช่วยตรวจข้อมูลของแผนที่เสนอให้คุณทาง LINE</p>
+        <div className="mt-5"><LineButton placement="lab" label="คุยทาง LINE" /></div>
+      </div>
+    );
+  }
   switch (tool) {
     case "typeCompare":
       return <TypeMatrix catalog={catalog} />;

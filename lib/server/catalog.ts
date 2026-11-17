@@ -2,7 +2,8 @@ import { cache } from "react";
 import { mockCatalog } from "@/lib/data";
 import { loadCatalog } from "@/lib/db/catalog";
 import { getDb } from "@/lib/db/client";
-import { CATALOG_FROM_CODE } from "@/lib/features";
+import { CATALOG_FROM_CODE, SHOW_PUBLIC_PRODUCTS } from "@/lib/features";
+import { publicCatalog } from "@/lib/public-catalog";
 import type { Catalog, VehicleCatalog } from "@/lib/types";
 
 const byName = <T extends { name: string }>(a: T, b: T) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0);
@@ -21,6 +22,9 @@ const codeCatalog: Catalog = {
  * prebuilt and use no D1 query), otherwise from D1.
  */
 export const getCatalog = cache(async (): Promise<Catalog> => (CATALOG_FROM_CODE ? codeCatalog : loadCatalog(await getDb())));
+
+/** Never expose mock or pending product versions through public pages. */
+export const getPublicCatalog = cache(async (): Promise<Catalog> => publicCatalog(await getCatalog(), SHOW_PUBLIC_PRODUCTS));
 
 export async function getVehicleCatalog(): Promise<VehicleCatalog> {
   const { brands, models } = await getCatalog();

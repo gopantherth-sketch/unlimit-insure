@@ -19,7 +19,7 @@ import { homeCopy } from "@/content/home";
 import { getDemo } from "@/lib/demo";
 import { LineQuoteBand } from "@/components/home/LineQuoteBand";
 import { SHOW_AFTER_PURCHASE, SHOW_PARTNER_LOGOS, SHOW_PRICES } from "@/lib/features";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 
 // Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
   const demo = getDemo(catalog);
 
   return (

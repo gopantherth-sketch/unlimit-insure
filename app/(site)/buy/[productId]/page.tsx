@@ -14,7 +14,7 @@ import { parseQuoteInput, selectPlanHref, withJourney, type RawParams } from "@/
 import { quoteForProduct } from "@/lib/quote";
 import type { Quote } from "@/lib/types";
 import { requiredCustomerDocuments } from "@/lib/applications/status";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import { purchaseEnabled } from "@/lib/server/features";
 import { redirect } from "next/navigation";
 import { resolveVehicle, vehicleLabel } from "@/lib/vehicle";
@@ -61,7 +61,7 @@ export default async function BuyPage({ params, searchParams }: { params: Promis
   const [{ productId }, raw] = await Promise.all([params, searchParams]);
   const input = parseQuoteInput(raw);
   if (!(await purchaseEnabled())) redirect(selectPlanHref(productId, input ? { vehicle: input.vehicle, usage: input.usage, priorities: input.priorities } : {}, false));
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
   if (!catalog.products.some((p) => p.id === productId)) notFound();
   const vehicle = input ? resolveVehicle(catalog, input.vehicle) : null;
   if (!input || !vehicle) {

@@ -32,7 +32,7 @@ export function AdvisorContact({ context, vehicleText, planNames }: Props) {
     track("advisor_viewed");
   }, []);
 
-  const plans = context.selectedPlanIds.length ? context.selectedPlanIds : compared;
+  const plans = (context.selectedPlanIds.length ? context.selectedPlanIds : compared).filter((id) => id in planNames);
   const message = contact.messages.plans(plans.map(planName), vehicleText, {
     usage: context.usage ? usageLabel(context.usage) : undefined,
     priorities: context.priorities.map(priorityLabel),

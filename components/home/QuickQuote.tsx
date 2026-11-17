@@ -42,7 +42,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
       setError(true);
       return;
     }
-    router.push(withJourney("/quote", { vehicle, step: "use" }));
+    router.push(withJourney("/advisor", { vehicle }));
   };
 
   return (
@@ -75,7 +75,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
         })}
       </div>
 
-      <div id="quick-quote-panel" role="tabpanel" aria-label={tab === "ev" ? "เลือกแผนประกันรถ EV" : "เลือกแผนประกันรถยนต์"}>
+      <div id="quick-quote-panel" role="tabpanel" aria-label={tab === "ev" ? "บอกรถ EV ของคุณ" : "บอกรถยนต์ของคุณ"}>
       <form onSubmit={submit} noValidate className="px-4 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:gap-6">
           <VehicleSelector

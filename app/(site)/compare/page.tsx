@@ -1,6 +1,7 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowLeft, Headset } from "lucide-react";
 import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { CompareTable } from "@/components/insurance/CompareTable";
@@ -18,7 +19,7 @@ import { rankQuotes } from "@/lib/match";
 import { parsePlanIds, parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import type { RankedQuote } from "@/lib/types";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import { purchaseEnabled } from "@/lib/server/features";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
@@ -29,7 +30,8 @@ const planLabel = (i: number) => `แผน ${String.fromCharCode(65 + i)}`;
 export default async function ComparePage({ searchParams }: { searchParams: Promise<RawParams> }) {
   const raw = await searchParams;
   const input = parseQuoteInput(raw);
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
+  if (catalog.products.length === 0) redirect(withJourney("/advisor", input ? { vehicle: input.vehicle, usage: input.usage, priorities: input.priorities } : {}));
   const buyEnabled = await purchaseEnabled();
   const vehicle = input ? resolveVehicle(catalog, input.vehicle) : null;
   if (!input || !vehicle) {
