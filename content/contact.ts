@@ -59,7 +59,8 @@ export const contact = {
     /**
      * Advisor page message, one detail per line so admins can read it at a glance (owner, 2026-11-17).
      * The first line is fixed so admins can tag or filter website chats in LINE OA Manager.
-     * Lines ending in ": " are blanks the customer can fill before sending.
+     * The last three detail lines show options in brackets for the customer to fill in before sending.
+     * Wording W11: drafted by Gemini, approved by the owner on 2026-11-17.
      */
     quoteRequest: (q: {
       car?: string | null;
@@ -74,14 +75,14 @@ export const contact = {
       [
         "ขอราคาประกันรถยนต์ (จากเว็บไซต์)",
         `รถ: ${q.car ?? ""}${q.car && q.ev ? " (EV)" : ""}`,
-        `ปี: ${q.year ?? ""}`,
+        `ปีรถ: ${q.year ?? ""}`,
         `รุ่นย่อย/เครื่องยนต์: ${q.trim ?? ""}`,
         q.usage ? `การใช้งาน: ${q.usage}` : null,
         q.priorities?.length ? `สิ่งที่สำคัญ: ${q.priorities.join(", ")}` : null,
         q.plans?.length ? `แผนที่สนใจ: ${q.plans.join(", ")}` : null,
-        "ประเภทประกันที่สนใจ: ",
-        "ซ่อมห้างหรืออู่: ",
-        "ประกันเดิมหมดวันที่: ",
+        "ประเภทประกัน: (ชั้น 1 / 2+ / 3+)",
+        "รูปแบบการซ่อม: (ซ่อมห้าง / ซ่อมอู่)",
+        "ประกันเดิมหมดอายุ: (ระบุวันที่ / ยังไม่มี)",
         q.from ? `(จากหน้า: ${q.from})` : null,
       ]
         .filter((line) => line !== null)
