@@ -1,6 +1,6 @@
 # Cursor brief: D9 (design review of the X8 sub-model field)
 
-Paste into Cursor. Role for this task: **designer** (layout, colour, type, responsive, accessibility). Don't change any wording; leave `TODO(copy)` notes instead (copy goes through Grok, W9).
+Paste into Cursor. Role for this task: **designer** (layout, colour, type, responsive, accessibility). Don't change any wording; leave `TODO(copy)` notes instead (copy goes through Gemini, W9).
 
 ## Context
 - X8 added an optional free-text field, "รุ่นย่อย / ขนาดเครื่องยนต์ (ไม่บังคับ)", after brand / model / year in the car selector.
