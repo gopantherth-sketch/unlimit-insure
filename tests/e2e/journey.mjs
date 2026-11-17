@@ -34,7 +34,7 @@ await p.waitForURL(/\/advisor/);
 const advisorUrl = new URL(p.url());
 const lineHref = await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href");
 const message = decodeURIComponent(lineHref?.split("?")[1] ?? "");
-for (const line of ["ขอราคาประกันรถยนต์ (จากเว็บไซต์)", "รถ: Toyota Corolla Cross", "ปี: 2025", "รุ่นย่อย/เครื่องยนต์: 1.8 Hybrid b Premium /b", "ประเภทประกันที่สนใจ: ", "(จากหน้า: หน้าแรก)"]) {
+for (const line of ["ขอราคาประกันรถยนต์ (จากเว็บไซต์)", "รถ: Toyota Corolla Cross", "ปีรถ: 2025", "รุ่นย่อย/เครื่องยนต์: 1.8 Hybrid b Premium /b", "ประเภทประกัน: (ชั้น 1 / 2+ / 3+)", "(จากหน้า: หน้าแรก)"]) {
   if (!message.includes(line)) throw new Error(`advisor LINE message lacks "${line}": ` + message);
 }
 if (message.includes("<") || message.includes(">")) throw new Error("sub-model not sanitised: " + message);
@@ -58,7 +58,7 @@ if (!(await p.getByRole("link", { name: /ถามประกันสำหร
 await p.getByRole("link", { name: /ถามประกันสำหรับ/ }).click();
 await p.waitForURL(/\/advisor/);
 const modelMessage = decodeURIComponent((await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href"))?.split("?")[1] ?? "");
-if (!modelMessage.includes("ปี: \n") || !modelMessage.includes("(จากหน้า: Toyota Corolla Cross)")) throw new Error("model page LINE message: " + modelMessage);
+if (!modelMessage.includes("ปีรถ: \n") || !modelMessage.includes("(จากหน้า: Toyota Corolla Cross)")) throw new Error("model page LINE message: " + modelMessage);
 step("model page → advisor: year left blank, source page named");
 step("model page has guidance and advisor CTA, no mock plan cards");
 

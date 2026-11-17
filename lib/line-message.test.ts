@@ -12,11 +12,11 @@ describe("advisor LINE message (quoteRequest)", () => {
       [
         "ขอราคาประกันรถยนต์ (จากเว็บไซต์)",
         "รถ: Toyota Corolla Cross",
-        "ปี: 2022",
+        "ปีรถ: 2022",
         "รุ่นย่อย/เครื่องยนต์: 1.8 Hybrid Premium",
-        "ประเภทประกันที่สนใจ: ",
-        "ซ่อมห้างหรืออู่: ",
-        "ประกันเดิมหมดวันที่: ",
+        "ประเภทประกัน: (ชั้น 1 / 2+ / 3+)",
+        "รูปแบบการซ่อม: (ซ่อมห้าง / ซ่อมอู่)",
+        "ประกันเดิมหมดอายุ: (ระบุวันที่ / ยังไม่มี)",
         "(จากหน้า: Toyota Corolla Cross)",
       ].join("\n"),
     );
@@ -24,7 +24,7 @@ describe("advisor LINE message (quoteRequest)", () => {
 
   it("marks EV cars and leaves unknown fields blank", () => {
     const text = quoteRequest({ car: "BYD Atto 3", ev: true, year: null, trim: null, from: from.home });
-    expect(text).toContain("รถ: BYD Atto 3 (EV)\nปี: \nรุ่นย่อย/เครื่องยนต์: \n");
+    expect(text).toContain("รถ: BYD Atto 3 (EV)\nปีรถ: \nรุ่นย่อย/เครื่องยนต์: \n");
     expect(text.endsWith("(จากหน้า: หน้าแรก)")).toBe(true);
   });
 
