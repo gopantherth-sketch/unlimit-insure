@@ -2,6 +2,8 @@
 
 import { CalendarDays, CarFront, ChevronDown, Tag, type LucideIcon } from "lucide-react";
 import { useId, useMemo } from "react";
+import { vehicleForm } from "@/content/vehicle-form";
+import { TRIM_MAX } from "@/lib/params";
 import { modelsForBrand, yearsForModel } from "@/lib/vehicle";
 import type { VehicleCatalog, VehicleSelection } from "@/lib/types";
 import { cx } from "@/lib/cx";
@@ -10,6 +12,8 @@ export interface VehicleDraft {
   brandId: string;
   modelId: string;
   year: number | null;
+  /** Optional sub-model / engine size (free text, X8). */
+  trim?: string;
 }
 
 export const emptyDraft: VehicleDraft = { brandId: "", modelId: "", year: null };
@@ -105,7 +109,7 @@ export function VehicleSelector({ catalog, value, onChange, layout = "row", evOn
         value={value.modelId}
         disabled={!value.brandId}
         options={modelOptions.map((m) => ({ value: m.id, label: m.name }))}
-        onChange={(modelId) => onChange({ ...value, modelId, year: null })}
+        onChange={(modelId) => onChange({ ...value, modelId, year: null, trim: "" })}
       />
       <SelectField
         id={`${id}-year`}
@@ -117,6 +121,27 @@ export function VehicleSelector({ catalog, value, onChange, layout = "row", evOn
         options={yearOptions.map((y) => ({ value: String(y), label: String(y) }))}
         onChange={(y) => onChange({ ...value, year: y ? Number(y) : null })}
       />
+      {/* X8: optional free text, carried in the URL and the LINE message only. */}
+      <div className="min-w-0 flex-1">
+        <label htmlFor={`${id}-trim`} className="field-label">
+          {vehicleForm.trim.label}
+        </label>
+        <input
+          id={`${id}-trim`}
+          className="field-input"
+          type="text"
+          autoComplete="off"
+          enterKeyHint="done"
+          maxLength={TRIM_MAX}
+          placeholder={vehicleForm.trim.placeholder}
+          aria-describedby={`${id}-trim-hint`}
+          value={value.trim ?? ""}
+          onChange={(e) => onChange({ ...value, trim: e.target.value })}
+        />
+        <p id={`${id}-trim-hint`} className="mt-1 text-xs text-navy-500">
+          {vehicleForm.trim.hint}
+        </p>
+      </div>
     </div>
   );
 }

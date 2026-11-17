@@ -16,7 +16,7 @@ import { NeedVehicle } from "@/components/quote/NeedVehicle";
 import { RememberCompared } from "@/components/quote/RememberCompared";
 import { buttonClass } from "@/components/ui/button";
 import { rankQuotes } from "@/lib/match";
-import { parsePlanIds, parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
+import { parsePlanIds, parseQuoteInput, parseTrim, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
 import { generateQuotes } from "@/lib/quote";
 import type { RankedQuote } from "@/lib/types";
 import { getPublicCatalog } from "@/lib/server/catalog";
@@ -31,7 +31,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   const raw = await searchParams;
   const input = parseQuoteInput(raw);
   const catalog = await getPublicCatalog();
-  if (catalog.products.length === 0) redirect(withJourney("/advisor", input ? { vehicle: input.vehicle, usage: input.usage, priorities: input.priorities } : {}));
+  if (catalog.products.length === 0) redirect(withJourney("/advisor", input ? { vehicle: input.vehicle, trim: parseTrim(raw), usage: input.usage, priorities: input.priorities } : {}));
   const buyEnabled = await purchaseEnabled();
   const vehicle = input ? resolveVehicle(catalog, input.vehicle) : null;
   if (!input || !vehicle) {

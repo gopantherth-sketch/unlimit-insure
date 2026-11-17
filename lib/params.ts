@@ -23,6 +23,24 @@ export function parseVehicle(raw: RawParams): VehicleSelection | null {
   return { brandId, modelId, year };
 }
 
+/** Longest sub-model / engine-size text kept from the URL or the form. */
+export const TRIM_MAX = 60;
+
+/**
+ * Optional free-text sub-model / engine size (X8). Plain text only: control characters and angle
+ * brackets are removed, whitespace collapsed, capped at TRIM_MAX. Empty means absent. Never stored
+ * server-side and never used for pricing or matching; it only travels in the URL and the LINE message.
+ */
+export function cleanTrim(value: string | null | undefined): string | undefined {
+  if (!value) return undefined;
+  const text = value.replace(/[\u0000-\u001f\u007f-\u009f<>]/g, " ").replace(/\s+/g, " ").trim().slice(0, TRIM_MAX).trim();
+  return text || undefined;
+}
+
+export function parseTrim(raw: RawParams): string | undefined {
+  return cleanTrim(first(raw.trim));
+}
+
 export function parseUsage(raw: RawParams): UsageId | undefined {
   const u = first(raw.use);
   return usageIds.find((id) => id === u);
@@ -49,6 +67,8 @@ export function parseQuoteInput(raw: RawParams): QuoteInput | null {
 
 export interface JourneyState {
   vehicle?: VehicleSelection | null;
+  /** Optional sub-model / engine size; see cleanTrim. */
+  trim?: string;
   usage?: UsageId;
   priorities?: PriorityId[];
   plans?: string[];
@@ -61,6 +81,8 @@ export function buildQuery(state: JourneyState): string {
     sp.set("brand", state.vehicle.brandId);
     sp.set("model", state.vehicle.modelId);
     sp.set("year", String(state.vehicle.year));
+    const trim = cleanTrim(state.trim);
+    if (trim) sp.set("trim", trim);
   }
   if (state.usage) sp.set("use", state.usage);
   if (state.priorities && state.priorities.length > 0) sp.set("p", state.priorities.join(","));

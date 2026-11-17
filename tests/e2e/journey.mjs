@@ -28,19 +28,27 @@ const eventHref = await guide.getByRole("link", { name: /ถามเรื่�
 if (!eventHref || !decodeURIComponent(eventHref).includes("น้ำท่วม")) throw new Error("event missing from LINE message");
 step("event guide: no mock verdict; selected event in LINE message");
 
+await p.getByLabel(/รุ่นย่อย/).first().fill("  1.8 Hybrid <b>Premium</b>  ");
 await p.getByRole("button", { name: "ให้ที่ปรึกษาช่วยดู" }).click();
 await p.waitForURL(/\/advisor/);
+const advisorUrl = new URL(p.url());
 const lineHref = await p.getByRole("link", { name: /ส่งข้อมูลทาง LINE/ }).getAttribute("href");
 const message = decodeURIComponent(lineHref?.split("?")[1] ?? "");
-if (!message.includes("Toyota Corolla Cross 2025")) throw new Error("advisor LINE message lacks car details: " + message);
+if (!message.includes("Toyota Corolla Cross 2025 · 1.8 Hybrid b Premium /b")) throw new Error("advisor LINE message lacks car or sub-model: " + message);
+if (message.includes("<") || message.includes(">")) throw new Error("sub-model not sanitised: " + message);
 if (message.includes("ชั้น 1 ซ่อมศูนย์ Plus")) throw new Error("mock plan in advisor LINE message");
 if (await p.locator("main form").count()) throw new Error("advisor still has a form");
-step("car details → advisor LINE message; no form or mock plan");
+step("car + sub-model → advisor LINE message (sanitised); no form or mock plan");
 
 for (const path of ["/quote", "/quote/results", "/compare", "/plans/a-type1-dealer", "/buy/a-type1-dealer"]) {
   await checkAdvisor(path);
 }
 step("old product routes → advisor");
+
+advisorUrl.pathname = "/quote";
+await p.goto(advisorUrl.href);
+if (new URL(p.url()).searchParams.get("trim") !== advisorUrl.searchParams.get("trim")) throw new Error("/quote redirect dropped the sub-model: " + p.url());
+step("/quote redirect keeps car and sub-model");
 
 await p.goto(B + "/insurance/toyota/toyota-corolla-cross");
 if (await p.getByRole("heading", { name: /ตัวอย่างแพ็กเกจ/ }).count()) throw new Error("mock product card on model page");

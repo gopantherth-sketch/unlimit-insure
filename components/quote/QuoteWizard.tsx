@@ -33,7 +33,8 @@ import { buttonClass } from "@/components/ui/button";
 import { track } from "@/lib/analytics/track";
 import { SHOW_PRICES } from "@/lib/features";
 import { formatBaht } from "@/lib/format";
-import { parsePriorities, parseUsage, parseVehicle, toRaw, withJourney } from "@/lib/params";
+import { cleanTrim, parsePriorities, parseTrim, parseUsage, parseVehicle, toRaw, withJourney } from "@/lib/params";
+import { vehicleForm } from "@/content/vehicle-form";
 import { priorityDefinitions, usageDefinitions } from "@/lib/priorities";
 import type { PriorityId, UsageId, VehicleCatalog } from "@/lib/types";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
@@ -54,7 +55,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
   // Later steps need a valid car; fall back to step 1 otherwise.
   const step: Step = resolvedFromUrl ? requested : "car";
 
-  const [draft, setDraft] = useState<VehicleDraft>(urlVehicle ?? emptyDraft);
+  const [draft, setDraft] = useState<VehicleDraft>(urlVehicle ? { ...urlVehicle, trim: parseTrim(raw) ?? "" } : emptyDraft);
   const [usage, setUsage] = useState<UsageId | undefined>(parseUsage(raw));
   const [priorities, setPriorities] = useState<PriorityId[]>(parsePriorities(raw));
   const [error, setError] = useState<string | null>(null);
@@ -68,7 +69,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
   // Keep local state in sync when the URL changes (browser back/forward).
   useEffect(() => {
     const v = parseVehicle(raw);
-    if (v) setDraft(v);
+    if (v) setDraft({ ...v, trim: parseTrim(raw) ?? "" });
     setUsage(parseUsage(raw));
     setPriorities(parsePriorities(raw));
     setError(null);
@@ -83,6 +84,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
     router.push(
       withJourney("/quote", {
         vehicle: selection,
+        trim: draft.trim,
         usage: overrides.usage ?? usage,
         priorities: overrides.priorities ?? priorities,
         step: next,
@@ -107,7 +109,7 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
     if (!selection) return;
     const valid = priorities.filter((p) => availablePriorities.some((a) => a.id === p));
     for (const p of valid) track("priority_selected", p);
-    router.push(withJourney("/quote/results", { vehicle: selection, usage, priorities: valid }));
+    router.push(withJourney("/quote/results", { vehicle: selection, trim: draft.trim, usage, priorities: valid }));
   };
 
   const togglePriority = (id: PriorityId) =>
@@ -122,9 +124,9 @@ export function QuoteWizard({ catalog }: { catalog: VehicleCatalog }) {
 
         {step !== "car" && vehicle && (
           <MyCarChip
-            label={vehicleLabel(vehicle)}
+            label={vehicleForm.withTrim(vehicleLabel(vehicle), cleanTrim(draft.trim))}
             value={SHOW_PRICES ? formatBaht(vehicle.estimatedValue) : null}
-            changeHref={withJourney("/quote", { vehicle: selection, usage, priorities, step: "car" })}
+            changeHref={withJourney("/quote", { vehicle: selection, trim: draft.trim, usage, priorities, step: "car" })}
           />
         )}
 

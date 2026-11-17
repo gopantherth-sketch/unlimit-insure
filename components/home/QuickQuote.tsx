@@ -42,7 +42,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
       setError(true);
       return;
     }
-    router.push(withJourney("/advisor", { vehicle }));
+    router.push(withJourney("/advisor", { vehicle, trim: draft.trim }));
   };
 
   return (
