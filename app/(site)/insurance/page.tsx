@@ -8,7 +8,7 @@ import { getCatalog } from "@/lib/server/catalog";
 // Prebuilt while CATALOG_FROM_CODE is on (lib/features.ts).
 export const metadata: Metadata = {
   title: "ประกันรถยนต์ตามรุ่นรถ",
-  description: "เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณาและเปรียบเทียบแพ็กเกจประกันรถยนต์สำหรับรถรุ่นนั้น",
+  description: "เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณา แล้วสอบถามแผนและราคาจริงทาง LINE",
   alternates: { canonical: "/insurance" },
 };
 
@@ -21,7 +21,7 @@ export default async function InsuranceIndexPage() {
         id="models-title"
         eyebrow="Car models"
         title="ประกันรถยนต์ตามรุ่นรถ"
-        body="เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณา และตัวอย่างแพ็กเกจสำหรับรถรุ่นนั้น"
+        body="เลือกรุ่นรถของคุณเพื่อดูสิ่งที่ควรพิจารณา แล้วคุยกับเราเพื่อเช็กแผนและราคาจริง"
       />
       <div className="container-page">
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">

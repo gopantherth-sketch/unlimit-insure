@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ArrowLeft, Check, FileText, Headset } from "lucide-react";
 import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
@@ -18,14 +18,14 @@ import { formatBaht, formatNumber } from "@/lib/format";
 import { buildMatchContext, matchQuote } from "@/lib/match";
 import { parseQuoteInput, withJourney, type RawParams, selectPlanHref } from "@/lib/params";
 import { activeVersion, findProduct, generateQuotes, quoteForProduct } from "@/lib/quote";
-import { getCatalog } from "@/lib/server/catalog";
+import { getPublicCatalog } from "@/lib/server/catalog";
 import { purchaseEnabled } from "@/lib/server/features";
 import { isElectric, resolveVehicle, vehicleLabel } from "@/lib/vehicle";
 
 type Params = Promise<{ productId: string }>;
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const product = findProduct(await getCatalog(), (await params).productId);
+  const product = findProduct(await getPublicCatalog(), (await params).productId);
   return product ? { title: product.name, description: product.summary, alternates: { canonical: `/plans/${product.id}` } } : { title: "ไม่พบแพ็กเกจ" };
 }
 
@@ -33,7 +33,8 @@ const groups: FieldGroup[] = ["core", "ownDamage", "thirdParty", "people", "serv
 
 export default async function PlanPage({ params, searchParams }: { params: Params; searchParams: Promise<RawParams> }) {
   const { productId } = await params;
-  const catalog = await getCatalog();
+  const catalog = await getPublicCatalog();
+  if (catalog.products.length === 0) redirect("/advisor");
   const buyEnabled = await purchaseEnabled();
   const product = findProduct(catalog, productId);
   if (!product) notFound();

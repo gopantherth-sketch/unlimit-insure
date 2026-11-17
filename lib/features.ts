@@ -7,6 +7,9 @@
  */
 export const SHOW_PRICES = false;
 
+/** Public plan results stay off while advisors check each customer's car and policy terms. */
+export const SHOW_PUBLIC_PRODUCTS = false;
+
 /** My Garage, renewal reminders and other after-purchase features that need the back office. */
 export const SHOW_AFTER_PURCHASE = false;
 
