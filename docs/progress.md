@@ -207,3 +207,11 @@ Owners: **Core** = system core manager (code, data, deploy) · **Designer** · *
     - All requests: Google replied "Indexing requested".
     - The first live test of `dealer-vs-garage` failed with "Server connection error" ("Not available due to a site-wide issue"). A re-test a minute later passed, and curl with Google's user agents got 200 in about 0.1 s. Treated as a one-off. If it happens again, check Crawl stats (host status) and Workers errors (C2 CPU limit, Y2).
     - With `/advisor` (requested earlier today), O11 is done. "Validate fix" is not needed: the noindex, canonical and redirect states are intended. C10: re-check the Pages report in about a week.
+
+**No display ads for now (owner decision, 2026-11-17):** the owner asked about ads for extra income, then followed Core's advice not to add them. Reasons:
+- Traffic is too low to earn anything (350 search impressions in 3 months).
+- Ads on insurance pages would advertise competing insurers and brokers.
+- One LINE lead that turns into a policy is worth far more than ad income.
+- Ads would need a PDPA consent banner, and their scripts would slow pages and add CPU on Workers Free (C2).
+
+Focus instead on more leads: car-model pages and Lab articles for the queries people already search (type 1 vs 2+, BYD/EV insurance). Revisit only with steady traffic in the thousands of visits a month, and then only on Lab articles, never on `/advisor` or quote pages.
