@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ArrowLeft, Check, FileText, Headset } from "lucide-react";
 import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { ExplainButton } from "@/components/insurance/ExplainButton";
@@ -34,7 +34,7 @@ const groups: FieldGroup[] = ["core", "ownDamage", "thirdParty", "people", "serv
 export default async function PlanPage({ params, searchParams }: { params: Params; searchParams: Promise<RawParams> }) {
   const { productId } = await params;
   const catalog = await getPublicCatalog();
-  if (catalog.products.length === 0) redirect("/advisor");
+  if (catalog.products.length === 0) permanentRedirect("/advisor");
   const buyEnabled = await purchaseEnabled();
   const product = findProduct(catalog, productId);
   if (!product) notFound();

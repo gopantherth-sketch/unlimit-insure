@@ -1,7 +1,7 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { permanentRedirect } from "next/navigation";
 import { ArrowLeft, Headset } from "lucide-react";
 import { ScenarioGuide } from "@/components/home/ScenarioGuide";
 import { CompareTable } from "@/components/insurance/CompareTable";
@@ -31,7 +31,7 @@ export default async function ComparePage({ searchParams }: { searchParams: Prom
   const raw = await searchParams;
   const input = parseQuoteInput(raw);
   const catalog = await getPublicCatalog();
-  if (catalog.products.length === 0) redirect(withJourney("/advisor", input ? { vehicle: input.vehicle, trim: parseTrim(raw), usage: input.usage, priorities: input.priorities } : {}));
+  if (catalog.products.length === 0) permanentRedirect(withJourney("/advisor", input ? { vehicle: input.vehicle, trim: parseTrim(raw), usage: input.usage, priorities: input.priorities } : {}));
   const buyEnabled = await purchaseEnabled();
   const vehicle = input ? resolveVehicle(catalog, input.vehicle) : null;
   if (!input || !vehicle) {
