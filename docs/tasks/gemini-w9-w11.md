@@ -1,6 +1,6 @@
 # Gemini brief: W9 + W11 (car-detail field and LINE message text)
 
-Paste everything below the line into Gemini. The owner approves Gemini's answer, then hands it to Cursor (see "For Cursor" at the end).
+Paste everything below the line into Gemini. A ready package with screenshots and a brand guide is in `marketing/gemini-package-2026-11-17/`, next to the repo and outside git. The owner approves Gemini's answer, then hands it to Cursor (see "For Cursor" at the end).
 
 ---
 
@@ -18,9 +18,9 @@ Current text:
 - Hint (small text under the box): `ช่วยให้ที่ปรึกษาเช็กราคาได้ตรงขึ้น`
 
 Limits:
-- Label: at most about 35 characters. It must say the field is optional.
-- Placeholder: a realistic example, at most about 25 characters.
-- Hint: one short line, at most about 45 characters. Don't promise a lower price.
+- Label: must fit on one line in the desktop column, so about 22 characters at most. Today's label wraps at 1440 px and splits "(ไม่บังคับ)". It must still say the field is optional.
+- Placeholder: a realistic example, about 16 characters at most. Today's placeholder is cut off at 1440 px ("Premiur").
+- Hint: one short line, about 40 characters at most. Don't promise a lower price.
 
 ## 2. Prefilled LINE message (W11)
 

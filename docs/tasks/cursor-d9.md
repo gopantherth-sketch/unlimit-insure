@@ -12,7 +12,7 @@ Paste into Cursor. Role for this task: **designer** (layout, colour, type, respo
 1. **Homepage quick-quote card.** Four fields plus the button in one row on desktop, stacked on mobile.
    - Alignment: the selects have icon tiles and the text input has none, so check label and baseline alignment.
    - Height: the hint text under the input makes that column taller. Does the button still line up with the fields (`lg:items-end`)?
-   - Wrapping and overflow of the long Thai label.
+   - Wrapping and overflow of the long Thai label. Already seen live at 1440 px: the label wraps onto two lines and the placeholder is cut off ("Premiur"). W9 (Gemini) is shortening the text. Check again after the W9 merge, and only fix layout here.
    - Focus ring, tap target height (≥ 44 px) and placeholder contrast.
    - Both tabs: "ประกันรถยนต์" and "ประกันรถ EV".
 2. **`/advisor?brand=toyota&model=toyota-corolla-cross&year=2022&trim=1.8%20Hybrid%20Premium&from=home`.** The summary card with a long sub-model (try 60 characters): wrapping, no overflow.
