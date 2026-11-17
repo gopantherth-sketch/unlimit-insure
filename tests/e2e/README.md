@@ -16,6 +16,7 @@ Set `ADMIN_USER` and `ADMIN_PASS` to the values in your `.dev.vars`.
 | `npm run e2e:admin-users` | Empty `admin_users` table (`npx wrangler d1 execute unlimit-insure --local --command "UPDATE leads SET assigned_to=NULL; UPDATE applications SET assigned_to=NULL; DELETE FROM admin_users;"`) | Owner creates staff, forced password change, roles, disable, reset |
 | `npm run e2e:import` | — | Product import template, example file, bad file, new version as draft |
 | `npm run e2e:purchase` | `PURCHASE_ENABLED=true` and the R2 binding (see `docs/deploy.md`) | Buy → private link → phone check → uploads → staff moves → payment → policy issued → link reset |
+| `npm run e2e:shop` | Local server only (it refuses other URLs); migration 0004 applied | Shop off: `/shop` and the stock API 404, not in the sitemap. Shop on: product page LINE order message. Admin: shop PromptPay, stock, new order with QR, paid takes stock, ship needs tracking, short stock refused, cancel returns stock |
 | `npm run e2e:a11y -- [APP-REF]` | Optional reference of an application made with phone 0812345678 | axe accessibility scan, horizontal overflow, page errors at 360px and 1280px; writes `tests/e2e/a11y-report.json` |
 
 Phone lookups are rate-limited (5 per 10 minutes per IP). Restart the local server if a run hits the limit.

@@ -292,3 +292,52 @@ export const settings = sqliteTable("settings", {
   updatedBy: text("updated_by"),
   updatedAt: text("updated_at").notNull().default(now),
 });
+
+// Shop (task C14). Orders are created by admins from the customer's LINE message. No address, phone
+// or payment slip is stored here: those stay in the LINE chat (PDPA, collect the minimum).
+export type ShopOrderStatus = "pending_payment" | "paid" | "shipped" | "completed" | "cancelled";
+
+/** Stock per SKU. A SKU without a row is not tracked (never shown as sold out). */
+export const shopStock = sqliteTable("shop_stock", {
+  sku: text("sku").primaryKey(),
+  qty: integer("qty").notNull(),
+  updatedAt: text("updated_at").notNull().default(now),
+});
+
+export const shopOrders = sqliteTable(
+  "shop_orders",
+  {
+    id: text("id").primaryKey(),
+    number: text("number").notNull().unique(),
+    status: text("status").$type<ShopOrderStatus>().notNull().default("pending_payment"),
+    /** Integer satang. total = items + shipping. */
+    itemsSatang: integer("items_satang").notNull(),
+    shippingSatang: integer("shipping_satang").notNull().default(0),
+    totalSatang: integer("total_satang").notNull(),
+    /** Customer's LINE display name, so admins can find the chat. Nothing else about the customer. */
+    lineName: text("line_name").notNull(),
+    courier: text("courier"),
+    tracking: text("tracking"),
+    note: text("note"),
+    /** True once stock was taken for this order (moved to paid), so a cancel puts it back exactly once. */
+    stockTaken: integer("stock_taken", { mode: "boolean" }).notNull().default(false),
+    createdBy: text("created_by").notNull(),
+    createdAt: createdAt(),
+    updatedAt: text("updated_at").notNull().default(now),
+  },
+  (t) => [index("shop_orders_status_idx").on(t.status), index("shop_orders_created_idx").on(t.createdAt)],
+);
+
+export const shopOrderItems = sqliteTable(
+  "shop_order_items",
+  {
+    id: text("id").primaryKey(),
+    orderId: text("order_id").notNull().references(() => shopOrders.id),
+    sku: text("sku").notNull(),
+    /** Product and variant names at order time, so old orders read right after the catalogue changes. */
+    label: text("label").notNull(),
+    qty: integer("qty").notNull(),
+    unitSatang: integer("unit_satang").notNull(),
+  },
+  (t) => [index("shop_order_items_order_idx").on(t.orderId)],
+);

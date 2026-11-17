@@ -3,6 +3,7 @@ import { labArticles } from "@/content/lab";
 import { INSURANCE_TYPES } from "@/lib/import/columns";
 import { priorityIds, usageIds } from "@/lib/priorities";
 import { scenarioRules } from "@/lib/scenarios";
+import { shopProducts } from "@/content/shop";
 
 // Allowlisted funnel events. Anything else is dropped by the API.
 // Order of FUNNEL is the journey order shown in admin.
@@ -32,6 +33,8 @@ export const eventDefs = {
   application_submitted: { label: "ส่งใบสมัคร", dims: [] as string[] },
   documents_submitted: { label: "ส่งเอกสารให้ตรวจ", dims: [] as string[] },
   payment_submitted: { label: "แจ้งชำระเงิน", dims: [] as string[] },
+  shop_viewed: { label: "ดูสินค้าในร้านค้า", dims: shopProducts.map((p) => p.slug) },
+  shop_order_clicked: { label: "กดสั่งซื้อสินค้าทาง LINE", dims: shopProducts.map((p) => p.slug) },
 } as const;
 
 export type EventName = keyof typeof eventDefs;

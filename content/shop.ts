@@ -1,0 +1,68 @@
+// Shop (task C14, brief docs/tasks/shop-option1.md). Car-care products sold as real sales:
+// the customer orders on LINE and pays by PromptPay; an admin confirms the slip and ships.
+// Product facts, prices and photos come from the owner only (O12). Until then they read [รอข้อมูล].
+// Wording here is Core's placeholder; the copywriter replaces it (W13).
+
+export interface ShopVariant {
+  /** Stock-keeping id, stored on orders and stock rows. Never rename once orders exist. */
+  sku: string;
+  /** Size / colour shown in the picker and the order message. */
+  label: string;
+  /** Price per piece in satang (1 บาท = 100). null = not set yet; the page shows [รอข้อมูล]. */
+  priceSatang: number | null;
+}
+
+export interface ShopProduct {
+  slug: string;
+  name: string;
+  /** One line under the name on cards. */
+  summary: string;
+  /** Short paragraphs on the product page: owner facts only (size, material, care). */
+  description: string[];
+  /** Owner's own photo in public/images/shop/ (webp). Absent = a designed placeholder tile. */
+  photo?: { src: string; width: number; height: number; alt: string };
+  variants: ShopVariant[];
+}
+
+export const shopProducts: ShopProduct[] = [
+  {
+    slug: "microfiber-cloth",
+    name: "ผ้าไมโครไฟเบอร์ [รอข้อมูล]",
+    summary: "[รอข้อมูล]",
+    description: ["[รอข้อมูล: ขนาด เนื้อผ้า วิธีดูแล]"],
+    variants: [{ sku: "MF-01", label: "[รอข้อมูล]", priceSatang: null }],
+  },
+];
+
+export const shopCopy = {
+  title: "ร้านค้า",
+  eyebrow: "ร้านค้า Unlimit",
+  intro: "อุปกรณ์ดูแลรถที่เราเลือกมาเอง สั่งซื้อทาง LINE แล้วชำระด้วยพร้อมเพย์",
+  howTo: {
+    title: "สั่งซื้ออย่างไร",
+    steps: [
+      "เลือกแบบและจำนวน แล้วกด “สั่งซื้อทาง LINE”",
+      "แอดมินแจ้งยอดรวมค่าส่งและส่ง QR พร้อมเพย์ให้ในแชต",
+      "ส่งสลิปและที่อยู่จัดส่งในแชต เราแจ้งเลขพัสดุเมื่อส่งของแล้ว",
+    ],
+  },
+  seller: "ผู้ขาย: [รอข้อมูล]",
+  priceMissing: "ราคา [รอข้อมูล]",
+  variant: "แบบ",
+  quantity: "จำนวน",
+  total: "รวม",
+  shippingNote: "ยังไม่รวมค่าส่ง แอดมินแจ้งในแชต",
+  soldOut: "สินค้าหมด",
+  orderButton: "สั่งซื้อทาง LINE",
+  backToShop: "กลับไปร้านค้า",
+  /** Prefilled LINE order message. The first line lets admins filter shop chats; keep it unchanged. */
+  orderMessage: (o: { product: string; variant: string; qty: number; unit: string | null; total: string | null }) =>
+    [
+      "สั่งซื้อสินค้า (จากเว็บไซต์)",
+      `สินค้า: ${o.product}`,
+      `แบบ: ${o.variant}`,
+      `จำนวน: ${o.qty}`,
+      o.unit && o.total ? `ราคา: ${o.qty} × ${o.unit} = ${o.total} บาท` : "ราคา: (แอดมินแจ้ง)",
+      "ค่าส่ง: (แอดมินแจ้ง)",
+    ].join("\n"),
+};

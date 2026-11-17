@@ -5,6 +5,8 @@ const axe = readFileSync(createRequire(import.meta.url).resolve("axe-core/axe.mi
 const J = "brand=toyota&model=toyota-corolla-cross&year=2022";
 const pub = ["/", "/quote", `/quote?${J}&step=use`, `/quote/results?${J}&usage=commute`, `/compare?${J}&plans=a-type1-dealer,b-type3plus`, `/plans/a-type1-dealer?${J}`,
   `/buy/a-type1-dealer?${J}`, "/advisor", "/garage", "/claims", "/lab", "/lab/type1-vs-2plus", "/insurance", "/insurance/toyota/toyota-corolla-cross", "/privacy", "/terms", "/track/APP-0000000000", "/admin/login"];
+// Shop pages only while SHOW_SHOP is on (otherwise they are 404 on purpose).
+{ const r = await fetch(B + "/shop").catch(() => null); if (r?.status === 200) pub.push("/shop", "/shop/microfiber-cloth"); }
 const ref = process.argv[2];
 const b = await launch();
 const out = [];
@@ -41,9 +43,11 @@ await o.getByRole("button", { name: "เข้าสู่ระบบ" }).click
 if (ref) { await o.goto(B + "/admin/applications"); await o.getByRole("link", { name: ref }).click(); await o.waitForURL(/applications\/.+/); appPath = new URL(o.url()).pathname; }
 await o.goto(B + "/admin/leads"); const firstLead = o.locator("tbody a").first(); let leadPath = null;
 if (await firstLead.count()) { await firstLead.click(); await o.waitForURL(/leads\/.+/); leadPath = new URL(o.url()).pathname; }
+await o.goto(B + "/admin/shop"); const firstOrder = o.locator("tbody a").first(); let orderPath = null;
+if (await firstOrder.count()) { await firstOrder.click(); await o.waitForURL(/admin\/shop\/.+/); orderPath = new URL(o.url()).pathname; }
 await o.close();
 const mobAdmin = await b.newContext({ viewport: { width: 360, height: 800 }, storageState: await desk.storageState() });
-for (const path of ["/admin", "/admin/leads", leadPath, "/admin/applications", appPath, "/admin/products", "/admin/import", "/admin/analytics", "/admin/users", "/admin/settings", "/admin/account"].filter(Boolean)) { await scan(desk, path, 1280); await scan(mobAdmin, path, 360); }
+for (const path of ["/admin", "/admin/leads", leadPath, "/admin/applications", appPath, "/admin/products", "/admin/shop", orderPath, "/admin/import", "/admin/analytics", "/admin/users", "/admin/settings", "/admin/account"].filter(Boolean)) { await scan(desk, path, 1280); await scan(mobAdmin, path, 360); }
 writeFileSync(new URL("./a11y-report.json", import.meta.url), JSON.stringify(out, null, 1));
 const agg = {};
 for (const r of out) for (const v of r.violations) { const k = `${v.impact} ${v.id}`; (agg[k] ??= new Set()).add(`${r.path}@${r.width}`); }
