@@ -44,7 +44,11 @@ Local and live checks passed, and so did journey and a11y. Owner, in Search Cons
   - **X8:** optional sub-model / engine-size field (`trim`, cleaned, max 60, not stored). It shows on the homepage, and `/advisor` puts it in the summary and the LINE message. The `/quote`, `/quote/results` and `/compare` redirects keep it. Branch `codex/x8-trim-field` (`b47f870`), PR #5, stacked on #4.
   - **Checks on both branches:** tsc, tests (49 on X5, 56 on X8), cf:build, `e2e:journey`, `e2e:a11y` on local `wrangler dev` (54 pages, 0 violations).
   - **X5 merged and live:** with the owner's OK, merged as `b372b3f`. "Workers Builds: unlimit-insure" passed at 07:23 UTC. Live: `/`, `/advisor`, `/lab` and `/claims` return 200, `/quote` redirects (307) to `/advisor`, and unknown paths return 404.
-  - **X8 not merged:** PR #5 is retargeted to `main` and waits for D9 and W9.
+  - **X8 merged and live:** the owner asked to deploy it before D9 and W9 ("Deploy X8 now"). Merged as `39bea62`. "Workers Builds: unlimit-insure" passed at 07:34 UTC.
+    - The live homepage shows the field.
+    - `/advisor?…&trim=1.8 Hybrid <b>Premium` gives the LINE message "…Toyota Corolla Cross 2022 · 1.8 Hybrid b Premium" (`<` `>` removed) and is noindex.
+    - `/quote?…&trim=1.8` redirects (307) to `/advisor?…&trim=1.8`.
+    - D9 and W9 will follow as small changes.
 - Playwright's bundled headless shell is missing on this PC; e2e ran with `CHROMIUM` set to an installed Playwright Chromium.
 
 **Cloudflare review (Dev Report 2026-09-27), code items done:** `worker.ts` wraps the OpenNext handler: http and www → 301 `https://unlimitinsure.com` (U1/U4), security headers HSTS (1 day; raise to 1 year after a week), nosniff, X-Frame-Options DENY, Referrer-Policy (U5), shared-cacheable HTML → `s-maxage=300, stale-while-revalidate` (U3); `public/_headers` caches `/_next/static/*` for a year. `workers_dev: false` (the workers.dev address is off; use unlimitinsure.com). Local preview needs `DISABLE_CANONICAL_REDIRECT=1` in `.dev.vars`. Open: U6 email DNS records (owner Q1), optional dashboard "Always Use HTTPS", U2 plan choice.
