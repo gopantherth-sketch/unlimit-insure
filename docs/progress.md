@@ -232,3 +232,7 @@ All fields are within limits (titles 56–60, descriptions 135–144). tsc, test
   - Why not CPU or security rules: a Worker over its CPU limit returns an error page (1102/5xx), and a security block returns 403. Google reports those as server error or blocked, not "connection error".
   - Not checked: Cloudflare Security events and Worker errors. The dashboard needs the owner to sign in, and wrangler isn't logged in on this machine.
   - Action: none now. If Crawl stats ever shows host problems, or the error keeps coming back, check Cloudflare Security events for Google IPs and the Worker error rate (Y2).
+  - **Cloudflare checked the same day (owner signed in to the dashboard):**
+    - Worker `unlimit-insure`, last 24 h: 0 errors, no 5xx responses, median CPU 3.6–4 ms, 2.5k invocations, asset cache hit rate about 87%.
+    - Security events, last 24 h: only managed-rule blocks of scanners on cloud hosts (Netherlands, US, and a Google Cloud IP in Belgium). Nothing from Googlebot's ranges (66.249.x.x) and nothing near either failure time (23:16 on 2026-11-17 and 00:05 on 2026-11-18, GMT+7).
+    - Conclusion confirmed: no site-side cause. No change.
