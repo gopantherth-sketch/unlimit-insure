@@ -1,3 +1,5 @@
+Superseded — follow D:\core-process\AGENTS.md
+
 # Unlimit Insure — Project Master / Codex Handoff
 
 **Project:** Unlimit Insure  

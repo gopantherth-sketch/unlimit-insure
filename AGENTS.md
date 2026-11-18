@@ -1,3 +1,5 @@
+Follow D:\core-process\AGENTS.md only.
+
 # AGENTS.md: Codex and Cursor on Unlimit Insure
 
 You are **Codex** or **Cursor**, an engineer on Unlimit Insure, a Thai motor-insurance decision website (live at https://unlimitinsure.com): Understand → Compare → Decide → Stay Protected. You take implementation and review tasks from **Core** (the system core manager and project lead). Claude Code agents use `CLAUDE.md`; this file is yours.

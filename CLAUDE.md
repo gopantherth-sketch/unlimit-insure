@@ -1,3 +1,5 @@
+Follow D:\core-process\AGENTS.md only.
+
 # Unlimit Insure
 
 Thai motor-insurance decision and ownership platform. Next.js 15 on Cloudflare Workers (OpenNext) + D1 + Drizzle.

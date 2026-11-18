@@ -1,3 +1,5 @@
+Superseded — follow D:\core-process\AGENTS.md
+
 # Progress
 
 Snapshot of the live tracker (https://claude.ai/artifact/F5LAtBAfu9GNHnhMJpGVoC) taken 2026-09-26 at handover. From now on **this file is the source of truth**: the core manager updates it with each merged change. The tracker page is no longer updated.

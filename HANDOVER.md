@@ -1,3 +1,5 @@
+Superseded — follow D:\core-process\AGENTS.md
+
 # Handover: Unlimit Insure
 
 Handed over 2026-09-26 from the cloud PM session to the local agents (Core, Designer, Copywriter; see [`docs/agents.md`](docs/agents.md)). Everything needed to continue is in this repo. Nothing lives only in the old session.

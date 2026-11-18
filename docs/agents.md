@@ -1,3 +1,5 @@
+Superseded — follow D:\core-process\AGENTS.md
+
 # Team: who does what
 
 **Owner decision, 2026-11-17:** to save Claude quota, Claude is Core only. Later the same day the owner moved copywriting and generated graphics from Gemini to **Gemini**. The designer and copywriter roles moved off Claude, and Codex is retired (ChatGPT cancelled).
