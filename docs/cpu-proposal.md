@@ -34,6 +34,8 @@ Prebuilt pages (served from the static-assets cache) stay at 2–6 ms. The pages
 3. **Cold start of `/`.** It is already prebuilt (4–6 ms). The worker bundle is 1.67 MB gzip. Trimming server-only dependencies from the public bundle would lower cold-start wall time but not CPU per request. Low priority.
 4. **Admin and the stock API stay dynamic.** They are low-traffic and staff-only. `/api/shop/stock` (once the shop is on) is one small D1 read.
 
+**Built 2026-11-18:** #1 as CLEAR row 41, #2 as row 42.
+
 Order: 1, then 2, each as its own CLEAR row with "No behaviour change". Measure again with the same `wrangler tail` method after each deploy.
 
 Note: this was measured on the live Next 15 build. The Next 16 upgrade (row 7, branch `core/c13-next16`) should be measured again after its GO deploy.

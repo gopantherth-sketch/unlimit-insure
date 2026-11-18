@@ -26,5 +26,8 @@
   // To switch on: create the bucket (npx wrangler r2 bucket create unlimit-insure-docs), uncomment r2_buckets,
   // set PURCHASE_ENABLED to "true", redeploy. See docs/deploy.md.
   // "r2_buckets": [{ "binding": "DOCS", "bucket_name": "unlimit-insure-docs" }],
-  "vars": { "PURCHASE_ENABLED": "false" }
+  // JOURNEY_REDIRECTS "1": no insurance products are published, so worker.ts answers the old journey pages
+  // (/quote, /quote/results, /compare, /plans/*) with the advisor redirect (CLEAR row 41). Set "0" or remove
+  // it in the same change that publishes real products.
+  "vars": { "PURCHASE_ENABLED": "false", "JOURNEY_REDIRECTS": "1" }
 }

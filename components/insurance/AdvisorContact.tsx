@@ -26,6 +26,8 @@ interface Props {
   /** Page the customer came from, for the LINE message. */
   fromText: string | null;
   planNames: Record<string, string>;
+  /** The prebuilt placeholder on /advisor (row 42): no analytics, the real one counts the view. */
+  quiet?: boolean;
 }
 
 /**
@@ -33,15 +35,15 @@ interface Props {
  * go into a prefilled LINE message they can edit and send themselves. (The lead form is kept in
  * AdvisorHandoff.tsx for when the back office returns.)
  */
-export function AdvisorContact({ context, car, fromText, planNames }: Props) {
+export function AdvisorContact({ context, car, fromText, planNames, quiet }: Props) {
   const id = useId();
   const planName = (pid: string) => planNames[pid] ?? pid;
   const [compared, setCompared] = useState<string[]>([]);
 
   useEffect(() => {
     setCompared(readJourney().comparedPlanIds);
-    track("advisor_viewed");
-  }, []);
+    if (!quiet) track("advisor_viewed");
+  }, [quiet]);
 
   const plans = (context.selectedPlanIds.length ? context.selectedPlanIds : compared).filter((id) => id in planNames);
   const message = contact.messages.quoteRequest({

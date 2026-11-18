@@ -1,39 +1,29 @@
 import { seo } from "@/lib/seo";
 import type { Metadata } from "next";
 import { CircleCheck } from "lucide-react";
+import { Suspense } from "react";
+import { AdvisorContact } from "@/components/insurance/AdvisorContact";
 import { LineChatPreview } from "@/components/brand/LineChatPreview";
 import { homeCopy } from "@/content/home";
-import { AdvisorContact } from "@/components/insurance/AdvisorContact";
-import { contextFromParams } from "@/lib/leads";
-import { parseFrom, parseTrim, type RawParams } from "@/lib/params";
-import { contact } from "@/content/contact";
-import type { AdvisorCar } from "@/components/insurance/AdvisorContact";
+import { AdvisorFromUrl } from "@/components/insurance/AdvisorFromUrl";
+import { advisorCarKey, type AdvisorCars } from "@/lib/advisor-params";
 import { getPublicCatalog } from "@/lib/server/catalog";
-import { isElectric, resolveVehicle } from "@/lib/vehicle";
 
-// The plain page is a real landing page ("free consultation") and is indexed. With journey params in the URL
-// it carries one visitor's car and plan picks, so those variants are noindex (canonical stays /advisor).
-export async function generateMetadata({ searchParams }: { searchParams: Promise<RawParams> }): Promise<Metadata> {
-  const sp = await searchParams;
-  return seo("/advisor", { noindex: Object.values(sp).some((v) => v !== undefined && v !== "") });
-}
+// Prebuilt (CLEAR row 42): the plain page is a real landing page ("free consultation") and is indexed.
+// The journey params (car, plan picks, sub-model, source page) are read in the browser by AdvisorFromUrl.
+// URLs with params carry one visitor's choices, so worker.ts sends X-Robots-Tag: noindex for them
+// (canonical stays /advisor).
+export const metadata: Metadata = seo("/advisor");
 
-export default async function AdvisorPage({ searchParams }: { searchParams: Promise<RawParams> }) {
-  const raw = await searchParams;
-  const context = contextFromParams(raw);
-  // X8: the optional sub-model only goes into the on-screen summary and the LINE message, never the stored lead.
-  const trim = parseTrim(raw);
+export default async function AdvisorPage() {
   const catalog = await getPublicCatalog();
-  const vehicle = context.vehicle ? resolveVehicle(catalog, context.vehicle) : null;
+  const brandName = new Map(catalog.brands.map((b) => [b.id, b.name]));
+  const cars: AdvisorCars = {};
+  for (const m of catalog.models) {
+    const brand = brandName.get(m.brandId);
+    if (brand) cars[advisorCarKey(m.brandId, m.id)] = { name: `${brand} ${m.name}`, ev: m.powertrain === "EV", yearFrom: m.yearFrom, yearTo: m.yearTo };
+  }
   const planNames = Object.fromEntries(catalog.products.map((p) => [p.id, p.name]));
-  const safeContext = { ...context, vehicle: vehicle ? context.vehicle : null };
-  const from = parseFrom(raw);
-  const carName = vehicle ? `${vehicle.brand.name} ${vehicle.model.name}` : null;
-  // A model page link carries a default year the customer did not pick, so leave the year blank for them.
-  const car: AdvisorCar | null = vehicle && carName
-    ? { name: carName, ev: isElectric(vehicle), year: from === "model" ? null : vehicle.year, trim: trim ?? null }
-    : null;
-  const fromText = from === "home" ? contact.messages.from.home : from === "model" && carName ? contact.messages.from.model(carName) : null;
 
   return (
     <div className="bg-canvas pb-16">
@@ -61,7 +51,9 @@ export default async function AdvisorPage({ searchParams }: { searchParams: Prom
         </div>
       </section>
       <div className="container-page mt-6 sm:mt-8">
-        <AdvisorContact context={safeContext} planNames={planNames} car={car} fromText={fromText} />
+        <Suspense fallback={<AdvisorContact context={{ vehicle: null, priorities: [], selectedPlanIds: [] }} car={null} fromText={null} planNames={planNames} quiet />}>
+          <AdvisorFromUrl cars={cars} planNames={planNames} />
+        </Suspense>
       </div>
     </div>
   );

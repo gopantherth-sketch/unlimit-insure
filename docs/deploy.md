@@ -14,6 +14,8 @@ Settings in `release.config.json`: `target` `worker`, `workerName` `unlimit-insu
 
 - **`release-candidates/` is git-ignored** (~46 MB per candidate). Back up the folder; rollback needs it.
 - **Dry run without deploying:** from `release-candidates/<id>/`, run `node ../../node_modules/wrangler/bin/wrangler.js deploy --dry-run --config wrangler.jsonc --outdir <temp>`. The first candidate, `20261118-ef75bea-1`, bundled 233 asset files, 1.67 MB gzip, with bindings DB, ASSETS and PURCHASE_ENABLED.
+- **`JOURNEY_REDIRECTS` (`wrangler.jsonc` vars, CLEAR row 41):** `"1"` while no insurance products are published. `worker.ts` then answers `/quote`, `/quote/results`, `/compare` and `/plans/*` with the advisor redirect itself (~1 ms CPU instead of 22–37 ms). The change that publishes real products must set it to `"0"`, or those pages stay redirects. `/buy/*` follows `PURCHASE_ENABLED` instead.
+- **`/advisor` is prebuilt** (row 42): the browser reads the car and plan picks from the URL; `worker.ts` adds `X-Robots-Tag: noindex` when the URL has any.
 - **D1 migrations are not part of a deploy.** `deploy.mjs` never runs `--remote` or `d1`. A change that adds a file under `migrations/` needs Nithi's explicit yes to run `npm run db:migrate:remote` before the GO deploy. Write it in the batch reply next to the GO line.
 - **Next.js 16** (C13, 2026-11-18): Next 16.4.6 with `@opennextjs/cloudflare` 1.20.16; `--dangerouslyUseUnsupportedNextVersion` is gone. OpenNext 1.20.6 with Next 16 gave 500 on every dynamic page (`preview-props.json`), so keep OpenNext at 1.20.16 or later.
 - **Untracked files that affect a build:**
