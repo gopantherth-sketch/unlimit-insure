@@ -39,3 +39,18 @@ Prebuilt pages (served from the static-assets cache) stay at 2–6 ms. The pages
 Order: 1, then 2, each as its own CLEAR row with "No behaviour change". Measure again with the same `wrangler tail` method after each deploy.
 
 Note: this was measured on the live Next 15 build. The Next 16 upgrade (row 7, branch `core/c13-next16`) should be measured again after its GO deploy.
+
+## Re-measure after 20261118-b4e6a52-1 (Next 16 + rows 41/42)
+
+Same method, 3 rounds, CPU / wall ms:
+
+| Page | Round 1 | Round 2 | Round 3 | Before |
+|---|---|---|---|---|
+| `/` | 10 / 22 | 8 / 19 | 10 / 22 | 4–6 |
+| `/lab` | 5 / 14 | 5 / 15 | 5 / 13 | 2–3 |
+| `/insurance/toyota/toyota-corolla-cross` | 4 / 11 | 4 / 11 | 8 / 15 | 2–3 |
+| `/quote` (edge 308) | 0 / 0 | 0 / 0 | 0 / 0 | 22–31 |
+| `/quote/results` (edge 308) | 0 / 1 | 0 / 0 | 0 / 0 | 28–37 |
+| `/advisor` (with and without params) | 4–6 / 10–18 | | | 39–238 |
+
+Rows 41/42 worked as planned. Prebuilt pages roughly doubled (`/` now 8–10 ms, close to the 10 ms limit). That is likely the Next 16 / OpenNext 1.20.16 runtime, not rows 41/42, and is worth its own row.
