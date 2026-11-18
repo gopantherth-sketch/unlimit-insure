@@ -21,7 +21,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 6 | C8 · Payment slip guard: an old slip still passes after staff sends it back; require an upload after the last move to awaiting_payment (`lib/db/applications.ts`) + vitest cases | app |  | Must land before C6; purchase is off so no live impact | done 11-18 | 20261118-afae7fa-1 |
 | 7 | C13 · Upgrade Next.js 15 to a supported major with matching `@opennextjs/cloudflare`; remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command | app |  |  | done 11-18 | 20261118-df708c8-1 |
 | 8 | C4 · Import real products (admin → นำเข้าข้อมูล); retire the mock catalogue, `CATALOG_FROM_CODE=false`, restore `force-dynamic` | app | | Blocked on owner data O4 | open | |
-| 9 | C6 · Switch on online purchase (R2 bucket, `r2_buckets`, `PURCHASE_ENABLED=true`, payment account, `e2e:purchase`) | live | | Blocked on C4, C8, O5, O8 | open | |
+| 9 | C6 · Switch on online purchase (R2 bucket, `r2_buckets`, `PURCHASE_ENABLED=true`, payment account, `e2e:purchase`) | live | | Blocked on C4, C8, O5, O8; also update the privacy line "ไม่มีแบบฟอร์มเก็บข้อมูลส่วนบุคคล" in `content/legal.ts` (W10 review) | open | |
 | 10 | C7 · Staff alerts via LINE (`lib/notify` ready; needs Messaging API token + `LINE_ALERT_TO`) | app | | Parked by owner | open | |
 | 11 | C9 · Phase 4: renewal reminders and renewal compare | app | | Blocked on real policies | open | |
 | 12 | C15 · Shop launch: `SHOW_SHOP` on, footer link, sitemap, indexing request, one real test order | live | | Blocked on W13, D10, O12, O13 (C14 shop build live hidden as `1da12df`, 11-18) | open | |
@@ -37,7 +37,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 22 | D10 · Shop design review: product card and page at 390/1440, variant/quantity picker, out of stock, admin Orders; axe clean | app |  | fit: Cursor · shop build is live hidden | done 11-19 | 20261119-c847c24-1 |
 | 23 | W12 · Content plan from Search Console: three rounds, A first | live | | Owner pastes round A into Gemini (`docs/tasks/w12-content-plan.md`) | open | |
 | 24 | W13 · Shop copy: `/shop` intro, SEO text, product names and descriptions (owner facts only), order message label | app | | Gemini drafts · brief `docs/tasks/gemini-w13.md` (2 products from the owner 11-19; more products and seller still O12) | open | |
-| 25 | W10 · Review the X5 copy edits (PR #4, merged) | live | | | open | |
+| 25 | W10 · Review the X5 copy edits (PR #4, merged) | live | | | done 11-19 · Claude | |
 | 26 | W6 · SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`) | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 27 | W4 · Turn `docs/verify-before-launch.md` into a question sheet grouped by reviewer | app |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 28 | W3 · Review the Phase 3 strings in `content/purchase.ts` | app |  |  | done 11-18 | 20261118-afae7fa-1 |
