@@ -126,3 +126,61 @@ export function advisorNoindex(url: URL): boolean {
   for (const v of url.searchParams.values()) if (v !== "") return true;
   return false;
 }
+
+// ---------------------------------------------------------------------------------------------------
+// Prebuilt pages straight from static assets (CLEAR row 43).
+// On Next 16 each prebuilt page's OpenNext cache entry is one JSON file of up to ~640 KB (HTML + RSC +
+// segment prefetch data). Cache interception parses all of it and hashes the body on every request:
+// 8–10 ms CPU live for `/`. scripts/prebuilt-pages.mjs copies the same files Next.js wrote for each page
+// into the assets folder, and the worker streams them, mirroring OpenNext's cacheInterceptor.
+
+/** One prebuilt page, written by scripts/prebuilt-pages.mjs into .open-next/prebuilt-pages.mjs. */
+export interface PrebuiltPage {
+  /** Asset file stem, e.g. "index" or "lab/flood-cover". */
+  file: string;
+  /** Headers Next.js stored with the page (x-nextjs-prerender, x-nextjs-stale-time). */
+  headers: Record<string, string>;
+  /** Segment prefetch keys with a file, e.g. "/_tree". */
+  segments: string[];
+}
+
+export const PREBUILT_ASSET_DIR = "/cdn-cgi/_prebuilt/";
+/** Same as OpenNext's cacheInterceptor (routes manifest rsc.varyHeader). */
+export const NEXT_VARY = "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch, Next-Url";
+
+/** Asset key for a segment, e.g. "/!KHNpdGUp/__PAGE__" → "!KHNpdGUp/__PAGE__". The file is <file>.segments/<key>.segment.rsc. */
+export function segmentAssetKey(segment: string): string {
+  return segment.replace(/^\//, "");
+}
+
+/**
+ * The asset to answer with and its headers, or null to let OpenNext answer. Same rules as OpenNext's
+ * cacheInterceptor for a prebuilt app page with no revalidation:
+ * - GET or HEAD only, no server action, no revalidation request, no draft-mode cookie;
+ * - exact path only (a trailing slash or other spelling goes to Next.js, which redirects or 404s);
+ * - `RSC: 1` gets the RSC payload; with `Next-Router-Segment-Prefetch` it gets that segment, or Next.js
+ *   when the page has no such segment.
+ */
+export function prebuiltAsset(request: Request, pages: Record<string, PrebuiltPage>): { asset: string; headers: Record<string, string> } | null {
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+  const h = request.headers;
+  if (h.get("next-action") || h.get("x-prerender-revalidate")) return null;
+  const cookie = h.get("cookie") ?? "";
+  if (cookie.includes("__prerender_bypass") || cookie.includes("__next_preview_data")) return null;
+  const path = new URL(request.url).pathname;
+  if (!Object.hasOwn(pages, path)) return null;
+  const page = pages[path]!;
+  const headers: Record<string, string> = { ...page.headers, Vary: NEXT_VARY };
+  if (h.get("rsc") !== "1") {
+    return { asset: `${PREBUILT_ASSET_DIR}${page.file}.html.bin`, headers: { ...headers, "Content-Type": "text/html; charset=utf-8" } };
+  }
+  const segment = h.get("next-router-segment-prefetch");
+  if (segment !== null) {
+    if (!page.segments.includes(segment)) return null;
+    return {
+      asset: `${PREBUILT_ASSET_DIR}${page.file}.segments/${segmentAssetKey(segment)}.segment.rsc.bin`,
+      headers: { ...headers, "Content-Type": "text/x-component", "x-nextjs-prerender": "1", "x-nextjs-postponed": "2" },
+    };
+  }
+  return { asset: `${PREBUILT_ASSET_DIR}${page.file}.rsc.bin`, headers: { ...headers, "Content-Type": "text/x-component" } };
+}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { advisorNoindex, canonicalRedirect, EDGE_PRIORITY_IDS, EDGE_USAGE_IDS, htmlCacheControl, HTML_CACHE, journeyRedirect } from "@/lib/edge";
+import { advisorNoindex, canonicalRedirect, EDGE_PRIORITY_IDS, EDGE_USAGE_IDS, htmlCacheControl, HTML_CACHE, journeyRedirect, NEXT_VARY, prebuiltAsset, type PrebuiltPage } from "@/lib/edge";
 import { parseQuoteInput, parseTrim, parseVehicle, selectPlanHref, withJourney } from "@/lib/params";
 import { priorityIds, usageIds } from "@/lib/priorities";
 
@@ -97,5 +97,47 @@ describe("advisorNoindex (row 42)", () => {
     expect(advisorNoindex(u("/advisor?brand=toyota"))).toBe(true);
     expect(advisorNoindex(u("/advisor?from=home"))).toBe(true);
     expect(advisorNoindex(u("/lab?x=1"))).toBe(false);
+  });
+});
+
+describe("prebuiltAsset (row 43) follows OpenNext's cacheInterceptor", () => {
+  const pages: Record<string, PrebuiltPage> = {
+    "/": { file: "index", headers: { "x-nextjs-prerender": "1", "x-nextjs-stale-time": "300" }, segments: ["/_tree", "/!KHNpdGUp/__PAGE__"] },
+    "/lab/flood-cover": { file: "lab/flood-cover", headers: { "x-nextjs-prerender": "1" }, segments: [] },
+  };
+  const req = (path: string, init: RequestInit = {}) => new Request(`https://unlimitinsure.com${path}`, init);
+
+  it("serves the HTML for a plain page load, with or without a query", () => {
+    expect(prebuiltAsset(req("/"), pages)).toEqual({
+      asset: "/cdn-cgi/_prebuilt/index.html.bin",
+      headers: { "x-nextjs-prerender": "1", "x-nextjs-stale-time": "300", Vary: NEXT_VARY, "Content-Type": "text/html; charset=utf-8" },
+    });
+    expect(prebuiltAsset(req("/lab/flood-cover?utm_source=x", { method: "HEAD" }), pages)?.asset).toBe("/cdn-cgi/_prebuilt/lab/flood-cover.html.bin");
+    expect(prebuiltAsset(req("/", { headers: { rsc: "0" } }), pages)?.asset).toBe("/cdn-cgi/_prebuilt/index.html.bin");
+  });
+
+  it("serves the RSC payload and known segments, else leaves it to Next.js", () => {
+    expect(prebuiltAsset(req("/?_rsc=1", { headers: { rsc: "1", "next-router-state-tree": "x" } }), pages)).toEqual({
+      asset: "/cdn-cgi/_prebuilt/index.rsc.bin",
+      headers: { "x-nextjs-prerender": "1", "x-nextjs-stale-time": "300", Vary: NEXT_VARY, "Content-Type": "text/x-component" },
+    });
+    expect(prebuiltAsset(req("/", { headers: { rsc: "1", "next-router-segment-prefetch": "/!KHNpdGUp/__PAGE__" } }), pages)).toEqual({
+      asset: "/cdn-cgi/_prebuilt/index.segments/!KHNpdGUp/__PAGE__.segment.rsc.bin",
+      headers: { "x-nextjs-prerender": "1", "x-nextjs-stale-time": "300", Vary: NEXT_VARY, "Content-Type": "text/x-component", "x-nextjs-postponed": "2" },
+    });
+    expect(prebuiltAsset(req("/", { headers: { rsc: "1", "next-router-segment-prefetch": "/nope" } }), pages)).toBeNull();
+    expect(prebuiltAsset(req("/", { headers: { rsc: "1", "next-router-segment-prefetch": "" } }), pages)).toBeNull();
+  });
+
+  it("leaves everything else to Next.js", () => {
+    expect(prebuiltAsset(req("/", { method: "POST" }), pages)).toBeNull();
+    expect(prebuiltAsset(req("/", { headers: { "next-action": "abc" } }), pages)).toBeNull();
+    expect(prebuiltAsset(req("/", { headers: { "x-prerender-revalidate": "1" } }), pages)).toBeNull();
+    expect(prebuiltAsset(req("/", { headers: { cookie: "a=1; __prerender_bypass=x" } }), pages)).toBeNull();
+    expect(prebuiltAsset(req("/lab/flood-cover/"), pages)).toBeNull();
+    expect(prebuiltAsset(req("/LAB/flood-cover"), pages)).toBeNull();
+    expect(prebuiltAsset(req("/lab/flood%2Dcover"), pages)).toBeNull();
+    expect(prebuiltAsset(req("/garage"), pages)).toBeNull();
+    expect(prebuiltAsset(req("/hasOwnProperty"), pages)).toBeNull();
   });
 });
