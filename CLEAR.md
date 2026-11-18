@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261118-8bf853b-1 · 2026-11-18
+Live:  20261118-df708c8-1 · 2026-11-18
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -19,7 +19,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 4 | C3 · Live QA on real phones (iOS Safari, Android Chrome) and live speed; not recorded yet | live | | | open | |
 | 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live | | Blocked on O10 | open | |
 | 6 | C8 · Payment slip guard: an old slip still passes after staff sends it back; require an upload after the last move to awaiting_payment (`lib/db/applications.ts`) + vitest cases | app |  | Must land before C6; purchase is off so no live impact | done 11-18 | 20261118-afae7fa-1 |
-| 7 | C13 · Upgrade Next.js 15 to a supported major with matching `@opennextjs/cloudflare`; remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command | app |  |  | built 11-18 · Claude | |
+| 7 | C13 · Upgrade Next.js 15 to a supported major with matching `@opennextjs/cloudflare`; remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command | app |  |  | done 11-18 | 20261118-df708c8-1 |
 | 8 | C4 · Import real products (admin → นำเข้าข้อมูล); retire the mock catalogue, `CATALOG_FROM_CODE=false`, restore `force-dynamic` | app | | Blocked on owner data O4 | open | |
 | 9 | C6 · Switch on online purchase (R2 bucket, `r2_buckets`, `PURCHASE_ENABLED=true`, payment account, `e2e:purchase`) | live | | Blocked on C4, C8, O5, O8 | open | |
 | 10 | C7 · Staff alerts via LINE (`lib/notify` ready; needs Messaging API token + `LINE_ALERT_TO`) | app | | Parked by owner | open | |
