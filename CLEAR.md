@@ -14,7 +14,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | # | Item | Where | Don't touch | Suggest | Status | Candidate |
 |---|---|---|---|---|---|---|
 | 1 | Release lock — deploys today via Cloudflare Workers Builds on push to `main` (OpenNext), or `npm run deploy` from the PC; no candidate or GO line | live |  | Structure: every merge to `main` goes live, so the GO line is skipped. Lever: rule (deploy only via a candidate) | done 11-18 | 20261118-afae7fa-1 |
-| 2 | C2 · Workers Free 10 ms CPU limit vs 26–273 ms per page; risk of error 1102 under real traffic | live | | Owner decision O9 (Workers Paid $5/month) | open | |
+| 2 | C2 · Workers Free 10 ms CPU limit vs 26–273 ms per page; risk of error 1102 under real traffic | live | | Owner decision O9 (Workers Paid $5/month) | done 11-18 | 20261118-62110f2-1 · all public pages 0 ms CPU (docs/cpu-proposal.md) |
 | 3 | C10 · Search Console re-check around 2026-11-24: Pages report, `/advisor` and `/insurance/honda/honda-city` indexed | live | Do not "Validate fix" intended states | Waits for Google crawl | open | |
 | 4 | C3 · Live QA on real phones (iOS Safari, Android Chrome) and live speed; not recorded yet | live | | | open | |
 | 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live | | Blocked on O10 | open | |
@@ -28,7 +28,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 13 | Y2 · Measure live CPU per page with `wrangler tail` (`/`, `/lab`, `/quote`, `/advisor`, one car page) | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 14 | Y5 · Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com` | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 15 | Y6 · CPU proposal: what still renders per request, what can be prebuilt or cached, cold start of `/`; ranked, with expected savings | app | No behaviour change | fit: Cursor | done 11-18 | 20261118-afae7fa-1 |
-| 16 | Y3 · CPU fixes from the approved parts of Y6 | app | | After 15 | open | |
+| 16 | Y3 · CPU fixes from the approved parts of Y6 | app | | After 15 | done 11-18 | 20261118-62110f2-1 · all public pages 0 ms CPU (docs/cpu-proposal.md) |
 | 17 | Y4 · Deploy runbook in `docs/deploy.md`: Next 15 flag, how to pick the Cloudflare account, untracked files that affect builds, rollback | app |  | Fold into row 1 | done 11-18 | 20261118-afae7fa-1 |
 | 18 | D1 · Advisor portrait 4:5 `public/images/advisor.webp` — a real photo of the owner/advisor, no AI person | app | | Blocked on owner photo O7 | open | |
 | 19 | D2 · Add the Phase 3 components to `design/design-system.md` | app | | | open | |
