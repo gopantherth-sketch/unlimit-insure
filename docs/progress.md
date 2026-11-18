@@ -236,3 +236,22 @@ All fields are within limits (titles 56–60, descriptions 135–144). tsc, test
     - Worker `unlimit-insure`, last 24 h: 0 errors, no 5xx responses, median CPU 3.6–4 ms, 2.5k invocations, asset cache hit rate about 87%.
     - Security events, last 24 h: only managed-rule blocks of scanners on cloud hosts (Netherlands, US, and a Google Cloud IP in Belgium). Nothing from Googlebot's ranges (66.249.x.x) and nothing near either failure time (23:16 on 2026-11-17 and 00:05 on 2026-11-18, GMT+7).
     - Conclusion confirmed: no site-side cause. No change.
+
+**C14 shop build, 2026-11-18:** branch `core/c14-shop`, shop off (`SHOW_SHOP=false`). Built:
+- `/shop` and `/shop/[slug]` (prebuilt; 404 while off) with a variant and quantity picker, the total, and the prefilled LINE order (first line "สั่งซื้อสินค้า (จากเว็บไซต์)"). The sold-out state comes from `/api/shop/stock` (no-store, one small D1 read).
+- Admin → ร้านค้า:
+  - create an order from the LINE chat (blank price = catalogue price);
+  - status รอชำระ → ชำระแล้ว → จัดส่งแล้ว → สำเร็จ / ยกเลิก;
+  - PromptPay QR with the exact total;
+  - stock per SKU: taken on paid, returned on cancel, untracked when blank;
+  - shipping needs a tracking number.
+- Settings: optional shop PromptPay receiver; empty = the premium account.
+- Migration `0004_shop` (shop_stock, shop_orders, shop_order_items). Stored per order: LINE display name, items, amounts, courier, tracking, note. No address, phone or slip.
+- Catalogue `content/shop.ts`: one product with `[รอข้อมูล]` name, variant and price until O12.
+
+Checks:
+- tsc, vitest (74, 12 new), next build, cf:build, `e2e:journey`.
+- `e2e:shop` on `wrangler dev` (shop off) and `next dev` (shop on and off).
+- `e2e:a11y` on `next dev` with the shop on: 62 pages including the shop and admin order pages, 0 violations, no overflow.
+
+Found while testing (local only): on `wrangler dev`, a server-action redirect fetches its RSC payload from `SITE_URL`, which is the **live** site. So after an admin form the page rendered with the live build's chunks and broke. Production fetches itself and is not affected. `e2e:shop` now reloads the redirect target locally. Other admin e2e scripts may hit the same problem on `wrangler dev`.
