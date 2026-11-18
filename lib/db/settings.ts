@@ -13,7 +13,7 @@ export async function getPaymentSettings(db: Database): Promise<PaymentSettings>
   return out;
 }
 
-export async function setSetting(db: Database, key: PaymentSettingKey, value: string, updatedBy: string): Promise<void> {
+export async function setSetting(db: Database, key: PaymentSettingKey | ShopSettingKey, value: string, updatedBy: string): Promise<void> {
   const v = value.trim().slice(0, 200);
   if (!v) {
     await db.delete(settings).where(eq(settings.key, key));
@@ -27,3 +27,14 @@ export async function setSetting(db: Database, key: PaymentSettingKey, value: st
 
 /** Payment can be shown to customers only when a PromptPay ID or a bank account is configured. */
 export const paymentConfigured = (s: PaymentSettings) => !!s["payment.accountName"] && (!!s["payment.promptpayId"] || (!!s["payment.bankName"] && !!s["payment.bankAccount"]));
+
+/** Shop (C14): its own PromptPay receiver. Empty = fall back to the insurance payment settings. */
+export const shopSettingKeys = ["shop.accountName", "shop.promptpayId"] as const;
+export type ShopSettingKey = (typeof shopSettingKeys)[number];
+
+export async function getShopPayee(db: Database): Promise<{ promptpayId: string; accountName: string; fromShop: boolean }> {
+  const rows = await db.select().from(settings).where(inArray(settings.key, [...shopSettingKeys, "payment.promptpayId", "payment.accountName"]));
+  const v = (k: string) => rows.find((r) => r.key === k)?.value ?? "";
+  if (v("shop.promptpayId")) return { promptpayId: v("shop.promptpayId"), accountName: v("shop.accountName"), fromShop: true };
+  return { promptpayId: v("payment.promptpayId"), accountName: v("payment.accountName"), fromShop: false };
+}

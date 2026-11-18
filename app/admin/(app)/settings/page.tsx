@@ -4,7 +4,8 @@ import { alertChannels } from "@/lib/server/notify";
 import { Flash } from "@/components/admin/Flash";
 import { buttonClass } from "@/components/ui/button";
 import { getDb } from "@/lib/db/client";
-import { getPaymentSettings, paymentConfigured, type PaymentSettingKey } from "@/lib/db/settings";
+import { getPaymentSettings, getShopPayee, paymentConfigured, type PaymentSettingKey } from "@/lib/db/settings";
+import { saveShopPayeeAction } from "@/app/admin/(app)/shop/actions";
 import { requireOwner } from "@/lib/server/admin-auth";
 
 export const metadata: Metadata = { title: "ตั้งค่า" };
@@ -18,7 +19,8 @@ const fields: { key: PaymentSettingKey; label: string; hint: string }[] = [
 
 export default async function SettingsPage({ searchParams }: { searchParams: Promise<{ ok?: string; error?: string; failed?: string }> }) {
   await requireOwner();
-  const [{ ok, error, failed }, s, channels] = await Promise.all([searchParams, getPaymentSettings(await getDb()), alertChannels()]);
+  const db = await getDb();
+  const [{ ok, error, failed }, s, channels, shopPayee] = await Promise.all([searchParams, getPaymentSettings(db), alertChannels(), getShopPayee(db)]);
   const ready = paymentConfigured(s);
   return (
     <div className="max-w-2xl space-y-6">
@@ -45,6 +47,22 @@ export default async function SettingsPage({ searchParams }: { searchParams: Pro
             <p className="mt-1 text-xs text-navy-400">{f.hint}</p>
           </div>
         ))}
+        <button type="submit" className={buttonClass("primary", "sm")}>บันทึก</button>
+      </form>
+
+      <form action={saveShopPayeeAction} className="card space-y-4 p-5">
+        <div>
+          <h2 className="font-bold">บัญชีรับเงินร้านค้า</h2>
+          <p className="mt-1 text-sm text-navy-500">ใช้สร้าง QR พร้อมเพย์ในหน้าคำสั่งซื้อของร้านค้า ถ้าเว้นว่างจะใช้พร้อมเพย์ของบัญชีรับชำระเบี้ยด้านบน</p>
+        </div>
+        <div>
+          <label htmlFor="shop.accountName" className="field-label">ชื่อบัญชีผู้รับเงิน (ร้านค้า)</label>
+          <input id="shop.accountName" name="shop.accountName" defaultValue={shopPayee.fromShop ? shopPayee.accountName : ""} maxLength={200} className="field-input" />
+        </div>
+        <div>
+          <label htmlFor="shop.promptpayId" className="field-label">พร้อมเพย์ร้านค้า (เบอร์มือถือ หรือเลข 13 หลัก)</label>
+          <input id="shop.promptpayId" name="shop.promptpayId" defaultValue={shopPayee.fromShop ? shopPayee.promptpayId : ""} maxLength={40} className="field-input" />
+        </div>
         <button type="submit" className={buttonClass("primary", "sm")}>บันทึก</button>
       </form>
 

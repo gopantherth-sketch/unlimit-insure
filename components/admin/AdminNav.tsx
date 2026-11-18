@@ -9,6 +9,7 @@ const items = [
   { href: "/admin/leads", label: "ลีด" },
   { href: "/admin/applications", label: "ใบสมัคร" },
   { href: "/admin/products", label: "แพ็กเกจ" },
+  { href: "/admin/shop", label: "ร้านค้า" },
   { href: "/admin/import", label: "นำเข้าข้อมูล" },
   { href: "/admin/analytics", label: "สถิติ" },
   { href: "/admin/users", label: "ผู้ใช้", ownerOnly: true },

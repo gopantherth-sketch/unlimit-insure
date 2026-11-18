@@ -1,4 +1,4 @@
-import type { AdminRole, LeadStatus, VersionStatus } from "@/lib/db/schema";
+import type { AdminRole, LeadStatus, ShopOrderStatus, VersionStatus } from "@/lib/db/schema";
 import type { ApplicationStatus } from "@/lib/applications/status";
 import type { VerificationStatus } from "@/lib/types";
 
@@ -100,4 +100,33 @@ export const applicationOkMessage: Record<string, string> = {
   premium: "บันทึกเบี้ยสุดท้ายแล้ว ลูกค้าจะเห็นยอดใหม่และเหตุผล",
   policy: "บันทึกข้อมูลกรมธรรม์แล้ว",
   assigned: "บันทึกผู้รับผิดชอบแล้ว",
+};
+
+export const shopOrderStatusLabel: Record<ShopOrderStatus, string> = {
+  pending_payment: "รอชำระ",
+  paid: "ชำระแล้ว",
+  shipped: "จัดส่งแล้ว",
+  completed: "สำเร็จ",
+  cancelled: "ยกเลิก",
+};
+
+export const shopOrderStatusTone: Record<ShopOrderStatus, string> = {
+  pending_payment: "bg-warning-50 text-warning-700",
+  paid: "bg-brand-50 text-brand-700",
+  shipped: "bg-navy-100 text-navy-700",
+  completed: "bg-success-50 text-success-700",
+  cancelled: "bg-danger-50 text-danger-600",
+};
+
+export const shopErrorMessages: Record<string, string> = {
+  invalid_qty: "จำนวนต้องเป็นเลขเต็ม 1–99",
+  invalid_price: "ใส่ราคาต่อชิ้น (สินค้านี้ยังไม่มีราคาในระบบ) เช่น 89 หรือ 89.50",
+  invalid_shipping: "ค่าส่งต้องเป็นตัวเลข เช่น 40 (ส่งฟรีใส่ 0)",
+  no_items: "เลือกสินค้าอย่างน้อย 1 รายการ",
+  unknown_sku: "ไม่พบสินค้านี้",
+  missing_line_name: "ใส่ชื่อ LINE ของลูกค้า เพื่อหาแชตเจอ",
+  not_found: "ไม่พบคำสั่งซื้อ",
+  not_allowed: "เปลี่ยนสถานะนี้ไม่ได้ (อาจมีคนเปลี่ยนไปก่อนแล้ว) ลองโหลดหน้าใหม่",
+  no_stock: "สต็อกไม่พอ ปรับสต็อกในหน้าร้านค้าก่อน",
+  missing_tracking: "ใส่เลขพัสดุและบันทึกก่อน แล้วจึงกด “จัดส่งแล้ว”",
 };

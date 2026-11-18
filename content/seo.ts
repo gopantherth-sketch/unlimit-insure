@@ -22,6 +22,10 @@ export const pageSeo: Record<string, { title: string; description: string }> = {
     description:
       "หน้าตารางเปรียบเทียบเดิมพาไปยังหน้าที่ปรึกษา เพื่อพูดคุยเรื่องความคุ้มครองและขอใบเสนอราคา",
   },
+  "/shop": {
+    title: "ร้านค้า อุปกรณ์ดูแลรถ [รอข้อมูล]",
+    description: "[รอข้อมูล] สั่งซื้อทาง LINE ชำระด้วยพร้อมเพย์",
+  },
   "/lab": {
     title: "Insurance Lab ความรู้ประกันรถยนต์แบบเข้าใจง่าย",
     description:

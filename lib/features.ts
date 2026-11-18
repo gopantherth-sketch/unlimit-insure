@@ -35,3 +35,9 @@ export const SHOW_PROTOTYPE_EXTRAS = false;
 
 /** Partner insurer logo strip: only with licensed logos and permission (task D4). */
 export const SHOW_PARTNER_LOGOS = false;
+
+/**
+ * Shop (`/shop`, car-care products ordered on LINE, task C14). Off until the owner's product
+ * details, outside checks, copy and design review are done (C15). Admin → ร้านค้า works either way.
+ */
+export const SHOW_SHOP = false;

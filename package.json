@@ -24,7 +24,8 @@
     "e2e:admin-users": "node tests/e2e/admin-users.mjs",
     "e2e:import": "node tests/e2e/import.mjs",
     "e2e:purchase": "node tests/e2e/purchase.mjs",
-    "e2e:a11y": "node tests/e2e/a11y.mjs"
+    "e2e:a11y": "node tests/e2e/a11y.mjs",
+    "e2e:shop": "node tests/e2e/shop.mjs"
   },
   "dependencies": {
     "@opennextjs/cloudflare": "1.20",
