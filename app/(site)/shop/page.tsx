@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductImage } from "@/components/shop/ProductImage";
+import { SoldOutBadge } from "@/components/shop/SoldOutBadge";
 import { PageHero } from "@/components/ui/PageHero";
 import { shopCopy } from "@/content/shop";
 import { getDb } from "@/lib/db/client";
@@ -32,6 +33,7 @@ export default async function ShopPage() {
                 <Link href={`/shop/${p.slug}`} className="card group flex h-full flex-col overflow-hidden rounded-xl2 transition-shadow hover:shadow-float">
                   <span className="relative block aspect-square overflow-hidden bg-wash">
                     <ProductImage product={p} sizes="(min-width: 1024px) 380px, 50vw" />
+                    <SoldOutBadge skus={p.variants.map((v) => v.sku)} />
                   </span>
                   <span className="flex flex-1 flex-col p-3 sm:p-5">
                     <span className="text-base font-bold leading-snug text-navy-900 sm:text-lg">{p.name}</span>
