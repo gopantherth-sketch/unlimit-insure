@@ -11,6 +11,8 @@ import { CallButton, LineButton } from "@/components/contact/ContactButtons";
 export function MobileContactBar() {
   const pathname = usePathname();
   if (pathname.startsWith("/quote")) return null;
+  // D10: a product page has its own "สั่งซื้อทาง LINE" button; a second LINE bar would compete with it.
+  if (pathname.startsWith("/shop/")) return null;
   return (
     <>
       <div aria-hidden className="h-[76px] sm:hidden" />

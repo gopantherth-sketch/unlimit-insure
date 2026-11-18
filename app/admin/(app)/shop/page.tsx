@@ -42,11 +42,11 @@ export default async function AdminShopPage({ searchParams }: { searchParams: Pr
       <section aria-labelledby="orders-title" className="space-y-4">
         <h2 id="orders-title" className="text-xl font-bold">คำสั่งซื้อ</h2>
         <nav aria-label="กรองตามสถานะ" className="flex flex-wrap gap-2 text-sm">
-          <Link href="/admin/shop" aria-current={!status ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", !status ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
+          <Link href="/admin/shop" aria-current={!status ? "page" : undefined} className={cx("inline-flex min-h-11 items-center rounded-full border px-4 font-medium sm:min-h-0 sm:px-3 sm:py-1", !status ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
             ทั้งหมด
           </Link>
           {shopOrderStatuses.map((s) => (
-            <Link key={s} href={`/admin/shop?status=${s}`} aria-current={status === s ? "page" : undefined} className={cx("rounded-full border px-3 py-1 font-medium", status === s ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
+            <Link key={s} href={`/admin/shop?status=${s}`} aria-current={status === s ? "page" : undefined} className={cx("inline-flex min-h-11 items-center rounded-full border px-4 font-medium sm:min-h-0 sm:px-3 sm:py-1", status === s ? "border-navy-900 bg-navy-900 text-white" : "border-navy-200 bg-white")}>
               {shopOrderStatusLabel[s]}
             </Link>
           ))}

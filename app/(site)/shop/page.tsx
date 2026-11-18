@@ -22,7 +22,8 @@ export default async function ShopPage() {
       <PageHero id="shop-title" eyebrow={shopCopy.eyebrow} title={shopCopy.title} body={shopCopy.intro} />
       <div className="container-page space-y-10">
         {shopProducts.length === 0 && <p className="card p-5 text-navy-700">{shopCopy.empty}</p>}
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {/* D10: two columns on phones, so a short list is not five screens of photos. */}
+        <ul className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
           {shopProducts.map((p) => {
             const price = fromPrice(p);
             const many = new Set(p.variants.map((v) => v.priceSatang)).size > 1;
@@ -30,12 +31,12 @@ export default async function ShopPage() {
               <li key={p.slug}>
                 <Link href={`/shop/${p.slug}`} className="card group flex h-full flex-col overflow-hidden rounded-xl2 transition-shadow hover:shadow-float">
                   <span className="relative block aspect-square overflow-hidden bg-wash">
-                    <ProductImage product={p} sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw" />
+                    <ProductImage product={p} sizes="(min-width: 1024px) 380px, 50vw" />
                   </span>
-                  <span className="flex flex-1 flex-col p-5">
-                    <span className="text-lg font-bold text-navy-900">{p.name}</span>
-                    <span className="mt-1 text-navy-600">{p.summary}</span>
-                    <span className="mt-auto pt-3 text-lg font-bold text-navy-900">
+                  <span className="flex flex-1 flex-col p-3 sm:p-5">
+                    <span className="text-base font-bold leading-snug text-navy-900 sm:text-lg">{p.name}</span>
+                    <span className="mt-1 text-sm text-navy-600 sm:text-base">{p.summary}</span>
+                    <span className="tabular mt-auto pt-3 text-base font-bold text-navy-900 sm:text-lg">
                       {price !== null ? `${many ? "เริ่มต้น " : ""}${formatBaht(price)} บาท` : shopCopy.priceMissing}
                     </span>
                   </span>
