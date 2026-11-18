@@ -2,6 +2,33 @@
 
 Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare D1 (SQLite) with Drizzle, admin password as a Worker secret. R2 (documents) is only needed once online purchase is switched on.
 
+## Release (since 2026-11-18, `D:\core-process\AGENTS.md` step 4)
+
+Production changes only through a frozen candidate and Nithi's GO line. Nothing else deploys: not a push to `main`, not `npm run deploy`, not `wrangler deploy`.
+
+1. Commit. Then, from the project folder: `node scripts/candidate.mjs`. It runs `npm test`, then `npm run cf:build`, and freezes `worker.ts`, `lib/edge.ts`, `.open-next/` (with the assets and prebuilt-page cache), `wrangler.jsonc`, `migrations/`, `package.json` and `package-lock.json` in `release-candidates/<id>/`. It prints `GO deploy <id> index <sha256>`. It prints no GO line for uncommitted code.
+2. Nithi sends the GO line. The owner runs `node scripts/deploy.mjs <id> <sha256>`. It re-hashes the frozen folder and runs `wrangler deploy` from it. It strips `CLOUDFLARE_API_TOKEN` and uses the owner's Wrangler login (gopanther.th account `94ae8d1f…`). Then it updates `Live:` in `CLEAR.md`.
+3. Rollback: Nithi sends `GO rollback <id>`, and the owner runs `node scripts/deploy.mjs <id> --rollback`. That redeploys that frozen folder; it does not call `wrangler rollback`. Only candidates that were live before qualify (`release-candidates/live-history.log`).
+
+Settings in `release.config.json`: `target` `worker`, `workerName` `unlimit-insure`, `out` `.open-next/assets` (must equal `assets.directory`).
+
+- **`release-candidates/` is git-ignored** (~46 MB per candidate). Back up the folder; rollback needs it.
+- **Dry run without deploying:** from `release-candidates/<id>/`, run `node ../../node_modules/wrangler/bin/wrangler.js deploy --dry-run --config wrangler.jsonc --outdir <temp>`. The first candidate, `20261118-ef75bea-1`, bundled 233 asset files, 1.67 MB gzip, with bindings DB, ASSETS and PURCHASE_ENABLED.
+- **D1 migrations are not part of a deploy.** `deploy.mjs` never runs `--remote` or `d1`. A change that adds a file under `migrations/` needs Nithi's explicit yes to run `npm run db:migrate:remote` before the GO deploy. Write it in the batch reply next to the GO line.
+- **Next 15 flag:** `cf:build` passes `--dangerouslyUseUnsupportedNextVersion` until the Next.js upgrade (CLEAR row 7, C13).
+- **Untracked files that affect a build:**
+  - `.open-next/` and `.next/` are rebuilt by `cf:build`.
+  - `.dev.vars` is local only and never uploaded.
+  - A copied `.wrangler/` from another checkout can serve stale cache locally; copy only `.wrangler/state/v3/d1`.
+  - `release-candidates/`.
+- **Local preview caveat:** on `wrangler dev`, a server-action redirect fetches its page from `SITE_URL` (the live site), so admin pages break after a form submit locally. Production is fine. `e2e:shop` reloads the target; see `docs/progress.md`, 2026-11-18.
+
+### Switch off the Workers Builds auto-deploy (Nithi, once)
+
+Until this is off, every push to `main` still deploys, and nobody pushes to `main` without Nithi's yes.
+
+Cloudflare dashboard → **Workers & Pages** → **unlimit-insure** → **Settings** → **Build** → Git repository `gopantherth-sketch/unlimit-insure` → **Disconnect** (or, under Branch control, turn off automatic production deployments for `main`).
+
 ## Live
 
 - Production: https://unlimitinsure.com (account `94ae8d1f7781195ee6756040995a97fc`). `worker.ts` redirects http and `www` to it; the workers.dev address is off (`workers_dev: false`).
@@ -9,6 +36,8 @@ Stack: Next.js 15 via OpenNext (`@opennextjs/cloudflare`) on Workers, Cloudflare
 - Admin secrets: set with `wrangler secret put` (see step 4 below)
 
 ## Go live now (Core checklist)
+
+History: done 2026-09-26 (C1). Its deploy step is replaced by **Release** above; do not use `npm run deploy` or the dashboard retry.
 
 The Worker and D1 database already exist. Online purchase is **off** (`PURCHASE_ENABLED=false` in `wrangler.jsonc`), so no R2 bucket is needed: "select plan" buttons go to the advisor form and `/buy` redirects there.
 
@@ -41,9 +70,9 @@ Only when real products are imported and verified, the broker licence wording is
 - **Signing key**: sessions are signed with `SESSION_SECRET` (optional secret, 32+ characters) or, if unset, `ADMIN_PASSWORD`. Setting `SESSION_SECRET` means rotating the break-glass password no longer signs out personal accounts. `npx wrangler secret put SESSION_SECRET`.
 - **Passwords** are PBKDF2-SHA256, 100,000 iterations (the Workers maximum), per-user salt. On the Workers Free plan (10 ms CPU per request) a personal-account login can exceed the CPU limit; if logins fail with "exceeded CPU", move to Workers Paid or ask the PM to lower the iteration count (stored per hash, so existing passwords keep working). The break-glass login doesn't hash and is unaffected.
 
-## Automatic deploys from GitHub
+## Automatic deploys from GitHub (retired 2026-11-18)
 
-The Worker is connected to `gopantherth-sketch/unlimit-insure`. In the dashboard (Workers & Pages → unlimit-insure → Settings → Build) set:
+History only: releases go through **Release** above, and this auto-deploy is to be switched off. Before that, the Worker was connected to `gopantherth-sketch/unlimit-insure`. In the dashboard (Workers & Pages → unlimit-insure → Settings → Build) set:
 
 - Build command: `npx opennextjs-cloudflare build --dangerouslyUseUnsupportedNextVersion`
 - Deploy command: `npx opennextjs-cloudflare deploy`
