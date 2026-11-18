@@ -82,6 +82,28 @@ Numbers use `.tabular` (tabular figures).
 - **Explain button**: ⓘ icon (or icon + "อธิบายให้เข้าใจง่าย"), opens native `<dialog>`.
 - **Source badge**: mock (amber), pending (grey), verified (green).
 
+### Purchase and tracking (Phase 3, behind `PURCHASE_ENABLED`)
+
+Used on `/buy/[productId]` and `/track/[reference]`. Not visible to visitors until online purchase is switched on (C6).
+
+- **Purchase timeline** (`components/track/Timeline.tsx`): five steps from `timelineSteps` (`lib/applications/status.ts`), each with a step label and who acts (customer or staff).
+  - Below `sm`, a compact white rounded-2xl card: a row of 6 px segment bars (`success-600` done, `brand-600` current, `navy-100` to do), then one line "ขั้นที่ n จาก 5 · step · actor". The bars are `aria-hidden`.
+  - From `sm`, a 5-column `<ol>` of rounded-2xl tiles. Each has a 28 px circle: a check on `success-600` when done, the number on `brand-600` with a `brand-100` ring when current, the number on `navy-100` to do. The current tile gets a `brand-600` border, `brand-50` fill and `shadow-card`, plus `aria-current="step"`. Each state is also given in sr-only text.
+  - The buy page shows it at "documents pending"; when the policy is issued, every step shows done.
+- **Status card** (track page, `statusTone`): `.card` with a 6 px coloured bar on the left edge, a 44 px rounded-2xl icon tile, the status title and a badge pill. Four tones:
+  - `turn` (customer's move: documents, more info, payment): brand bar and tile, solid `brand-600` badge (`tracking.yourTurn`, "ถึงขั้นตอนของคุณ").
+  - `waiting` (staff's move): `navy-300` bar, navy tile, `navy-100` badge (`tracking.waiting`).
+  - `done` (policy issued): `success-600` bar, success tile, no badge.
+  - `stopped` (rejected or cancelled): `danger-600` bar, danger tile, no badge.
+  Colour is never the only signal: the title and icon (ClipboardList / Hourglass / ShieldCheck / CircleSlash) carry the meaning.
+- **File picker** (`components/track/UploadForm.tsx`): a dashed `navy-200` rounded-2xl panel. It holds the document type select and a file field. The native input is `sr-only` (`peer`) and its label is drawn as a 48 px rounded-xl box with a `brand-50` "Paperclip" pill and the chosen file name, or "ยังไม่ได้เลือกไฟล์" in `navy-500`. Focus ring via `peer-focus-visible`. The upload rules sit below in 13 px `navy-400`. The submit pill is 44 px with a spinner while sending, and the result goes in an `aria-live` line (`success-700` / `danger-600`).
+- **Form sections** (`components/buy/BuyForm.tsx`): each part is a `.card` with a section title: a 36 px `brand-50` rounded-xl icon tile, an eyebrow "ส่วนที่ n จาก 3" and an 18 px Prompt title. Yes/no questions use pill radios (`has-[:checked]` → `brand-600` border, `brand-50` fill). The form-level error is a `danger-50` rounded-2xl panel with `role="alert"`. On a commercial-use "yes", a `warning-50` panel links to the advisor and submit is disabled.
+- **Consent rows**: the disclosures come first as a bulleted list in a `canvas` rounded-2xl panel. Each consent is a whole-row label: rounded-xl, 1 px `navy-100` border, a 20 px checkbox (`accent-brand-600`) top-left and the text in 14 px `navy-700`. Checked rows turn `brand-300` / `brand-50`. A missing required consent turns the border `danger-500`, with the message below, linked by `aria-describedby`. The optional marketing consent uses the same row and is never pre-checked.
+- **Buy-page plan summary**:
+  - From `lg`, a sticky right column (340 px, `top-24`) with two cards. The first holds the plan: insurer mark and name, type · car, premium in Prompt 30 px `tabular` with "บาท / ปี", the price note and four key rows (`PlanFacts`). The second holds "documents to prepare".
+  - Below `lg`, one compact card above the form: insurer mark, product name (truncated) and premium on the right. A `<details>` row "ดูความคุ้มครองหลักและเอกสารที่ต้องใช้" opens the same key rows and documents.
+- **Documents to prepare** (`PrepareDocs`): bold title (`prepareTitle`), a 13 px `navy-500` line (`prepareBody`), then one row per required document with a 16 px `brand-600` FileText icon.
+
 ## Icons
 
 lucide-react, outlined. UI icons 16–24 px; homepage feature/section icons 36–44 px at stroke 1.5 in `brand-600` without tiles (mockup). One icon per idea; no decorative icon clusters.
@@ -97,7 +119,7 @@ Photo slots are defined once in `components/brand/Photo.tsx` (`photos` map + `<P
 | advisor | `advisor.webp` 640×800 | Smiling Thai female advisor, headset, navy polo, plain light or transparent background; overlaps the advisor panel's top edge |
 | articleFlood / articleEv / articleSteering | `article-*.webp` 480×320 | Flooded street with cars / EV charging plug / hands on a steering wheel |
 
-To replace a slot's image, compress the new file to ≤ 250 KB `.webp` and overwrite the file with the same name. The owner no longer uses Canva (2026-11-16): new graphics come from the owner's own photos or from Codex (see `docs/agents.md`). The old `canva` ids in `photos` are unused history. Images are served pre-sized with `unoptimized` (no image optimiser binding on Workers); only the hero uses `priority`. Never use real insurer logos, car brand badges or readable number plates. Partner tiles stay neutral placeholders until logos are authorised.
+To replace a slot's image, compress the new file to ≤ 250 KB `.webp` and overwrite the file with the same name. The owner no longer uses Canva (2026-11-16): new graphics come from the owner's own photos, images generated by Gemini, or SVG drawn by Claude. Codex is not used. The old `canva` ids in `photos` are unused history. Images are served pre-sized with `unoptimized` (no image optimiser binding on Workers); only the hero uses `priority`. Never use real insurer logos, car brand badges or readable number plates. Partner tiles stay neutral placeholders until logos are authorised.
 
 ## Honesty in layout
 

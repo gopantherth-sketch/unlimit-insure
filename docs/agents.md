@@ -114,7 +114,7 @@ Images follow the image rule in the team section: generated images from Gemini, 
 | # | Task | Status | Blocked on / note |
 |---|---|---|---|
 | D1 | Advisor portrait 4:5 (`public/images/advisor.webp`, 640 × 800): must be a **real photo of the owner/advisor** (no AI person). Until then the LineChatPreview graphic stays on `/advisor` and the homepage. Crop, compress to .webp ≤ 250 KB (Cursor). | Blocked | Owner photo (O7) |
-| D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". Not started (no change since D6). | To do | — |
+| D2 | Update `design/design-system.md` with the Phase 3 components: purchase Timeline (compact on mobile), status card with badge, file picker, consent rows, buy-page summary and "documents to prepare". | Done 11-18 (CLEAR row 19) | — |
 | D9 | **X8 review (Cursor).** Brief: `docs/tasks/cursor-d9.md`. Live since `39bea62` (owner chose to deploy before review), check two things at 390 px and 1440 px:<br>- the selector row with four fields on the homepage `QuickQuote` (`/quote` now redirects to `/advisor`);<br>- the trim text on `/advisor`.<br>Axe scan clean, no overflow. Send findings to Core; no wording changes. | To do | — |
 | D4 | Insurer logo strip: keep the neutral placeholders (hidden, `SHOW_PARTNER_LOGOS=false`) until the owner supplies licensed logos with permission; then design the tiles. | Blocked | Owner logos |
 | D10 | **Shop design review (Cursor).** After C14: product card and page at 390/1440 px, variant and quantity picker, out-of-stock state, admin Orders page. Axe clean, no overflow. Brief: `docs/tasks/shop-option1.md`. | Blocked | C14 |

@@ -31,7 +31,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 16 | Y3 · CPU fixes from the approved parts of Y6 | app | | After 15 | done 11-18 | 20261118-62110f2-1 · all public pages 0 ms CPU (docs/cpu-proposal.md) |
 | 17 | Y4 · Deploy runbook in `docs/deploy.md`: Next 15 flag, how to pick the Cloudflare account, untracked files that affect builds, rollback | app |  | Fold into row 1 | done 11-18 | 20261118-afae7fa-1 |
 | 18 | D1 · Advisor portrait 4:5 `public/images/advisor.webp` — a real photo of the owner/advisor, no AI person | app | | Blocked on owner photo O7 | open | |
-| 19 | D2 · Add the Phase 3 components to `design/design-system.md` | app | | | open | |
+| 19 | D2 · Add the Phase 3 components to `design/design-system.md` | app | | | done 11-18 · Claude | |
 | 20 | D9 · X8 trim-field review at 390 and 1440 px (homepage selector, trim on `/advisor`); axe clean | live | No wording changes | fit: Cursor · brief `docs/tasks/cursor-d9.md` | open | |
 | 21 | D4 · Insurer logo strip stays hidden (`SHOW_PARTNER_LOGOS=false`) until licensed logos with permission | app | | Blocked on owner logos | open | |
 | 22 | D10 · Shop design review: product card and page at 390/1440, variant/quantity picker, out of stock, admin Orders; axe clean | app | | fit: Cursor · shop build is live hidden | open | |
