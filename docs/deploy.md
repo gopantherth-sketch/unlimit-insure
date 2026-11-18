@@ -15,7 +15,7 @@ Settings in `release.config.json`: `target` `worker`, `workerName` `unlimit-insu
 - **`release-candidates/` is git-ignored** (~46 MB per candidate). Back up the folder; rollback needs it.
 - **Dry run without deploying:** from `release-candidates/<id>/`, run `node ../../node_modules/wrangler/bin/wrangler.js deploy --dry-run --config wrangler.jsonc --outdir <temp>`. The first candidate, `20261118-ef75bea-1`, bundled 233 asset files, 1.67 MB gzip, with bindings DB, ASSETS and PURCHASE_ENABLED.
 - **D1 migrations are not part of a deploy.** `deploy.mjs` never runs `--remote` or `d1`. A change that adds a file under `migrations/` needs Nithi's explicit yes to run `npm run db:migrate:remote` before the GO deploy. Write it in the batch reply next to the GO line.
-- **Next 15 flag:** `cf:build` passes `--dangerouslyUseUnsupportedNextVersion` until the Next.js upgrade (CLEAR row 7, C13).
+- **Next.js 16** (C13, 2026-11-18): Next 16.4.6 with `@opennextjs/cloudflare` 1.20.16; `--dangerouslyUseUnsupportedNextVersion` is gone. OpenNext 1.20.6 with Next 16 gave 500 on every dynamic page (`preview-props.json`), so keep OpenNext at 1.20.16 or later.
 - **Untracked files that affect a build:**
   - `.open-next/` and `.next/` are rebuilt by `cf:build`.
   - `.dev.vars` is local only and never uploaded.
