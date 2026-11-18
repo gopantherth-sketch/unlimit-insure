@@ -52,7 +52,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 37 | O5 · Owner: receiving account for premiums (name, PromptPay or bank) | live | | Unblocks row 9 | open | |
 | 38 | O12 · Owner: shop details — seller, products, variants, prices, starting stock, own product photos | live | | Unblocks rows 12, 24 | open | |
 | 39 | O13 · Owner: shop checks — accountant (DBD, VAT, receipts) and licensed reviewer | live | | Unblocks row 12 | open | |
-| 40 | C16 · Shop products entered in admin (name, description, variants, prices, stock, photos in R2) instead of code in `content/shop.ts`; owner request 11-18 | app | Shop stays off (`SHOW_SHOP`) | Needs R2 for photos; after O12 | open | |
+| 40 | C16 · Shop products entered in admin (name, description, variants, prices, stock, photos in R2) instead of code in `content/shop.ts`; owner request 11-18 | app | Shop stays off (`SHOW_SHOP`) | Needs R2 for photos; after O12 | built 11-18 · Claude | |
 
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.

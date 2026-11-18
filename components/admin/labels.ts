@@ -130,3 +130,31 @@ export const shopErrorMessages: Record<string, string> = {
   no_stock: "สต็อกไม่พอ ปรับสต็อกในหน้าร้านค้าก่อน",
   missing_tracking: "ใส่เลขพัสดุและบันทึกก่อน แล้วจึงกด “จัดส่งแล้ว”",
 };
+
+/** Shop catalogue (C16): admin → ร้านค้า → สินค้า. */
+export const shopCatalogErrorMessages: Record<string, string> = {
+  invalid_slug: "ชื่อในลิงก์ใช้ได้เฉพาะ a–z ตัวเล็ก 0–9 และขีด - เช่น microfiber-cloth",
+  slug_taken: "มีสินค้าที่ใช้ชื่อในลิงก์นี้แล้ว",
+  missing_name: "ใส่ชื่อสินค้า",
+  not_found: "ไม่พบสินค้านี้",
+  invalid_sku: "รหัสสินค้า (SKU) ใช้ได้เฉพาะ A–Z ตัวใหญ่ 0–9 และขีด - เช่น MF-40",
+  sku_taken: "รหัสสินค้า (SKU) นี้มีอยู่แล้ว",
+  missing_label: "ใส่ชื่อแบบ เช่น ขนาดหรือสี",
+  invalid_price: "ราคาต้องเป็นตัวเลขมากกว่า 0 เช่น 89 หรือ 89.50 (เว้นว่างถ้ายังไม่มีราคา)",
+  invalid_photo: "ไฟล์รูปต้องเป็น JPG, PNG หรือ WebP",
+  photo_too_large: "รูปใหญ่เกินไป ลองรูปที่เล็กกว่านี้",
+  no_variants: "เปิดขายไม่ได้: ต้องมีอย่างน้อย 1 แบบที่เปิดขาย",
+  has_orders: "ลบไม่ได้เพราะมีคำสั่งซื้อใช้แบบนี้แล้ว ให้ปิดขายแทน",
+};
+
+export const shopCatalogOkMessages: Record<string, string> = {
+  created: "เพิ่มสินค้าแล้ว (ยังไม่เปิดขาย)",
+  saved: "บันทึกแล้ว",
+  published: "เปิดขายแล้ว",
+  unpublished: "ปิดขายแล้ว",
+  variant: "บันทึกแบบสินค้าแล้ว",
+  variant_added: "เพิ่มแบบสินค้าแล้ว",
+  variant_deleted: "ลบแบบสินค้าแล้ว",
+  photo: "บันทึกรูปแล้ว",
+  photo_removed: "ลบรูปแล้ว",
+};

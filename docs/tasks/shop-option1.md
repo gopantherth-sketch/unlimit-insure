@@ -30,7 +30,7 @@ Backlog rows: **C14** (build), **C15** (launch), **W13** (copy), **D10** (design
 
 ## Build notes (C14, Core)
 - **Feature flag:** `SHOW_SHOP` in `lib/features.ts`, default `false`. While it's off, `/shop` returns 404, isn't in the sitemap, and nothing links to it. The admin Orders page works regardless, so it can be tested.
-- **Catalogue in code:** `content/shop.ts` (Thai text) and `lib/shop/catalog.ts` (SKU, variants, price in satang, photo). Pages are prebuilt, which keeps CPU low on Workers Free (C2). Stock and orders live in D1.
+- **Catalogue in D1 (C16, 2026-11-18):** the owner enters products in admin → ร้านค้า → สินค้า: name, short text, paragraphs, variants (SKU fixed, label, price in satang or blank), photo, publish. Photos are resized in the browser (≤ 1600 px, WebP, ≤ 600 KB) and stored in D1 (`shop_photos`), served from `/api/shop/photo/<id>` with a one-year cache; no R2 needed. A SKU used by an order can't be deleted, only set off sale. `/shop` and `/shop/<slug>` now read D1 on each request (one small query). Shop copy (headings, steps, order message) stays in `content/shop.ts`. Migration `0005_shop_catalog` keeps the old placeholder `microfiber-cloth` / `MF-01`, unpublished.
 - **Migration** `0004_shop.sql`, three tables:
   - `shop_stock` (sku, qty);
   - `shop_orders` (id, number, status, shipping_satang, total_satang, line_name, courier, tracking, note, timestamps);

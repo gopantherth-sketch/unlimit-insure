@@ -1,28 +1,30 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import { ArrowLeft } from "lucide-react";
 import { OrderPicker } from "@/components/shop/OrderPicker";
 import { ProductImage } from "@/components/shop/ProductImage";
-import { shopCopy, shopProducts } from "@/content/shop";
+import { shopCopy } from "@/content/shop";
+import { getDb } from "@/lib/db/client";
+import { getShopCatalog } from "@/lib/db/shop-catalog";
 import { SHOW_SHOP } from "@/lib/features";
 import { findProduct } from "@/lib/shop/catalog";
 import { SITE_URL } from "@/lib/site";
 
-export const dynamicParams = false;
+// Products are entered in admin (C16): read from D1 per request, once for metadata and page (React cache).
+export const dynamic = "force-dynamic";
 
-export function generateStaticParams() {
-  return SHOW_SHOP ? shopProducts.map((p) => ({ slug: p.slug })) : [];
-}
+const load = cache(async (slug: string) => (SHOW_SHOP ? findProduct(slug, await getShopCatalog(await getDb())) : undefined));
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
-  const p = findProduct((await params).slug);
+  const p = await load((await params).slug);
   if (!p) return {};
   return { title: p.name, description: p.summary, alternates: { canonical: `/shop/${p.slug}` } };
 }
 
 export default async function ShopProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const product = SHOW_SHOP ? findProduct((await params).slug) : undefined;
+  const product = await load((await params).slug);
   if (!product) notFound();
   // Product JSON-LD: real price and availability only (no ratings or reviews).
   const priced = product.variants.filter((v) => v.priceSatang !== null);

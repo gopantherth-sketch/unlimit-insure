@@ -1,6 +1,6 @@
 // Shop (task C14, brief docs/tasks/shop-option1.md). Car-care products sold as real sales:
 // the customer orders on LINE and pays by PromptPay; an admin confirms the slip and ships.
-// Product facts, prices and photos come from the owner only (O12). Until then they read [รอข้อมูล].
+// Products, prices and photos come from the owner only (O12) and live in D1 since C16: admin → ร้านค้า → สินค้า.
 // Wording here is Core's placeholder; the copywriter replaces it (W13).
 
 export interface ShopVariant {
@@ -19,20 +19,10 @@ export interface ShopProduct {
   summary: string;
   /** Short paragraphs on the product page: owner facts only (size, material, care). */
   description: string[];
-  /** Owner's own photo in public/images/shop/ (webp). Absent = a designed placeholder tile. */
+  /** Owner's own photo, uploaded in admin (served from /api/shop/photo/<id>). Absent = a designed placeholder tile. */
   photo?: { src: string; width: number; height: number; alt: string };
   variants: ShopVariant[];
 }
-
-export const shopProducts: ShopProduct[] = [
-  {
-    slug: "microfiber-cloth",
-    name: "ผ้าไมโครไฟเบอร์ [รอข้อมูล]",
-    summary: "[รอข้อมูล]",
-    description: ["[รอข้อมูล: ขนาด เนื้อผ้า วิธีดูแล]"],
-    variants: [{ sku: "MF-01", label: "[รอข้อมูล]", priceSatang: null }],
-  },
-];
 
 export const shopCopy = {
   title: "ร้านค้า",
@@ -53,6 +43,7 @@ export const shopCopy = {
   total: "รวม",
   shippingNote: "ยังไม่รวมค่าส่ง แอดมินแจ้งในแชต",
   soldOut: "สินค้าหมด",
+  empty: "ยังไม่มีสินค้าในร้าน [รอข้อมูล]",
   orderButton: "สั่งซื้อทาง LINE",
   backToShop: "กลับไปร้านค้า",
   /** Prefilled LINE order message. The first line lets admins filter shop chats; keep it unchanged. */

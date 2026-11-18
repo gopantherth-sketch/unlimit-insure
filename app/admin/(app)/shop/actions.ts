@@ -6,6 +6,7 @@ import { getDb } from "@/lib/db/client";
 import type { ShopOrderStatus } from "@/lib/db/schema";
 import { setSetting, shopSettingKeys } from "@/lib/db/settings";
 import { createShopOrder, moveShopOrder, setStock, updateShopOrderDetails } from "@/lib/db/shop";
+import { getShopCatalog } from "@/lib/db/shop-catalog";
 import { classifyPromptPayId } from "@/lib/payment/promptpay";
 import { actorOf, requireAdmin, requireOwner } from "@/lib/server/admin-auth";
 import { cleanQty, findSku, NEW_ORDER_LINES, parseBaht } from "@/lib/shop/catalog";
@@ -22,6 +23,9 @@ const toOrder = (id: string, q: string) => {
 
 export async function createShopOrderAction(formData: FormData) {
   const who = await requireAdmin();
+  const db = await getDb();
+  // Active variants only: a variant set to "not for sale" can't go on a new order.
+  const catalog = (await getShopCatalog(db, { admin: true })).map((p) => ({ ...p, variants: p.variants.filter((v) => v.active) }));
   const items: { sku: string; qty: number; unitSatang: number }[] = [];
   for (let i = 0; i < NEW_ORDER_LINES; i++) {
     const sku = str(formData, `sku_${i}`, 40);
@@ -30,14 +34,14 @@ export async function createShopOrderAction(formData: FormData) {
     if (qty === null) redirect("/admin/shop?error=invalid_qty");
     // Blank price = the catalogue price. Admins type one only while the catalogue has none.
     const rawPrice = str(formData, `price_${i}`, 20);
-    const unit = rawPrice ? parseBaht(rawPrice) : (findSku(sku)?.variant.priceSatang ?? null);
+    const unit = rawPrice ? parseBaht(rawPrice) : (findSku(sku, catalog)?.variant.priceSatang ?? null);
     if (unit === null) redirect("/admin/shop?error=invalid_price");
     items.push({ sku, qty, unitSatang: unit });
   }
   const rawShipping = str(formData, "shipping", 20);
   const shipping = rawShipping === "" || rawShipping === "0" ? 0 : parseBaht(rawShipping);
   if (shipping === null) redirect("/admin/shop?error=invalid_shipping");
-  const r = await createShopOrder(await getDb(), { items, shippingSatang: shipping, lineName: str(formData, "lineName", 80), note: str(formData, "note") }, actorOf(who));
+  const r = await createShopOrder(db, { items, shippingSatang: shipping, lineName: str(formData, "lineName", 80), note: str(formData, "note") }, actorOf(who), catalog);
   if (!r.ok) redirect(`/admin/shop?error=${r.error}`);
   toOrder(r.id, "ok=created");
 }
@@ -64,7 +68,8 @@ export async function setStockAction(formData: FormData) {
   const sku = str(formData, "sku", 40);
   const raw = str(formData, "qty", 8);
   const qty = raw === "" ? null : Number(raw);
-  const r = await setStock(await getDb(), sku, qty);
+  const db = await getDb();
+  const r = await setStock(db, sku, qty, await getShopCatalog(db, { admin: true }));
   revalidatePath("/admin/shop");
   redirect(`/admin/shop?${r.ok ? "ok=stock" : `error=${r.error}`}#stock`);
 }

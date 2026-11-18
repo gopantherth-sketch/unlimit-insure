@@ -32,7 +32,7 @@ export async function createShopOrder(
   db: Database,
   input: NewShopOrder,
   actor: Actor,
-  catalog?: ShopProduct[],
+  catalog: ShopProduct[],
 ): Promise<{ ok: true; id: string; number: string } | { ok: false; error: ShopOrderError }> {
   const lineName = input.lineName.trim().slice(0, 80);
   if (!lineName) return { ok: false, error: "missing_line_name" };
@@ -84,7 +84,7 @@ export async function getStock(db: Database, skus?: string[]): Promise<Map<strin
 }
 
 /** Set (qty ≥ 0) or stop tracking (null) stock for a SKU. */
-export async function setStock(db: Database, sku: string, qty: number | null, catalog?: ShopProduct[]): Promise<{ ok: boolean; error?: string }> {
+export async function setStock(db: Database, sku: string, qty: number | null, catalog: ShopProduct[]): Promise<{ ok: boolean; error?: string }> {
   if (!findSku(sku, catalog)) return { ok: false, error: "unknown_sku" };
   if (qty === null) {
     await db.delete(shopStock).where(eq(shopStock.sku, sku));

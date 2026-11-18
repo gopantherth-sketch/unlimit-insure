@@ -257,3 +257,5 @@ Checks:
 - `e2e:a11y` on `next dev` with the shop on: 62 pages including the shop and admin order pages, 0 violations, no overflow.
 
 Found while testing (local only): on `wrangler dev`, a server-action redirect fetches its RSC payload from `SITE_URL`, which is the **live** site. So after an admin form the page rendered with the live build's chunks and broke. Production fetches itself and is not affected. `e2e:shop` now reloads the redirect target locally. Other admin e2e scripts may hit the same problem on `wrangler dev`.
+
+**C16 shop products in admin, 2026-11-18:** CLEAR row 40. Owner screens at admin → ร้านค้า → สินค้า: add, edit, publish or take off sale; variants with price and on/off; photo upload (resized in the browser, stored in D1). Public shop pages read D1. Migration `0005_shop_catalog` (not applied remotely yet). Checks: tsc, vitest 79 (5 new), cf:build, `e2e:shop` on `wrangler dev` (shop off) and `next dev` (shop on), `e2e:a11y` on `next dev` with the shop on (64 pages, 0 violations), `e2e:journey`. Also fixed `tests/e2e/_env.mjs`: fixture paths broke on the space in "Unlimit Insure".

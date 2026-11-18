@@ -3,7 +3,6 @@ import { labArticles } from "@/content/lab";
 import { INSURANCE_TYPES } from "@/lib/import/columns";
 import { priorityIds, usageIds } from "@/lib/priorities";
 import { scenarioRules } from "@/lib/scenarios";
-import { shopProducts } from "@/content/shop";
 
 // Allowlisted funnel events. Anything else is dropped by the API.
 // Order of FUNNEL is the journey order shown in admin.
@@ -13,6 +12,8 @@ const scenarios = scenarioRules.map((r) => r.id as string);
 /** Where a contact button sits (dimension for contact_line / contact_call). */
 export const CONTACT_PLACEMENTS = ["header", "mobile_bar", "footer", "home", "advisor", "plan", "results", "compare", "lab"] as const;
 export type ContactPlacement = (typeof CONTACT_PLACEMENTS)[number];
+
+const SHOP_SLUG_DIM = /^[a-z0-9](?:[a-z0-9-]{0,58}[a-z0-9])?$/;
 
 export const eventDefs = {
   quote_started: { label: "เริ่มเลือกรถ", dims: [] as string[] },
@@ -33,9 +34,13 @@ export const eventDefs = {
   application_submitted: { label: "ส่งใบสมัคร", dims: [] as string[] },
   documents_submitted: { label: "ส่งเอกสารให้ตรวจ", dims: [] as string[] },
   payment_submitted: { label: "แจ้งชำระเงิน", dims: [] as string[] },
-  shop_viewed: { label: "ดูสินค้าในร้านค้า", dims: shopProducts.map((p) => p.slug) },
-  shop_order_clicked: { label: "กดสั่งซื้อสินค้าทาง LINE", dims: shopProducts.map((p) => p.slug) },
+  // Shop products are entered in admin (C16), so the dimension is any product slug, checked by shape.
+  shop_viewed: { label: "ดูสินค้าในร้านค้า", dims: [] as string[] },
+  shop_order_clicked: { label: "กดสั่งซื้อสินค้าทาง LINE", dims: [] as string[] },
 } as const;
+
+/** Events whose dimension is checked by shape instead of a fixed list. */
+const dimPatterns: Partial<Record<string, RegExp>> = { shop_viewed: SHOP_SLUG_DIM, shop_order_clicked: SHOP_SLUG_DIM };
 
 export type EventName = keyof typeof eventDefs;
 
@@ -45,5 +50,7 @@ export function isValidEvent(name: unknown, dim: unknown): name is EventName {
   if (typeof name !== "string" || !(name in eventDefs)) return false;
   const dims = eventDefs[name as EventName].dims;
   if (dim === undefined || dim === "") return true;
-  return typeof dim === "string" && dims.includes(dim);
+  if (typeof dim !== "string") return false;
+  const pattern = dimPatterns[name];
+  return pattern ? pattern.test(dim) : dims.includes(dim);
 }

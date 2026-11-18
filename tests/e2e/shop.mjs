@@ -1,6 +1,6 @@
 // Shop (C14): public pages (when SHOW_SHOP is on) and the admin order flow. Local only: it creates
 // orders, sets stock and a test PromptPay ID, so never run it against the live site.
-import { B, ADMIN_USER, ADMIN_PASS, launch } from "./_env.mjs";
+import { B, FIX, ADMIN_USER, ADMIN_PASS, launch } from "./_env.mjs";
 
 if (!/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(B)) {
   console.error("e2e:shop writes test orders and settings; run it against a local server only.");
@@ -25,6 +25,8 @@ if (!shopOn) {
   const sitemap = await (await c.request.get(B + "/sitemap.xml")).text();
   if (shopRes.status() !== 404 || stockRes.status() !== 404 || sitemap.includes("/shop")) fail(`shop off but /shop ${shopRes.status()}, stock API ${stockRes.status()}, sitemap has /shop: ${sitemap.includes("/shop")}`);
   else step("SHOW_SHOP off: /shop 404, stock API 404, not in the sitemap");
+} else if ((await c.locator('a[href^="/shop/"]').count()) === 0) {
+  step("SHOW_SHOP on, no published products yet: the order message is checked after the test product is published");
 } else {
   await c.locator('a[href^="/shop/"]').first().click();
   await c.waitForURL(/\/shop\/[^/]+$/);
@@ -54,7 +56,9 @@ const submit = async (button) => {
   // Let the app finish its own (broken locally) navigation first, then load the page ourselves.
   await o.waitForURL((u) => u.href.startsWith(B + to.split("#")[0]), { timeout: 10000 }).catch(() => {});
   await o.waitForLoadState("load");
-  await o.goto(B + to).catch(() => o.goto(B + to));
+  // Without the #fragment: a hash-only change would not reload the broken page.
+  const page = B + to.split("#")[0];
+  await o.goto(page).catch(() => o.goto(page));
   errs.length = before;
   return to;
 };
@@ -74,9 +78,59 @@ await o.getByLabel(/พร้อมเพย์ร้านค้า/).fill("080
 if (!/ok=saved/.test(await submit(o.locator("form", { hasText: "บัญชีรับเงินร้านค้า" }).getByRole("button", { name: "บันทึก" })))) fail("shop PromptPay not saved");
 else step("shop PromptPay saved");
 
-const setStock = async (v) => {
+// Catalogue (C16): the owner adds a product, a photo and a second variant, then publishes it.
+const tag = Date.now().toString(36);
+const slug = `e2e-${tag}`;
+const sku = `E2E-${tag.toUpperCase()}`;
+const productName = `ผ้าทดสอบ ${tag}`;
+await o.goto(B + "/admin/shop/products");
+await o.getByLabel("ชื่อสินค้า", { exact: true }).fill(productName);
+await o.getByLabel(/ชื่อในลิงก์/).fill(slug);
+await o.getByLabel(/รายละเอียด/).fill("ย่อหน้าแรก\n\nย่อหน้าสอง");
+await o.getByLabel("รหัสสินค้า (SKU)", { exact: true }).fill("bad sku");
+await o.getByLabel("ชื่อแบบ", { exact: true }).fill("40×40 ซม.");
+await o.getByLabel("ราคาต่อชิ้น (บาท)", { exact: true }).fill("120");
+await o.evaluate(() => document.querySelectorAll("input[pattern]").forEach((i) => i.removeAttribute("pattern")));
+if (!/error=invalid_sku/.test(await submit(o.getByRole("button", { name: "เพิ่มสินค้า" })))) fail("bad SKU accepted");
+else step("bad SKU refused");
+await o.getByLabel("ชื่อสินค้า", { exact: true }).fill(productName);
+await o.getByLabel(/ชื่อในลิงก์/).fill(slug);
+await o.getByLabel(/รายละเอียด/).fill("ย่อหน้าแรก\n\nย่อหน้าสอง");
+await o.getByLabel("รหัสสินค้า (SKU)", { exact: true }).fill(sku);
+await o.getByLabel("ชื่อแบบ", { exact: true }).fill("40×40 ซม.");
+await o.getByLabel("ราคาต่อชิ้น (บาท)", { exact: true }).fill("120");
+const created = await submit(o.getByRole("button", { name: "เพิ่มสินค้า" }));
+if (!created.includes(`/admin/shop/products/${slug}?ok=created`)) fail("product not created: " + created);
+else step("product created (unpublished) " + slug);
+await o.locator("#photo input[type=file]").setInputFiles(FIX + "t.png");
+const photoDone = await submit(o.getByRole("button", { name: "อัปโหลดรูป" }));
+const photoSrc = await o.locator('section#photo img').getAttribute("src").catch(() => null);
+const photoRes = photoSrc ? await o.request.get(B + photoSrc) : null;
+if (!/ok=photo/.test(photoDone) || !photoRes?.ok() || !/^image\/(webp|jpeg)$/.test(photoRes.headers()["content-type"] ?? "")) fail(`photo upload: ${photoDone} ${photoSrc} ${photoRes?.status()}`);
+else step(`photo resized and stored, served as ${photoRes.headers()["content-type"]}`);
+await o.getByLabel("รหัสสินค้า (SKU)", { exact: true }).last().fill(sku + "-L");
+await o.locator("#new_label").fill("60×160 ซม.");
+await o.locator("#new_price").fill("259.50");
+if (!/ok=variant_added/.test(await submit(o.getByRole("button", { name: "เพิ่มแบบ" })))) fail("variant not added");
+else step("second variant added");
+if (!/ok=published/.test(await submit(o.getByRole("button", { name: "เปิดขาย", exact: true })))) fail("not published");
+else step("product published");
+if (shopOn) {
+  await c.goto(B + "/shop");
+  if (!(await c.getByText(productName).count())) fail("published product not on /shop");
+  await c.goto(B + `/shop/${slug}`);
+  const body = await c.evaluate(() => document.body.innerText);
+  if (!body.includes("ย่อหน้าสอง") || !body.includes("120")) fail("product page missing description or price");
+  else step("product page shows the admin-entered product, description and price");
+  await c.getByRole("button", { name: "เพิ่มจำนวน" }).click();
+  const msg = decodeURIComponent((await c.getByRole("link", { name: /สั่งซื้อทาง LINE/ }).getAttribute("href")).split("?")[1] ?? "");
+  if (!msg.includes(`สินค้า: ${productName}`) || !msg.includes("ราคา: 2 × 120 = 240 บาท")) fail("LINE order message:\n" + msg);
+  else step("LINE order message for the new product, qty 2 = 240 บาท");
+}
+
+const setStock = async (v, onlySku) => {
   await o.goto(B + "/admin/shop");
-  const f = o.locator("#stock form").first();
+  const f = onlySku ? o.locator("#stock form").filter({ has: o.locator(`input[name=sku][value="${onlySku}"]`) }) : o.locator("#stock form").first();
   await f.getByLabel("ตั้งสต็อก").fill(v);
   return submit(f.getByRole("button", { name: "บันทึก" }));
 };
@@ -129,18 +183,18 @@ else step("shipped → completed with tracking");
 await newOrder(4, "89", "0");
 if (!/error=no_stock/.test(await move("ได้รับเงินแล้ว (ชำระแล้ว)"))) fail("paid accepted with short stock");
 else step("paid refused when stock is short");
-await newOrder(3, "89", "0");
+const url3 = await newOrder(3, "89", "0");
 await move("ได้รับเงินแล้ว (ชำระแล้ว)");
 await o.goto(B + "/admin/shop");
 const mid = await stockText();
-await o.goBack();
+await o.goto(url3);
 await move("ยกเลิกคำสั่งซื้อ");
 await o.goto(B + "/admin/shop");
 if (!mid.includes("คงเหลือ 0") || !(await stockText()).includes("คงเหลือ 3")) fail("stock not 0 → 3 around cancel");
 else step("paid then cancelled: stock 0 → back to 3");
 
 // Sold out: stock 0 → API lists it; product page shows สินค้าหมด when the shop is on
-await setStock("0");
+await setStock("0", sku);
 if (shopOn) {
   const stock = await (await c.request.get(B + "/api/shop/stock")).json();
   if (!stock.soldOut?.length) fail("stock API soldOut empty");
@@ -149,7 +203,12 @@ if (shopOn) {
   step("stock 0 → product page shows สินค้าหมด, no LINE button: " + ((await c.getByRole("link", { name: /สั่งซื้อทาง LINE/ }).count()) === 0));
 }
 // Put the test stock back to untracked
+await setStock("", sku);
 await setStock("");
+// Take the test product off sale again (local DB only).
+await o.goto(B + `/admin/shop/products/${slug}`);
+if (!/ok=unpublished/.test(await submit(o.getByRole("button", { name: "ปิดขาย", exact: true })))) fail("test product not unpublished");
+else step("test product taken off sale");
 
 await b.close();
 if (errs.length) fail("page errors: " + errs.join(" | "));

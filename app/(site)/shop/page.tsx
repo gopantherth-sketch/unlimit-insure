@@ -3,19 +3,25 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ProductImage } from "@/components/shop/ProductImage";
 import { PageHero } from "@/components/ui/PageHero";
-import { shopCopy, shopProducts } from "@/content/shop";
+import { shopCopy } from "@/content/shop";
+import { getDb } from "@/lib/db/client";
+import { getShopCatalog } from "@/lib/db/shop-catalog";
 import { SHOW_SHOP } from "@/lib/features";
 import { seo } from "@/lib/seo";
 import { formatBaht, fromPrice } from "@/lib/shop/catalog";
 
 export const metadata: Metadata = seo("/shop");
+// Products are entered in admin (C16), so the page reads D1 on each request (one small query).
+export const dynamic = "force-dynamic";
 
-export default function ShopPage() {
+export default async function ShopPage() {
   if (!SHOW_SHOP) notFound();
+  const shopProducts = await getShopCatalog(await getDb());
   return (
     <div className="bg-canvas pb-16">
       <PageHero id="shop-title" eyebrow={shopCopy.eyebrow} title={shopCopy.title} body={shopCopy.intro} />
       <div className="container-page space-y-10">
+        {shopProducts.length === 0 && <p className="card p-5 text-navy-700">{shopCopy.empty}</p>}
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {shopProducts.map((p) => {
             const price = fromPrice(p);
