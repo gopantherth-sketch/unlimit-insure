@@ -57,3 +57,7 @@ Rows 41/42 worked as planned. Prebuilt pages roughly doubled (`/` now 8–10 ms,
 
 **Cause (row 43):** on Next 16 each prebuilt page's OpenNext cache entry holds HTML + RSC + segment prefetch data in one JSON file (`/` is 640 KB). Cache interception parses all of it and MD5-hashes the body on every request, HTML and every RSC prefetch alike.
 **Fix (row 43, built 11-18):** `scripts/prebuilt-pages.mjs` (run in `cf:build` after the OpenNext build) copies the files Next.js wrote for each 200, never-revalidated page into `.open-next/assets/cdn-cgi/_prebuilt/` (not served publicly) and lists them in `.open-next/prebuilt-pages.mjs`. `worker.ts` streams them via `ASSETS` using `prebuiltAsset` in `lib/edge.ts`, which follows OpenNext's `cacheInterceptor` (GET/HEAD, no server action or draft cookie, exact path, `RSC: 1` → payload, segment header → that segment or Next.js). Local check: 189 files from 27 pages byte-identical to the cache entries; 40 browser prefetches all served this way. Measure live after the GO deploy.
+
+## Re-measure after 20261118-62110f2-1 (row 43)
+
+Same method, 3 rounds: `/`, `/lab`, the car page, `/advisor`, an RSC payload and a segment prefetch all show **0 ms CPU** (the runtime reports whole ms) and 3–6 ms wall, down from 4–10 ms CPU and 10–22 ms wall. Live check: the same 189 files are byte-identical to the build's cache entries; browser soft navigation and `e2e:journey` pass; `/cdn-cgi/_prebuilt/*` is 404 from outside.
