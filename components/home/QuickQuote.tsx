@@ -77,7 +77,8 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
 
       <div id="quick-quote-panel" role="tabpanel" aria-label={tab === "ev" ? "บอกรถ EV ของคุณ" : "บอกรถยนต์ของคุณ"}>
       <form onSubmit={submit} noValidate className="px-4 pb-5 pt-5 sm:px-7 sm:pb-6 sm:pt-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:gap-6">
+        {/* D9: align the button with the fields, not with the sub-model hint below them. 1.625rem = field label (20 px line + 6 px margin). */}
+        <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:gap-6">
           <VehicleSelector
             catalog={catalog}
             value={draft}
@@ -89,7 +90,7 @@ export function QuickQuote({ ctaLabel, catalog }: { ctaLabel: string; catalog: V
             withIcons
             className="flex-1 sm:gap-4"
           />
-          <button type="submit" className={buttonClass("primary", "lg", "w-full rounded-xl text-[17px] lg:h-12 lg:w-auto lg:min-w-[232px]")}>
+          <button type="submit" className={buttonClass("primary", "lg", "w-full rounded-xl text-[17px] lg:mt-[1.625rem] lg:h-12 lg:w-auto lg:min-w-[232px]")}>
             {ctaLabel}
             <ArrowRight aria-hidden className="h-5 w-5" />
           </button>
