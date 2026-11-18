@@ -10,3 +10,7 @@ next-env.d.ts
 .open-next/
 .dev.vars
 tests/e2e/a11y-report.json
+
+# Frozen release candidates (scripts/candidate.mjs). ~46 MB each with the OpenNext output, so kept out of git;
+# back the folder up instead (RELEASE-SCRIPTS.md: committed or backed up).
+release-candidates/

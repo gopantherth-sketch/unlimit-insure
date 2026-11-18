@@ -1,0 +1,11 @@
+{
+  "target": "worker",
+  "workerName": "unlimit-insure",
+  "workerConfig": "wrangler.jsonc",
+  "sources": ["worker.ts", "lib/edge.ts", ".open-next"],
+  "out": ".open-next/assets",
+  "test": "npm test",
+  "build": "npm run cf:build",
+  "smoke": null,
+  "preview": "http://127.0.0.1:8787"
+}
