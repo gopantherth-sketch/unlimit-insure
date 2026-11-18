@@ -3,10 +3,10 @@ import Link from "next/link";
 import { Flash } from "@/components/admin/Flash";
 import { formatDateTime, shopErrorMessages, shopOrderStatusLabel, shopOrderStatusTone } from "@/components/admin/labels";
 import { buttonClass } from "@/components/ui/button";
-import { shopProducts } from "@/content/shop";
 import { getDb } from "@/lib/db/client";
 import type { ShopOrderStatus } from "@/lib/db/schema";
 import { getStock, listShopOrders } from "@/lib/db/shop";
+import { getShopCatalog } from "@/lib/db/shop-catalog";
 import { cx } from "@/lib/cx";
 import { SHOW_SHOP } from "@/lib/features";
 import { requireAdmin } from "@/lib/server/admin-auth";
@@ -17,19 +17,22 @@ import { createShopOrderAction, setStockAction } from "./actions";
 export const metadata: Metadata = { title: "ร้านค้า" };
 
 
-const variants = shopProducts.flatMap((p) => p.variants.map((v) => ({ ...v, name: `${p.name} · ${v.label}` })));
-
 export default async function AdminShopPage({ searchParams }: { searchParams: Promise<{ status?: string; ok?: string; error?: string }> }) {
   await requireAdmin();
   const { status: raw, ok, error } = await searchParams;
   const status = shopOrderStatuses.find((s) => s === raw) as ShopOrderStatus | undefined;
   const db = await getDb();
-  const [orders, stock] = await Promise.all([listShopOrders(db, { status }), getStock(db)]);
+  const [orders, stock, catalog] = await Promise.all([listShopOrders(db, { status }), getStock(db), getShopCatalog(db, { admin: true })]);
+  const variants = catalog.flatMap((p) => p.variants.map((v) => ({ ...v, name: `${p.name} · ${v.label}` })));
+  const orderable = variants.filter((v) => v.active);
 
   return (
     <div className="space-y-8">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h1 className="text-2xl font-bold">ร้านค้า</h1>
+        <div className="flex flex-wrap items-baseline gap-4">
+          <h1 className="text-2xl font-bold">ร้านค้า</h1>
+          <Link href="/admin/shop/products" className="font-medium text-brand-700 hover:underline">สินค้า ({catalog.length})</Link>
+        </div>
         <p className={cx("text-sm font-medium", SHOW_SHOP ? "text-success-700" : "text-navy-500")}>
           {SHOW_SHOP ? "หน้าร้าน /shop เปิดอยู่" : "หน้าร้าน /shop ยังปิดอยู่ (SHOW_SHOP) ใช้หน้านี้ทดสอบได้"}
         </p>
@@ -100,9 +103,9 @@ export default async function AdminShopPage({ searchParams }: { searchParams: Pr
               <legend className="sr-only">สินค้ารายการที่ {i + 1}</legend>
               <div>
                 <label htmlFor={`sku_${i}`} className="field-label">สินค้า {i + 1}</label>
-                <select id={`sku_${i}`} name={`sku_${i}`} required={i === 0} defaultValue={i === 0 ? variants[0]?.sku : ""} className="field-input">
+                <select id={`sku_${i}`} name={`sku_${i}`} required={i === 0} defaultValue={i === 0 ? orderable[0]?.sku : ""} className="field-input">
                   {i > 0 && <option value="">—</option>}
-                  {variants.map((v) => (
+                  {orderable.map((v) => (
                     <option key={v.sku} value={v.sku}>
                       {v.name} ({v.priceSatang !== null ? `${formatBaht(v.priceSatang)} บาท` : "ยังไม่มีราคา"})
                     </option>
@@ -146,7 +149,7 @@ export default async function AdminShopPage({ searchParams }: { searchParams: Pr
               <form action={setStockAction} className="flex flex-wrap items-end gap-3">
                 <input type="hidden" name="sku" value={v.sku} />
                 <div className="min-w-0 flex-1">
-                  <p className="font-medium">{v.name}</p>
+                  <p className="font-medium">{v.name}{!v.active && " (ปิดขาย)"}</p>
                   <p className="text-xs text-navy-500">
                     {v.sku} · {stock.has(v.sku) ? `คงเหลือ ${stock.get(v.sku)}` : "ไม่นับสต็อก"}
                   </p>

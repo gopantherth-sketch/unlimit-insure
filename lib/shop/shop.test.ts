@@ -1,7 +1,19 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import type { ShopProduct } from "@/content/shop";
-import { shopProducts } from "@/content/shop";
 import { createShopOrder, getShopOrder, getStock, moveShopOrder, setStock, soldOutSkus, updateShopOrderDetails } from "@/lib/db/shop";
+import {
+  addShopVariant,
+  createShopProduct,
+  deleteShopVariant,
+  getShopCatalog,
+  getShopPhoto,
+  removeShopProductPhoto,
+  setShopProductPhoto,
+  setShopProductPublished,
+  sniffPhoto,
+  updateShopProduct,
+  updateShopVariant,
+} from "@/lib/db/shop-catalog";
 import { createTestDb } from "@/lib/db/testing";
 import { cleanQty, formatBaht, fromPrice, orderMessage, parseBaht } from "@/lib/shop/catalog";
 import { canMoveOrder } from "@/lib/shop/status";
@@ -53,7 +65,7 @@ describe("catalogue helpers", () => {
   });
 
   it("leaves the price to the admin while it is not set", () => {
-    const p = shopProducts[0]!;
+    const p: ShopProduct = { slug: "x", name: "x", summary: "", description: [], variants: [{ sku: "X-1", label: "x", priceSatang: null }] };
     expect(orderMessage(p, p.variants[0]!, 1)).toContain("ราคา: (แอดมินแจ้ง)");
     expect(fromPrice(p)).toBeNull();
     expect(fromPrice(catalog[0]!)).toBe(8900);
@@ -156,5 +168,77 @@ describe("shop orders", () => {
     expect(await soldOutSkus(db)).toEqual([]);
     expect((await setStock(db, "C-S", -1, catalog)).ok).toBe(false);
     expect((await setStock(db, "NOPE", 1, catalog)).ok).toBe(false);
+  });
+});
+
+describe("shop catalogue in D1 (C16)", () => {
+  let db: ReturnType<typeof createTestDb>["db"];
+  beforeEach(() => {
+    db = createTestDb().db;
+  });
+  const fields = { name: " ผ้าเช็ดรถ ", summary: "นุ่ม", description: ["ย่อหน้าแรก", "", "ย่อหน้าสอง"].join("\n"), sort: 0 };
+  const webp = new Uint8Array([0x52, 0x49, 0x46, 0x46, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50, 1, 2, 3]);
+
+  it("migration keeps the placeholder product so SKU MF-01 still resolves (unpublished)", async () => {
+    const admin = await getShopCatalog(db, { admin: true });
+    expect(admin.map((p) => p.slug)).toEqual(["microfiber-cloth"]);
+    expect(admin[0]!.variants[0]).toMatchObject({ sku: "MF-01", priceSatang: null, active: true });
+    expect(await getShopCatalog(db)).toEqual([]);
+  });
+
+  it("creates, validates, publishes and lists a product", async () => {
+    expect(await createShopProduct(db, "Bad Slug", fields, { sku: "T-1", label: "S", priceSatang: 100 })).toEqual({ ok: false, error: "invalid_slug" });
+    expect(await createShopProduct(db, "towel", { ...fields, name: " " }, { sku: "T-1", label: "S", priceSatang: 100 })).toEqual({ ok: false, error: "missing_name" });
+    expect(await createShopProduct(db, "towel", fields, { sku: "t-1", label: "S", priceSatang: 100 })).toEqual({ ok: false, error: "invalid_sku" });
+    expect(await createShopProduct(db, "towel", fields, { sku: "MF-01", label: "S", priceSatang: 100 })).toEqual({ ok: false, error: "sku_taken" });
+    expect(await createShopProduct(db, "towel", fields, { sku: "T-1", label: "S", priceSatang: 0 })).toEqual({ ok: false, error: "invalid_price" });
+    expect(await createShopProduct(db, "towel", fields, { sku: "T-1", label: "40×40", priceSatang: 8900 })).toEqual({ ok: true });
+    expect(await createShopProduct(db, "towel", fields, { sku: "T-2", label: "S", priceSatang: 100 })).toEqual({ ok: false, error: "slug_taken" });
+    expect(await getShopCatalog(db)).toEqual([]); // not published yet
+    expect(await setShopProductPublished(db, "towel", true)).toEqual({ ok: true });
+    const [p] = await getShopCatalog(db);
+    expect(p).toMatchObject({ slug: "towel", name: "ผ้าเช็ดรถ", description: ["ย่อหน้าแรก", "ย่อหน้าสอง"], variants: [{ sku: "T-1", label: "40×40", priceSatang: 8900 }] });
+    expect(p!.variants[0]).not.toHaveProperty("active");
+    expect(await updateShopProduct(db, "towel", { ...fields, name: "ผ้าเช็ดรถ 2" })).toEqual({ ok: true });
+    expect((await getShopCatalog(db))[0]!.name).toBe("ผ้าเช็ดรถ 2");
+  });
+
+  it("variants: add, price change, inactive hides them, last inactive unpublishes", async () => {
+    await createShopProduct(db, "towel", fields, { sku: "T-1", label: "S", priceSatang: 8900 });
+    expect(await addShopVariant(db, "towel", { sku: "T-2", label: "L", priceSatang: null })).toEqual({ ok: true });
+    await setShopProductPublished(db, "towel", true);
+    expect((await getShopCatalog(db))[0]!.variants.map((v) => v.sku)).toEqual(["T-1", "T-2"]);
+    expect(await updateShopVariant(db, "T-2", { label: "L", priceSatang: 25900, active: true })).toEqual({ ok: true });
+    expect(await updateShopVariant(db, "T-1", { label: "S", priceSatang: 8900, active: false })).toEqual({ ok: true });
+    expect((await getShopCatalog(db))[0]!.variants).toEqual([{ sku: "T-2", label: "L", priceSatang: 25900 }]);
+    expect(await updateShopVariant(db, "T-2", { label: "L", priceSatang: 25900, active: false })).toEqual({ ok: true });
+    expect(await getShopCatalog(db)).toEqual([]);
+    expect(await setShopProductPublished(db, "towel", true)).toEqual({ ok: false, error: "no_variants" });
+  });
+
+  it("deletes an unordered variant, refuses one with orders", async () => {
+    await createShopProduct(db, "towel", fields, { sku: "T-1", label: "S", priceSatang: 8900 });
+    await addShopVariant(db, "towel", { sku: "T-2", label: "L", priceSatang: 100 });
+    const cat = await getShopCatalog(db, { admin: true });
+    expect((await createShopOrder(db, { items: [{ sku: "T-1", qty: 1, unitSatang: 8900 }], shippingSatang: 0, lineName: "A" }, staff, cat)).ok).toBe(true);
+    expect(await deleteShopVariant(db, "T-1")).toEqual({ ok: false, error: "has_orders" });
+    expect(await deleteShopVariant(db, "T-2")).toEqual({ ok: true });
+  });
+
+  it("photos: sniffed type, size limit, replace deletes the old one", async () => {
+    expect(sniffPhoto(webp)).toBe("image/webp");
+    expect(sniffPhoto(new Uint8Array([0x3c, 0x73, 0x76, 0x67]))).toBeNull();
+    await createShopProduct(db, "towel", fields, { sku: "T-1", label: "S", priceSatang: 8900 });
+    expect(await setShopProductPhoto(db, "towel", new Uint8Array([1, 2, 3, 4]), { width: 10, height: 10 })).toEqual({ ok: false, error: "invalid_photo" });
+    expect(await setShopProductPhoto(db, "towel", new Uint8Array(700 * 1024), { width: 10, height: 10 })).toEqual({ ok: false, error: "photo_too_large" });
+    const a = await setShopProductPhoto(db, "towel", webp, { width: 800, height: 600 });
+    if (!a.ok) throw new Error("photo");
+    expect(Array.from((await getShopPhoto(db, a.id))!.bytes)).toEqual(Array.from(webp));
+    const b = await setShopProductPhoto(db, "towel", webp, { width: 800, height: 800 });
+    if (!b.ok) throw new Error("photo");
+    expect(await getShopPhoto(db, a.id)).toBeNull();
+    expect((await getShopCatalog(db, { admin: true })).find((p) => p.slug === "towel")!.photo).toEqual({ src: `/api/shop/photo/${b.id}`, width: 800, height: 800, alt: "ผ้าเช็ดรถ" });
+    await removeShopProductPhoto(db, "towel");
+    expect(await getShopPhoto(db, b.id)).toBeNull();
   });
 });

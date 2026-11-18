@@ -1,14 +1,14 @@
-import { shopCopy, shopProducts, type ShopProduct, type ShopVariant } from "@/content/shop";
+import { shopCopy, type ShopProduct, type ShopVariant } from "@/content/shop";
 
 export const MAX_ORDER_QTY = 99;
 /** Product lines on the admin "new order" form. */
 export const NEW_ORDER_LINES = 3;
 
-export function findProduct(slug: string, products: ShopProduct[] = shopProducts): ShopProduct | undefined {
+export function findProduct(slug: string, products: ShopProduct[]): ShopProduct | undefined {
   return products.find((p) => p.slug === slug);
 }
 
-export function findSku(sku: string, products: ShopProduct[] = shopProducts): { product: ShopProduct; variant: ShopVariant } | undefined {
+export function findSku(sku: string, products: ShopProduct[]): { product: ShopProduct; variant: ShopVariant } | undefined {
   for (const product of products) {
     const variant = product.variants.find((v) => v.sku === sku);
     if (variant) return { product, variant };

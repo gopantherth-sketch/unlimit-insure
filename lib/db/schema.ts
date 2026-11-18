@@ -341,3 +341,46 @@ export const shopOrderItems = sqliteTable(
   },
   (t) => [index("shop_order_items_order_idx").on(t.orderId)],
 );
+
+// Shop catalogue (task C16): products the owner enters in admin → ร้านค้า → สินค้า.
+// A SKU is never renamed or deleted once an order uses it; a retired variant is set inactive.
+export const shopProducts = sqliteTable("shop_products", {
+  /** URL part of /shop/<slug>. Fixed after creation. */
+  slug: text("slug").primaryKey(),
+  name: text("name").notNull(),
+  summary: text("summary").notNull().default(""),
+  /** Paragraphs separated by a blank line. */
+  description: text("description").notNull().default(""),
+  /** Shown on /shop only when true. */
+  published: integer("published", { mode: "boolean" }).notNull().default(false),
+  sort: integer("sort").notNull().default(0),
+  photoId: text("photo_id"),
+  createdAt: createdAt(),
+  updatedAt: text("updated_at").notNull().default(now),
+});
+
+export const shopVariants = sqliteTable(
+  "shop_variants",
+  {
+    sku: text("sku").primaryKey(),
+    productSlug: text("product_slug").notNull().references(() => shopProducts.slug),
+    label: text("label").notNull(),
+    /** Price per piece in satang; null = not set yet (the site shows [รอข้อมูล]). */
+    priceSatang: integer("price_satang"),
+    active: integer("active", { mode: "boolean" }).notNull().default(true),
+    sort: integer("sort").notNull().default(0),
+    createdAt: createdAt(),
+  },
+  (t) => [index("shop_variants_product_idx").on(t.productSlug)],
+);
+
+/** Product photos, resized in the browser before upload (webp/jpeg, ≤ 600 KB), stored as base64. */
+export const shopPhotos = sqliteTable("shop_photos", {
+  id: text("id").primaryKey(),
+  productSlug: text("product_slug").notNull(),
+  mime: text("mime").notNull(),
+  width: integer("width").notNull(),
+  height: integer("height").notNull(),
+  dataB64: text("data_b64").notNull(),
+  createdAt: createdAt(),
+});
