@@ -38,6 +38,12 @@ if (ref) {
   await g.getByRole("button", { name: "ค้นหาใบสมัคร" }).click(); await g.waitForURL(/track/); await g.close();
   await scan(mobile, `/track/${ref}`, 360);
 }
+// Against a non-local site the admin scan needs real ADMIN_USER / ADMIN_PASS in the environment;
+// without them it is skipped, so the local default password is never tried on the live login.
+const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(B);
+const skipAdmin = !isLocal && !process.env.ADMIN_PASS;
+if (skipAdmin) console.log("admin pages skipped: set ADMIN_USER and ADMIN_PASS to scan them on " + B);
+if (!skipAdmin) {
 const o = await desk.newPage(); await o.goto(B + "/admin/login"); await o.getByLabel("ชื่อผู้ใช้").fill(ADMIN_USER); await o.getByLabel("รหัสผ่าน").fill(ADMIN_PASS);
 await o.getByRole("button", { name: "เข้าสู่ระบบ" }).click(); await o.waitForURL(/\/admin$/);
 if (ref) { await o.goto(B + "/admin/applications"); await o.getByRole("link", { name: ref }).click(); await o.waitForURL(/applications\/.+/); appPath = new URL(o.url()).pathname; }
@@ -48,6 +54,7 @@ if (await firstOrder.count()) { await firstOrder.click(); await o.waitForURL(/ad
 await o.close();
 const mobAdmin = await b.newContext({ viewport: { width: 360, height: 800 }, storageState: await desk.storageState() });
 for (const path of ["/admin", "/admin/leads", leadPath, "/admin/applications", appPath, "/admin/products", "/admin/shop", orderPath, "/admin/import", "/admin/analytics", "/admin/users", "/admin/settings", "/admin/account"].filter(Boolean)) { await scan(desk, path, 1280); await scan(mobAdmin, path, 360); }
+}
 writeFileSync(new URL("./a11y-report.json", import.meta.url), JSON.stringify(out, null, 1));
 const agg = {};
 for (const r of out) for (const v of r.violations) { const k = `${v.impact} ${v.id}`; (agg[k] ??= new Set()).add(`${r.path}@${r.width}`); }
