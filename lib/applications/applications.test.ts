@@ -127,6 +127,12 @@ describe("applications", () => {
     expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: false, error: "missing_payment_slip" });
     await doc(id, "payment_slip");
     expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: true });
+    // C8: a slip sent back cannot be re-submitted without a new upload
+    expect(await moveApplication(db, id, "awaiting_payment", "staff", staff)).toEqual({ ok: false, error: "missing_reason" });
+    expect(await moveApplication(db, id, "awaiting_payment", "staff", staff, { message: "สลิปไม่ชัด" })).toEqual({ ok: true });
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: false, error: "missing_payment_slip" });
+    await doc(id, "payment_slip");
+    expect(await moveApplication(db, id, "payment_submitted", "customer", customer)).toEqual({ ok: true });
     expect(await setFinalPremium(db, id, 1, "late change", staff)).toMatchObject({ ok: false, error: "not_allowed" });
     expect(await moveApplication(db, id, "sent_to_insurer", "staff", staff)).toEqual({ ok: true });
     expect(await moveApplication(db, id, "policy_issued", "staff", staff)).toEqual({ ok: false, error: "missing_policy" });
