@@ -22,8 +22,8 @@ export const contact = {
   brokerLine: `นายหน้าประกันวินาศภัย ${brokers.map((b) => `${b.holder} ใบอนุญาตเลขที่ ${b.licenceNo}`).join(" · ")}`,
   lineId,
   phoneDisplay: "091-444-5542",
-  /** Owner-supplied 2026-09-27: general and personal-data contact. */
-  email: "unlimit.adm@gmail.com",
+  /** General and personal-data contact. info@ forwards to the owner's Gmail (Cloudflare Email Routing, verified and tested by the owner 2026-11-20, O10). */
+  email: "info@unlimitinsure.com",
   /** Owner-supplied 2026-09-27: contact address for the legal pages (not shown in the footer). */
   address: "108/66 หมู่บ้านพลีโน่ชัยพฤกษ์ ซอย 5/5 ต.พิมลราช อ.บางบัวทอง จ.นนทบุรี 11110",
   /** E.164 for tel: links. */

@@ -17,7 +17,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 2 | C2 · Workers Free 10 ms CPU limit vs 26–273 ms per page; risk of error 1102 under real traffic | live | | Owner decision O9 (Workers Paid $5/month) | done 11-18 | 20261118-62110f2-1 · all public pages 0 ms CPU (docs/cpu-proposal.md) |
 | 3 | C10 · Search Console re-check around 2026-11-24: Pages report, `/advisor` and `/insurance/honda/honda-city` indexed | live | Do not "Validate fix" intended states | Waits for Google crawl | open | |
 | 4 | C3 · Live QA on real phones (iOS Safari, Android Chrome) and live speed; not recorded yet | live | | Emulated 11-19 (Claude): iPhone 13 390, Pixel 7 412, 360 px on 9 public pages: no overflow, no page errors, axe clean (rows 20/22). Repeat loads 25–40 ms to first byte, largest paint ≤ 0.6 s; first visit ~1 s (new connection). Homepage 521 KB (hero 111 KB). Fixed: `.link-arrow` links 44 px tall on phones (were 20), hero eyebrow 13 px (was 11). Still open: Nithi on a real iPhone (Safari) and Android (Chrome) | open | |
-| 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live | | Blocked on O10 | open | |
+| 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live | | DMARC TXT still missing (Cloudflare change, needs Nithi yes) | built 11-20 · Claude (routing done by Nithi; contact.email → info@ in content/contact.ts, footer + legal pages) | |
 | 6 | C8 · Payment slip guard: an old slip still passes after staff sends it back; require an upload after the last move to awaiting_payment (`lib/db/applications.ts`) + vitest cases | app |  | Must land before C6; purchase is off so no live impact | done 11-18 | 20261118-afae7fa-1 |
 | 7 | C13 · Upgrade Next.js 15 to a supported major with matching `@opennextjs/cloudflare`; remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command | app |  |  | done 11-18 | 20261118-df708c8-1 |
 | 8 | C4 · Import real products (admin → นำเข้าข้อมูล); retire the mock catalogue, `CATALOG_FROM_CODE=false`, restore `force-dynamic` | app | | Blocked on owner data O4 | open | |
@@ -44,7 +44,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 29 | W5 · Per-insurer claims guidance once real insurers are known | app | | Blocked on C4 | open | |
 | 30 | W9/W11 · Gemini brief `docs/tasks/gemini-w9-w11.md` (trim-field text and related copy) | live | | Owner sends to Gemini; Cursor or Claude places it | done 11-19 | PR #9 `9f31ec2`, live 2026-11-17 |
 | 31 | O9 · Owner: Workers Free vs Paid ($5/month) | live | | Unblocks row 2 | done 11-19 | Workers Paid: owner already pays $5/month (owner 11-19); the 10 ms Free CPU limit no longer applies |
-| 32 | O10 · Owner: verify the info@unlimitinsure.com destination | live | | Unblocks row 5 | open | |
+| 32 | O10 · Owner: verify the info@unlimitinsure.com destination | live | | Unblocks row 5 | done 11-20 · Nithi (destination verified, rule exists, test email arrived) | |
 | 33 | O7 · Owner: real advisor portrait (own photo) | app | | Unblocks row 18 | open | |
 | 34 | O3 · Owner: consent to display from each named broker | live | | Needed for the verify list and C6 | open | |
 | 35 | O8 · Owner: legal / licensed review of the verify list | live | | Launch sign-off, C6 | open | |
