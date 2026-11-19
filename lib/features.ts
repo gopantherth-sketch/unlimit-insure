@@ -37,7 +37,7 @@ export const SHOW_PROTOTYPE_EXTRAS = false;
 export const SHOW_PARTNER_LOGOS = false;
 
 /**
- * Shop (`/shop`, car-care products ordered on LINE, task C14). Off until the owner's product
- * details, outside checks, copy and design review are done (C15). Admin → ร้านค้า works either way.
+ * Shop (`/shop`, car-care products ordered on LINE, task C14). On by the owner 2026-11-20 (C15);
+ * outside checks (O13) still open. Admin → ร้านค้า works either way.
  */
-export const SHOW_SHOP = false;
+export const SHOW_SHOP = true;

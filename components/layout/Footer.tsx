@@ -5,6 +5,7 @@ import { ContactLink, LineButton } from "@/components/contact/ContactButtons";
 import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 import { lineAddUrl, telHref } from "@/lib/contact";
+import { SHOW_SHOP } from "@/lib/features";
 
 const columns = [
   {
@@ -29,6 +30,7 @@ const columns = [
     links: [
       { href: "/claims", label: "ขั้นตอนเมื่อเกิดเหตุ" },
       { href: "/advisor", label: "คุยกับที่ปรึกษา" },
+      ...(SHOW_SHOP ? [{ href: "/shop", label: "ร้านค้า อุปกรณ์ดูแลรถ" }] : []),
     ],
   },
 ];

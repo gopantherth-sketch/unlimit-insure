@@ -36,7 +36,7 @@ export const shopCopy = {
       "ส่งสลิปและที่อยู่ในแชต เราแจ้งเลขพัสดุเมื่อส่ง",
     ],
   },
-  seller: "ผู้ขาย: [รอข้อมูล]",
+  seller: "ผู้ขาย: Panther Group",
   priceMissing: "ราคา [รอข้อมูล]",
   variant: "แบบ",
   quantity: "จำนวน",
