@@ -58,6 +58,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 43 | Y9 · Find why prebuilt pages doubled in CPU after Next 16 / OpenNext 1.20.16 (`/` 4–6 → 8–10 ms, `/lab` 2–3 → 5, car page 2–3 → 4–8; `docs/cpu-proposal.md` re-measure) and propose a fix, e.g. serve prebuilt HTML from static assets before the worker | app | No behaviour change | `/` is close to the 10 ms Free limit; measure with `wrangler tail --ip self` | done 11-18 | 20261118-62110f2-1 |
 | 44 | C17 · Show sold out on `/shop` product cards: a product whose active variants all have stock 0 gets a "สินค้าหมด" badge on its card (same `/api/shop/stock` data as the product page; the list stays prebuilt-friendly) | app | Shop stays off (`SHOW_SHOP`) | Found in the D10 review (row 22); text from `content/shop.ts` | done 11-19 | 20261119-bb6cc09-1 |
 | 45 | O14 · Owner: add DMARC TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:info@unlimitinsure.com` in Cloudflare DNS (not found on Cloudflare's nameserver 11-20) | live | | Agent checks with nslookup after | open | |
+| 46 | Shop link in the header menu (desktop + phone): ร้านค้า before เกี่ยวกับเรา, shown while SHOW_SHOP is on (Nithi 11-20: customers only had the footer link) | live | | | built 11-20 · Claude | |
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.
 Numbers are never reused. One line per row. At the start of a batch, `done` rows move to `DONE.md`.

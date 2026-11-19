@@ -10,6 +10,7 @@ import { contact } from "@/content/contact";
 import { track } from "@/lib/analytics/track";
 import { telHref } from "@/lib/contact";
 import { cx } from "@/lib/cx";
+import { SHOW_SHOP } from "@/lib/features";
 
 // Customer navigation, labelled as in the selected mockup. My Garage and sign-in are hidden until
 // customer accounts exist; contact goes through LINE and phone.
@@ -18,8 +19,9 @@ const siteNav = [
   { href: "/advisor", label: "คุยกับที่ปรึกษา" },
   { href: "/lab", label: "บทความ" },
   { href: "/claims", label: "เมื่อเกิดเหตุ" },
+  ...(SHOW_SHOP ? [{ href: "/shop", label: "ร้านค้า" }] : []),
   { href: "/#why", label: "เกี่ยวกับเรา" },
-] as const;
+];
 
 export function Header() {
   const pathname = usePathname();
