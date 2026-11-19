@@ -24,7 +24,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 9 | C6 · Switch on online purchase (R2 bucket, `r2_buckets`, `PURCHASE_ENABLED=true`, payment account, `e2e:purchase`) | live | | Blocked on C4, C8, O5, O8; also update the privacy line "ไม่มีแบบฟอร์มเก็บข้อมูลส่วนบุคคล" in `content/legal.ts` (W10 review) | open | |
 | 10 | C7 · Staff alerts via LINE (`lib/notify` ready; needs Messaging API token + `LINE_ALERT_TO`) | app | | Parked by owner | open | |
 | 11 | C9 · Phase 4: renewal reminders and renewal compare | app | | Blocked on real policies | open | |
-| 12 | C15 · Shop launch: `SHOW_SHOP` on, footer link, sitemap, indexing request, one real test order | live | | Blocked on W13, D10, O12, O13 (C14 shop build live hidden as `1da12df`, 11-18) | open | |
+| 12 | C15 · Shop launch: `SHOW_SHOP` on, footer link, sitemap, indexing request, one real test order | live | | Blocked on O12 (seller name, plain cloth photo, products entered in live admin), O13 (C14 shop build live hidden as `1da12df`, 11-18) | open | |
 | 13 | Y2 · Measure live CPU per page with `wrangler tail` (`/`, `/lab`, `/quote`, `/advisor`, one car page) | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 14 | Y5 · Run `e2e:journey` and `e2e:a11y` against `BASE_URL=https://unlimitinsure.com` | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 15 | Y6 · CPU proposal: what still renders per request, what can be prebuilt or cached, cold start of `/`; ranked, with expected savings | app | No behaviour change | fit: Cursor | done 11-18 | 20261118-afae7fa-1 |
