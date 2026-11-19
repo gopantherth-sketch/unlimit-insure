@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261119-d3b846c-1 · 2026-11-19
+Live:  20261120-59fbedb-1 · 2026-11-20
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -17,7 +17,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 2 | C2 · Workers Free 10 ms CPU limit vs 26–273 ms per page; risk of error 1102 under real traffic | live | | Owner decision O9 (Workers Paid $5/month) | done 11-18 | 20261118-62110f2-1 · all public pages 0 ms CPU (docs/cpu-proposal.md) |
 | 3 | C10 · Search Console re-check around 2026-11-24: Pages report, `/advisor` and `/insurance/honda/honda-city` indexed | live | Do not "Validate fix" intended states | Waits for Google crawl | open | |
 | 4 | C3 · Live QA on real phones (iOS Safari, Android Chrome) and live speed; not recorded yet | live | | Emulated 11-19 (Claude): iPhone 13 390, Pixel 7 412, 360 px on 9 public pages: no overflow, no page errors, axe clean (rows 20/22). Repeat loads 25–40 ms to first byte, largest paint ≤ 0.6 s; first visit ~1 s (new connection). Homepage 521 KB (hero 111 KB). Fixed: `.link-arrow` links 44 px tall on phones (were 20), hero eyebrow 13 px (was 11). Still open: Nithi on a real iPhone (Safari) and Android (Chrome) | open | |
-| 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live | | DMARC TXT still missing (Cloudflare change, needs Nithi yes) | built 11-20 · Claude (routing done by Nithi; contact.email → info@ in content/contact.ts, footer + legal pages) | |
+| 5 | C11 · Route info@unlimitinsure.com (routing rule + test), then DNS / DMARC; copywriter switches `contact.email` | live |  | DMARC TXT still missing (Cloudflare change, needs Nithi yes) | done 11-20 · Claude | 20261120-59fbedb-1 |
 | 6 | C8 · Payment slip guard: an old slip still passes after staff sends it back; require an upload after the last move to awaiting_payment (`lib/db/applications.ts`) + vitest cases | app |  | Must land before C6; purchase is off so no live impact | done 11-18 | 20261118-afae7fa-1 |
 | 7 | C13 · Upgrade Next.js 15 to a supported major with matching `@opennextjs/cloudflare`; remove `--dangerouslyUseUnsupportedNextVersion` from `package.json` and the dashboard build command | app |  |  | done 11-18 | 20261118-df708c8-1 |
 | 8 | C4 · Import real products (admin → นำเข้าข้อมูล); retire the mock catalogue, `CATALOG_FROM_CODE=false`, restore `force-dynamic` | app | | Blocked on owner data O4 | open | |
@@ -57,6 +57,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 42 | Y8 · Prebuild `/advisor`: static shell, journey params resolved in `AdvisorContact` on the client, `noindex` for param variants via `X-Robots-Tag` in `worker.ts` (`docs/cpu-proposal.md` #2) | app | No behaviour change; LINE message text byte-identical | Live 39–238 ms CPU → ~3 ms; `e2e:journey` checks the LINE message | done 11-18 | 20261118-b4e6a52-1 |
 | 43 | Y9 · Find why prebuilt pages doubled in CPU after Next 16 / OpenNext 1.20.16 (`/` 4–6 → 8–10 ms, `/lab` 2–3 → 5, car page 2–3 → 4–8; `docs/cpu-proposal.md` re-measure) and propose a fix, e.g. serve prebuilt HTML from static assets before the worker | app | No behaviour change | `/` is close to the 10 ms Free limit; measure with `wrangler tail --ip self` | done 11-18 | 20261118-62110f2-1 |
 | 44 | C17 · Show sold out on `/shop` product cards: a product whose active variants all have stock 0 gets a "สินค้าหมด" badge on its card (same `/api/shop/stock` data as the product page; the list stays prebuilt-friendly) | app | Shop stays off (`SHOW_SHOP`) | Found in the D10 review (row 22); text from `content/shop.ts` | done 11-19 | 20261119-bb6cc09-1 |
+| 45 | O14 · Owner: add DMARC TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:info@unlimitinsure.com` in Cloudflare DNS (not found on Cloudflare's nameserver 11-20) | live | | Agent checks with nslookup after | open | |
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.
 Numbers are never reused. One line per row. At the start of a batch, `done` rows move to `DONE.md`.
