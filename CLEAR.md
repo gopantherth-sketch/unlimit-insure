@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261119-0305d51-1 · 2026-11-19
+Live:  20261119-d3b846c-1 · 2026-11-19
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -36,7 +36,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 21 | D4 · Insurer logo strip stays hidden (`SHOW_PARTNER_LOGOS=false`) until licensed logos with permission | app | | Blocked on owner logos | open | |
 | 22 | D10 · Shop design review: product card and page at 390/1440, variant/quantity picker, out of stock, admin Orders; axe clean | app |  | fit: Cursor · shop build is live hidden | done 11-19 | 20261119-c847c24-1 |
 | 23 | W12 · Content plan from Search Console: three rounds, A first | live | | Owner pastes round A into Gemini (`docs/tasks/w12-content-plan.md`) | open | |
-| 24 | W13 · Shop copy: `/shop` intro, SEO text, product names and descriptions (owner facts only), order message label | app | | Gemini drafts · brief `docs/tasks/gemini-w13.md` (2 products from the owner 11-19; more products and seller still O12) | built 11-19 · Claude | |
+| 24 | W13 · Shop copy: `/shop` intro, SEO text, product names and descriptions (owner facts only), order message label | app |  | Gemini drafted, owner approved 11-19. Page, search and LINE text live; product text for live admin in `docs/tasks/gemini-w13.md` (owner enters) | done 11-19 | 20261119-d3b846c-1 |
 | 25 | W10 · Review the X5 copy edits (PR #4, merged) | live | | | done 11-19 · Claude | |
 | 26 | W6 · SEO titles and descriptions final pass (`content/seo.ts`, `docs/seo-plan.md`) | live |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 27 | W4 · Turn `docs/verify-before-launch.md` into a question sheet grouped by reviewer | app |  |  | done 11-18 | 20261118-afae7fa-1 |
