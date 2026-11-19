@@ -1,7 +1,7 @@
 // Shop (task C14, brief docs/tasks/shop-option1.md). Car-care products sold as real sales:
 // the customer orders on LINE and pays by PromptPay; an admin confirms the slip and ships.
 // Products, prices and photos come from the owner only (O12) and live in D1 since C16: admin → ร้านค้า → สินค้า.
-// Wording here is Core's placeholder; the copywriter replaces it (W13).
+// Wording: W13 (Gemini, owner approved 2026-11-19, brief docs/tasks/gemini-w13.md).
 
 export interface ShopVariant {
   /** Stock-keeping id, stored on orders and stock rows. Never rename once orders exist. */
@@ -27,13 +27,13 @@ export interface ShopProduct {
 export const shopCopy = {
   title: "ร้านค้า",
   eyebrow: "ร้านค้า Unlimit",
-  intro: "อุปกรณ์ดูแลรถที่เราเลือกมาเอง สั่งซื้อทาง LINE แล้วชำระด้วยพร้อมเพย์",
+  intro: "อุปกรณ์ดูแลรถคัดสรร สั่งซื้อทาง LINE ชำระด้วยพร้อมเพย์",
   howTo: {
     title: "สั่งซื้ออย่างไร",
     steps: [
       "เลือกแบบและจำนวน แล้วกด “สั่งซื้อทาง LINE”",
-      "แอดมินแจ้งยอดรวมค่าส่งและส่ง QR พร้อมเพย์ให้ในแชต",
-      "ส่งสลิปและที่อยู่จัดส่งในแชต เราแจ้งเลขพัสดุเมื่อส่งของแล้ว",
+      "รอแอดมินแจ้งยอดรวมค่าส่งและส่ง QR พร้อมเพย์",
+      "ส่งสลิปและที่อยู่ในแชต เราแจ้งเลขพัสดุเมื่อส่ง",
     ],
   },
   seller: "ผู้ขาย: [รอข้อมูล]",
@@ -53,7 +53,7 @@ export const shopCopy = {
       `สินค้า: ${o.product}`,
       `แบบ: ${o.variant}`,
       `จำนวน: ${o.qty}`,
-      o.unit && o.total ? `ราคา: ${o.qty} × ${o.unit} = ${o.total} บาท` : "ราคา: (แอดมินแจ้ง)",
+      o.unit && o.total ? `ราคาสินค้า: ${o.qty} × ${o.unit} = ${o.total} บาท` : "ราคาสินค้า: (แอดมินแจ้ง)",
       "ค่าส่ง: (แอดมินแจ้ง)",
     ].join("\n"),
 };

@@ -35,7 +35,7 @@ if (!shopOn) {
   const href = await c.getByRole("link", { name: /สั่งซื้อทาง LINE/ }).getAttribute("href");
   const msg = decodeURIComponent(href.split("?")[1] ?? "");
   const lines = msg.split("\n");
-  if (lines[0] !== "สั่งซื้อสินค้า (จากเว็บไซต์)" || !lines.includes("จำนวน: 2") || !lines.some((l) => l.startsWith("ราคา: "))) fail("LINE order message:\n" + msg);
+  if (lines[0] !== "สั่งซื้อสินค้า (จากเว็บไซต์)" || !lines.includes("จำนวน: 2") || !lines.some((l) => l.startsWith("ราคาสินค้า: "))) fail("LINE order message:\n" + msg);
   else step("LINE order message, qty 2:\n    " + lines.join("\n    "));
   if (!href.startsWith("https://line.me/R/oaMessage/")) fail("LINE link " + href);
 }
@@ -124,7 +124,7 @@ if (shopOn) {
   else step("product page shows the admin-entered product, description and price");
   await c.getByRole("button", { name: "เพิ่มจำนวน" }).click();
   const msg = decodeURIComponent((await c.getByRole("link", { name: /สั่งซื้อทาง LINE/ }).getAttribute("href")).split("?")[1] ?? "");
-  if (!msg.includes(`สินค้า: ${productName}`) || !msg.includes("ราคา: 2 × 120 = 240 บาท")) fail("LINE order message:\n" + msg);
+  if (!msg.includes(`สินค้า: ${productName}`) || !msg.includes("ราคาสินค้า: 2 × 120 = 240 บาท")) fail("LINE order message:\n" + msg);
   else step("LINE order message for the new product, qty 2 = 240 บาท");
 }
 

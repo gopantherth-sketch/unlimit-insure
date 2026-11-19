@@ -59,14 +59,14 @@ describe("catalogue helpers", () => {
       "สินค้า: ผ้าไมโครไฟเบอร์",
       "แบบ: 60×160 ซม.",
       "จำนวน: 2",
-      "ราคา: 2 × 259.50 = 519 บาท",
+      "ราคาสินค้า: 2 × 259.50 = 519 บาท",
       "ค่าส่ง: (แอดมินแจ้ง)",
     ]);
   });
 
   it("leaves the price to the admin while it is not set", () => {
     const p: ShopProduct = { slug: "x", name: "x", summary: "", description: [], variants: [{ sku: "X-1", label: "x", priceSatang: null }] };
-    expect(orderMessage(p, p.variants[0]!, 1)).toContain("ราคา: (แอดมินแจ้ง)");
+    expect(orderMessage(p, p.variants[0]!, 1)).toContain("ราคาสินค้า: (แอดมินแจ้ง)");
     expect(fromPrice(p)).toBeNull();
     expect(fromPrice(catalog[0]!)).toBe(8900);
   });

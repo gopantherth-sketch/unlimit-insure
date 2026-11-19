@@ -63,3 +63,37 @@ For each item give **one recommended version** and **one alternative**, each wit
 3. Both products: name, card line, product-page paragraphs, alt text.
 4. LINE message: keep or changed labels.
 5. A list of every fact you used that is marked "Confirm" above, so the owner can tick them.
+
+---
+
+## Approved (owner, 2026-11-19)
+
+Gemini's recommended version of every item. The owner confirmed all four photo facts (sponge: polish and wax; cloth: velvet-like, "หนา+1", edging). "ทนและไม่ก่อให้เกิดรอย" stays out.
+
+Page, search and LINE text are in `content/shop.ts` and `content/seo.ts` (the LINE price line is now "ราคาสินค้า:", so it reads as before shipping).
+
+**For live admin → ร้านค้า → สินค้า** (the owner enters these; paragraphs are separated by a blank line):
+
+**ฟองน้ำกลม สีดำ** · ชื่อในลิงก์ `black-round-sponge` · SKU `SP-BLK-01` · แบบ "1 ชิ้น" · 50 บาท · สต็อก 50
+- คำโปรยบนการ์ด: `ฟองน้ำทรงกลมสำหรับงานขัดและงานเคลือบ`
+- รายละเอียด:
+  ```
+  ฟองน้ำทรงกลมสีดำ จำหน่ายแบบแยกชิ้น (ตัวเลือก 1 ชิ้น)
+
+  ใช้สำหรับงานขัดและงานเคลือบสีรถ
+
+  เลือกจำนวนที่ต้องการแล้วกดสั่งซื้อทาง LINE แอดมินจะแจ้งค่าจัดส่งและส่ง QR พร้อมเพย์ให้ในแชต
+  ```
+
+**ผ้าไมโครไฟเบอร์แบบขนสั้น 350–400 GSM** · ชื่อในลิงก์ `microfiber-short-350` · SKU `MF-SH350-40` · แบบ "40×40 ซม." · 35 บาท · สต็อก 50
+- คำโปรยบนการ์ด: `เนื้อกำมะหยี่ มีขอบ ขนาด 40×40 ซม.`
+- รายละเอียด:
+  ```
+  ผ้าไมโครไฟเบอร์แบบขนสั้น ความหนา 350–400 GSM เนื้อกำมะหยี่ (รุ่น หนา+1) และเย็บมีขอบเรียบร้อย
+
+  ขนาด 40×40 ซม. สำหรับงานดูแลรถ
+
+  กดสั่งซื้อทาง LINE เพื่อระบุจำนวน แอดมินจะแจ้งยอดรวมค่าจัดส่งและส่ง QR พร้อมเพย์ให้ในแชต
+  ```
+
+Photo alt text: the site uses the product name as the alt text, so Gemini's alt lines are not used.
