@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261119-bb6cc09-1 · 2026-11-19
+Live:  20261119-0305d51-1 · 2026-11-19
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
