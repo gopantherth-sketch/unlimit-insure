@@ -43,7 +43,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 28 | W3 · Review the Phase 3 strings in `content/purchase.ts` | app |  |  | done 11-18 | 20261118-afae7fa-1 |
 | 29 | W5 · Per-insurer claims guidance once real insurers are known | app | | Blocked on C4 | open | |
 | 30 | W9/W11 · Gemini brief `docs/tasks/gemini-w9-w11.md` (trim-field text and related copy) | live | | Owner sends to Gemini; Cursor or Claude places it | done 11-19 | PR #9 `9f31ec2`, live 2026-11-17 |
-| 31 | O9 · Owner: Workers Free vs Paid ($5/month) | live | | Unblocks row 2 | done 11-19 | Stay on Workers Free: all public pages 0 ms CPU since row 43 (owner 11-19) |
+| 31 | O9 · Owner: Workers Free vs Paid ($5/month) | live | | Unblocks row 2 | done 11-19 | Workers Paid: owner already pays $5/month (owner 11-19); the 10 ms Free CPU limit no longer applies |
 | 32 | O10 · Owner: verify the info@unlimitinsure.com destination | live | | Unblocks row 5 | open | |
 | 33 | O7 · Owner: real advisor portrait (own photo) | app | | Unblocks row 18 | open | |
 | 34 | O3 · Owner: consent to display from each named broker | live | | Needed for the verify list and C6 | open | |
