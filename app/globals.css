@@ -44,7 +44,7 @@
     @apply pointer-events-none select-none font-script font-normal leading-[0.9] text-brand-600;
   }
   .link-arrow {
-    @apply inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-800;
+    @apply inline-flex min-h-11 shrink-0 items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-800 sm:min-h-0; /* 44 px tap target on phones (C3 QA) */
   }
   .field-label {
     @apply mb-1.5 block text-sm font-medium text-navy-700;

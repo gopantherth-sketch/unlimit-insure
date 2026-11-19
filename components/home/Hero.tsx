@@ -34,7 +34,7 @@ export function Hero({ catalog }: { catalog: VehicleCatalog }) {
 
       <div className="container-page relative">
         <div className="max-w-[560px] pb-8 pt-7 sm:pt-10 lg:min-h-[500px] lg:pb-14 lg:pt-16 xl:max-w-[600px]">
-          <p className="eyebrow text-[11px] sm:text-xs">{homeCopy.eyebrow}</p>
+          <p className="eyebrow text-xs">{homeCopy.eyebrow}</p>
           <h1
             id="hero-title"
             className="mt-4 text-[38px] font-bold leading-[1.18] tracking-[-0.01em] text-navy-900 sm:text-[52px] lg:text-[58px] xl:text-[62px]"
