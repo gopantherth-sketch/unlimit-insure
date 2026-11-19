@@ -72,6 +72,15 @@ Gemini's recommended version of every item. The owner confirmed all four photo f
 
 Page, search and LINE text are in `content/shop.ts` and `content/seo.ts` (the LINE price line is now "ราคาสินค้า:", so it reads as before shipping).
 
+Source: the owner's Gemini answer, attached in chat on 2026-11-19 as `w13_shop_copy_unlimit_insure.md`, "แบบแนะนำ" lines; the owner chose "Recommended" for every item. Word for word:
+- Intro (`shopCopy.intro`): `อุปกรณ์ดูแลรถคัดสรร สั่งซื้อทาง LINE ชำระด้วยพร้อมเพย์`
+- Step 1 (unchanged): `เลือกแบบและจำนวน แล้วกด “สั่งซื้อทาง LINE”`
+- Step 2: `รอแอดมินแจ้งยอดรวมค่าส่งและส่ง QR พร้อมเพย์`
+- Step 3: `ส่งสลิปและที่อยู่ในแชต เราแจ้งเลขพัสดุเมื่อส่ง`
+- `/shop` search title: `ร้านค้า อุปกรณ์ดูแลรถ | สั่งซื้อทาง LINE`
+- `/shop` search description: `เลือกซื้ออุปกรณ์ดูแลรถที่คัดสรรมาให้ กดสั่งซื้อทาง LINE แอดมินแจ้งยอดรวมค่าส่งและชำระเงินผ่านพร้อมเพย์ได้ในแชต`
+- LINE price label: `ราคา:` → `ราคาสินค้า:`
+
 **For live admin → ร้านค้า → สินค้า** (the owner enters these; paragraphs are separated by a blank line):
 
 **ฟองน้ำกลม สีดำ** · ชื่อในลิงก์ `black-round-sponge` · SKU `SP-BLK-01` · แบบ "1 ชิ้น" · 50 บาท · สต็อก 50
