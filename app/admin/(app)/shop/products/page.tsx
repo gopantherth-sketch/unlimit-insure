@@ -43,7 +43,7 @@ export default async function AdminShopProductsPage({ searchParams }: { searchPa
                     <span className="min-w-0">
                       <span className="block font-semibold">{p.name}</span>
                       <span className="block text-xs text-navy-500">
-                        /shop/{p.slug} · {p.variants.length} แบบ · {price !== null ? `เริ่มต้น ${formatBaht(price)} บาท` : "ยังไม่มีราคา"} · {p.photo ? "มีรูป" : "ยังไม่มีรูป"}
+                        /shop/{p.slug} · {p.variants.length} แบบ · {price !== null ? `เริ่มต้น ${formatBaht(price)} บาท` : "ยังไม่มีราคา"} · {p.photos?.length ? `${p.photos.length} รูป` : "ยังไม่มีรูป"}{p.hasDraft ? " · มีการแก้ไขที่ยังไม่เผยแพร่" : ""}
                       </span>
                     </span>
                     <span className={cx("rounded-full px-3 py-1 text-xs font-semibold", p.published ? "bg-success-50 text-success-700" : "bg-navy-50 text-navy-600")}>

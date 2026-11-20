@@ -104,7 +104,7 @@ if (!created.includes(`/admin/shop/products/${slug}?ok=created`)) fail("product 
 else step("product created (unpublished) " + slug);
 await o.locator("#photo input[type=file]").setInputFiles(FIX + "t.png");
 const photoDone = await submit(o.getByRole("button", { name: "อัปโหลดรูป" }));
-const photoSrc = await o.locator('section#photo img').getAttribute("src").catch(() => null);
+const photoSrc = await o.locator('section#photo img').first().getAttribute("src").catch(() => null);
 const photoRes = photoSrc ? await o.request.get(B + photoSrc) : null;
 if (!/ok=photo/.test(photoDone) || !photoRes?.ok() || !/^image\/(webp|jpeg)$/.test(photoRes.headers()["content-type"] ?? "")) fail(`photo upload: ${photoDone} ${photoSrc} ${photoRes?.status()}`);
 else step(`photo resized and stored, served as ${photoRes.headers()["content-type"]}`);
@@ -126,6 +126,27 @@ if (shopOn) {
   const msg = decodeURIComponent((await c.getByRole("link", { name: /สั่งซื้อทาง LINE/ }).getAttribute("href")).split("?")[1] ?? "");
   if (!msg.includes(`สินค้า: ${productName}`) || !msg.includes("ราคาสินค้า: 2 × 120 = 240 บาท")) fail("LINE order message:\n" + msg);
   else step("LINE order message for the new product, qty 2 = 240 บาท");
+
+  // Drafts (C18): edits to a product on sale stay hidden until published; a second photo adds thumbnails.
+  await o.goto(B + `/admin/shop/products/${slug}`);
+  await o.getByLabel("ชื่อสินค้า", { exact: true }).fill(productName + " ใหม่");
+  await submit(o.locator("form", { has: o.locator("#name") }).getByRole("button", { name: "บันทึก" }));
+  await o.locator("#photo input[type=file]").setInputFiles(FIX + "t.png");
+  await submit(o.getByRole("button", { name: "อัปโหลดรูป" }));
+  await c.goto(B + `/shop/${slug}`);
+  const before = await c.locator("h1").innerText();
+  const thumbsBefore = await c.getByRole("button", { name: /ดูรูปที่/ }).count();
+  if (!(await o.getByText("มีการแก้ไขที่ลูกค้ายังไม่เห็น").count()) || before !== productName || thumbsBefore !== 0) fail(`draft leaked: "${before}", ${thumbsBefore} thumbnails`);
+  else step("draft edit and new photo hidden from customers");
+  if (!/ok=draft_published/.test(await submit(o.getByRole("button", { name: "เผยแพร่การแก้ไข" })))) fail("draft not published");
+  await c.goto(B + `/shop/${slug}`);
+  const after = await c.locator("h1").innerText();
+  const thumbs = c.getByRole("button", { name: /ดูรูปที่/ });
+  if (after !== productName + " ใหม่" || (await thumbs.count()) !== 2) fail(`after publish: "${after}", ${await thumbs.count()} thumbnails`);
+  else {
+    await thumbs.nth(1).click();
+    step(`draft published: new name and 2 photos, thumbnail 2 pressed=${await thumbs.nth(1).getAttribute("aria-pressed")}`);
+  }
 }
 
 const setStock = async (v, onlySku) => {

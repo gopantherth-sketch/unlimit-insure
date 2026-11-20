@@ -4,12 +4,15 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getDb } from "@/lib/db/client";
 import {
+  addShopProductPhoto,
   addShopVariant,
   createShopProduct,
   deleteShopVariant,
+  discardShopDraft,
   MAX_PHOTO_BYTES,
+  publishShopDraft,
   removeShopProductPhoto,
-  setShopProductPhoto,
+  setShopProductCover,
   setShopProductPublished,
   updateShopProduct,
   updateShopVariant,
@@ -78,12 +81,12 @@ export async function updateShopVariantAction(formData: FormData) {
   const slug = str(formData, "slug", 60);
   const sku = str(formData, "sku", 40);
   if (str(formData, "intent", 10) === "delete") {
-    const r = await deleteShopVariant(await getDb(), sku);
+    const r = await deleteShopVariant(await getDb(), slug, sku);
     done(slug, r.ok ? "ok=variant_deleted#variants" : `error=${r.error}#variants`);
   }
   const p = price(formData, "price");
   if (p === "invalid") done(slug, "error=invalid_price#variants");
-  const r = await updateShopVariant(await getDb(), sku, { label: str(formData, "label", 80), priceSatang: p, active: formData.get("active") === "on" });
+  const r = await updateShopVariant(await getDb(), slug, sku, { label: str(formData, "label", 80), priceSatang: p, active: formData.get("active") === "on" });
   done(slug, r.ok ? "ok=variant#variants" : `error=${r.error}#variants`);
 }
 
@@ -93,13 +96,24 @@ export async function uploadShopPhotoAction(formData: FormData) {
   const file = formData.get("photo");
   if (!(file instanceof File) || file.size === 0) done(slug, "error=invalid_photo#photo");
   if (file.size > MAX_PHOTO_BYTES) done(slug, "error=photo_too_large#photo");
-  const r = await setShopProductPhoto(await getDb(), slug, new Uint8Array(await file.arrayBuffer()), { width: num(formData, "width"), height: num(formData, "height") });
+  const r = await addShopProductPhoto(await getDb(), slug, new Uint8Array(await file.arrayBuffer()), { width: num(formData, "width"), height: num(formData, "height") });
   done(slug, r.ok ? "ok=photo#photo" : `error=${r.error}#photo`);
 }
 
-export async function removeShopPhotoAction(formData: FormData) {
+export async function shopPhotoAction(formData: FormData) {
   await requireOwner();
   const slug = str(formData, "slug", 60);
-  await removeShopProductPhoto(await getDb(), slug);
-  done(slug, "ok=photo_removed#photo");
+  const id = str(formData, "id", 60);
+  const cover = str(formData, "intent", 10) === "cover";
+  const r = cover ? await setShopProductCover(await getDb(), slug, id) : await removeShopProductPhoto(await getDb(), slug, id);
+  done(slug, r.ok ? `ok=${cover ? "photo_cover" : "photo_removed"}#photo` : `error=${r.error}#photo`);
+}
+
+/** Publish or throw away the pending edits of a product on sale (C18). */
+export async function shopDraftAction(formData: FormData) {
+  await requireOwner();
+  const slug = str(formData, "slug", 60);
+  const discard = str(formData, "intent", 10) === "discard";
+  const r = discard ? await discardShopDraft(await getDb(), slug) : await publishShopDraft(await getDb(), slug);
+  done(slug, r.ok ? `ok=${discard ? "draft_discarded" : "draft_published"}` : `error=${r.error}`);
 }

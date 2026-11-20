@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { ArrowLeft } from "lucide-react";
 import { OrderPicker } from "@/components/shop/OrderPicker";
-import { ProductImage } from "@/components/shop/ProductImage";
+import { ProductGallery } from "@/components/shop/ProductGallery";
 import { shopCopy } from "@/content/shop";
 import { getDb } from "@/lib/db/client";
 import { getShopCatalog } from "@/lib/db/shop-catalog";
@@ -34,7 +34,7 @@ export default async function ShopProductPage({ params }: { params: Promise<{ sl
         "@type": "Product",
         name: product.name,
         description: product.summary,
-        ...(product.photo && { image: `${SITE_URL}${product.photo.src}` }),
+        ...(product.photos?.length && { image: product.photos.map((p) => `${SITE_URL}${p.src}`) }),
         offers: priced.map((v) => ({
           "@type": "Offer",
           sku: v.sku,
@@ -55,9 +55,7 @@ export default async function ShopProductPage({ params }: { params: Promise<{ sl
           {shopCopy.backToShop}
         </Link>
         <div className="mt-4 grid gap-8 lg:grid-cols-2 lg:items-start">
-          <div className="aspect-square overflow-hidden rounded-xl2 bg-wash">
-            <ProductImage product={product} sizes="(min-width: 1024px) 560px, 100vw" />
-          </div>
+          <ProductGallery product={product} />
           <div className="space-y-6">
             <div>
               <h1 className="text-[28px] font-bold leading-tight text-navy-900 sm:text-[36px]">{product.name}</h1>

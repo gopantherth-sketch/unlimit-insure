@@ -143,7 +143,8 @@ export const shopCatalogErrorMessages: Record<string, string> = {
   invalid_price: "ราคาต้องเป็นตัวเลขมากกว่า 0 เช่น 89 หรือ 89.50 (เว้นว่างถ้ายังไม่มีราคา)",
   invalid_photo: "ไฟล์รูปต้องเป็น JPG, PNG หรือ WebP",
   photo_too_large: "รูปใหญ่เกินไป ลองรูปที่เล็กกว่านี้",
-  no_variants: "เปิดขายไม่ได้: ต้องมีอย่างน้อย 1 แบบที่เปิดขาย",
+  too_many_photos: "ใส่รูปได้สูงสุด 6 รูป ลบรูปเดิมก่อนแล้วค่อยเพิ่ม",
+  no_variants: "เปิดขายหรือเผยแพร่ไม่ได้: ต้องมีอย่างน้อย 1 แบบที่เปิดขาย",
   has_orders: "ลบไม่ได้เพราะมีคำสั่งซื้อใช้แบบนี้แล้ว ให้ปิดขายแทน",
 };
 
@@ -155,6 +156,9 @@ export const shopCatalogOkMessages: Record<string, string> = {
   variant: "บันทึกแบบสินค้าแล้ว",
   variant_added: "เพิ่มแบบสินค้าแล้ว",
   variant_deleted: "ลบแบบสินค้าแล้ว",
-  photo: "บันทึกรูปแล้ว",
+  photo: "เพิ่มรูปแล้ว",
   photo_removed: "ลบรูปแล้ว",
+  photo_cover: "ตั้งเป็นรูปหลักแล้ว",
+  draft_published: "เผยแพร่การแก้ไขแล้ว ลูกค้าเห็นแล้ว",
+  draft_discarded: "ยกเลิกการแก้ไขแล้ว กลับไปเป็นแบบที่ลูกค้าเห็นอยู่",
 };

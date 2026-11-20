@@ -354,7 +354,15 @@ export const shopProducts = sqliteTable("shop_products", {
   /** Shown on /shop only when true. */
   published: integer("published", { mode: "boolean" }).notNull().default(false),
   sort: integer("sort").notNull().default(0),
+  /** Cover photo: always the first of `photoIds` (kept for the card and older readers). */
   photoId: text("photo_id"),
+  /** Published photo ids as a JSON array, cover first (C18, up to 6). */
+  photoIds: text("photo_ids").notNull().default("[]"),
+  /**
+   * Unpublished edits to a product that is on sale, as JSON (C18): fields, photo ids and variants.
+   * Customers see the columns above until the owner publishes; null = no pending edits.
+   */
+  draft: text("draft"),
   createdAt: createdAt(),
   updatedAt: text("updated_at").notNull().default(now),
 });

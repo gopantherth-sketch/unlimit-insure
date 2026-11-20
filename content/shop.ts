@@ -12,6 +12,13 @@ export interface ShopVariant {
   priceSatang: number | null;
 }
 
+export interface ShopPhoto {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+}
+
 export interface ShopProduct {
   slug: string;
   name: string;
@@ -20,7 +27,9 @@ export interface ShopProduct {
   /** Short paragraphs on the product page: owner facts only (size, material, care). */
   description: string[];
   /** Owner's own photo, uploaded in admin (served from /api/shop/photo/<id>). Absent = a designed placeholder tile. */
-  photo?: { src: string; width: number; height: number; alt: string };
+  photo?: ShopPhoto;
+  /** All published photos, cover first (C18). Present whenever `photo` is. */
+  photos?: ShopPhoto[];
   variants: ShopVariant[];
 }
 
