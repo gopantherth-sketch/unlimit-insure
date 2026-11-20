@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261120-8f06b99-1 · 2026-11-20
+Live:  20261120-3c64097-1 · 2026-11-20
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -59,7 +59,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 44 | C17 · Show sold out on `/shop` product cards: a product whose active variants all have stock 0 gets a "สินค้าหมด" badge on its card (same `/api/shop/stock` data as the product page; the list stays prebuilt-friendly) | app | Shop stays off (`SHOW_SHOP`) | Found in the D10 review (row 22); text from `content/shop.ts` | done 11-19 | 20261119-bb6cc09-1 |
 | 45 | O14 · Owner: add DMARC TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:info@unlimitinsure.com` in Cloudflare DNS (not found on Cloudflare's nameserver 11-20) | live | | Agent checks with nslookup after | open | |
 | 46 | Shop link in the header menu (desktop + phone): ร้านค้า before เกี่ยวกับเรา, shown while SHOW_SHOP is on (Nithi 11-20: customers only had the footer link) | live |  |  | done 11-20 · Claude | 20261120-8f06b99-1 |
-| 47 | C18 · Shop: more photos per product and drafts. Admin uploads up to 6 photos per product, picks the main one (cover on the card), removes any; the product page shows thumbnails to switch. Edits to a product on sale (text, photos, variants, prices) stay a draft until “เผยแพร่การแก้ไข”, or are discarded; customers only see the published version. Needs migration 0006 (two columns) on live before the deploy | app | Shop is live | Nithi 11-20: more photos; drafts (“customer sees only the published version”) | built 11-20 · Claude | |
+| 47 | C18 · Shop: more photos per product and drafts. Admin uploads up to 6 photos per product, picks the main one (cover on the card), removes any; the product page shows thumbnails to switch. Edits to a product on sale (text, photos, variants, prices) stay a draft until “เผยแพร่การแก้ไข”, or are discarded; customers only see the published version. Needs migration 0006 (two columns) on live before the deploy | app | Shop is live | Nithi 11-20: more photos; drafts (“customer sees only the published version”) | done 11-20 · Claude | 20261120-3c64097-1 |
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.
 Numbers are never reused. One line per row. At the start of a batch, `done` rows move to `DONE.md`.
