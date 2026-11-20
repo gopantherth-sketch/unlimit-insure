@@ -59,6 +59,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 44 | C17 · Show sold out on `/shop` product cards: a product whose active variants all have stock 0 gets a "สินค้าหมด" badge on its card (same `/api/shop/stock` data as the product page; the list stays prebuilt-friendly) | app | Shop stays off (`SHOW_SHOP`) | Found in the D10 review (row 22); text from `content/shop.ts` | done 11-19 | 20261119-bb6cc09-1 |
 | 45 | O14 · Owner: add DMARC TXT `_dmarc` = `v=DMARC1; p=none; rua=mailto:info@unlimitinsure.com` in Cloudflare DNS (not found on Cloudflare's nameserver 11-20) | live | | Agent checks with nslookup after | open | |
 | 46 | Shop link in the header menu (desktop + phone): ร้านค้า before เกี่ยวกับเรา, shown while SHOW_SHOP is on (Nithi 11-20: customers only had the footer link) | live |  |  | done 11-20 · Claude | 20261120-8f06b99-1 |
+| 47 | C18 · Shop: more photos per product. Admin uploads up to 6 photos per product, picks the main one (cover on the card), removes any; the product page shows the main photo with thumbnails to switch. No schema change (photos already belong to a product) | app | Shop is live | Nithi 11-20: more photos | open | |
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.
 Numbers are never reused. One line per row. At the start of a batch, `done` rows move to `DONE.md`.
