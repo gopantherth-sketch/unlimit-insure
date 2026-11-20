@@ -19,6 +19,8 @@ const cardMeta: Record<string, { photo?: PhotoSlot; tag: string }> = {
   "what-is-excess": { photo: "articleExcess", tag: "คำศัพท์" },
   "flood-cover": { photo: "articleFlood", tag: "น้ำท่วม" },
   "ev-insurance": { photo: "articleEv", tag: "EV" },
+  "ev-claims": { tag: "EV" },
+  "byd-ev-insurance": { tag: "EV" },
 };
 
 export default function LabIndexPage() {

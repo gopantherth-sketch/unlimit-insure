@@ -120,3 +120,10 @@ Give plain text grouped by round, then by page, using the exact field names abov
   - Photos can follow later from Gemini (generated images) or the owner.
 - **Round C:** four new entries in `content/models.ts` with `modelId`: `byd-seal-ev`, `byd-sealion-7-ev`, `tesla-model-y-ev` and `gwm-ora-good-cat-ev`. These ids already exist in `lib/data/vehicles.ts`. The page and sitemap entry follow from the content entry.
 - Text only, exactly as approved. Run `npx tsc --noEmit && npm test && npx next build`, push `copy/w12-a` (then `-b`, `-c`), and ask Core to merge.
+
+---
+
+## Status (2026-11-20)
+- **Round A:** live since 11-17 (`aac0f30`, Gemini wording, owner approved). Compare clicks and CTR around 2026-12-15.
+- **Round B:** written by Claude at the owner's request on 11-20 (no Gemini step): `ev-claims` and `byd-ev-insurance` in `content/lab.ts`, tag "EV" on `/lab`, placeholder tile until a photo exists. Their `verify` items are in `docs/verify-before-launch.md` for the licensed review (O8). Owner approves the wording before the deploy. After the deploy, request indexing for `/lab/ev-claims` and `/lab/byd-ev-insurance`.
+- **Round C:** not started.
