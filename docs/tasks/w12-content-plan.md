@@ -126,4 +126,4 @@ Give plain text grouped by round, then by page, using the exact field names abov
 ## Status (2026-11-20)
 - **Round A:** live since 11-17 (`aac0f30`, Gemini wording, owner approved). Compare clicks and CTR around 2026-12-15.
 - **Round B:** written by Claude at the owner's request on 11-20 (no Gemini step): `ev-claims` and `byd-ev-insurance` in `content/lab.ts`, tag "EV" on `/lab`, placeholder tile until a photo exists. Their `verify` items are in `docs/verify-before-launch.md` for the licensed review (O8). Owner approves the wording before the deploy. After the deploy, request indexing for `/lab/ev-claims` and `/lab/byd-ev-insurance`.
-- **Round C:** not started.
+- **Round C:** written by Claude at the owner's request on 11-21 (no Gemini step): `byd-seal-ev`, `byd-sealion-7-ev`, `tesla-model-y-ev`, `gwm-ora-good-cat-ev` in `content/models.ts`, pages under `/insurance/<brand>/<model>` and in the sitemap. Owner approves the wording with the GO. After the deploy, request indexing for the 4 pages.
