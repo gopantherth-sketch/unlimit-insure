@@ -5,7 +5,7 @@ Process: `D:\core-process\AGENTS.md`
 Code:  UNL
 Usually: —
 Local: — · —
-Live:  20261123-c71e119-1 · 2026-11-23
+Live:  20261123-b293e42-1 · 2026-11-23
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -61,7 +61,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 46 | Shop link in the header menu (desktop + phone): ร้านค้า before เกี่ยวกับเรา, shown while SHOW_SHOP is on (Nithi 11-20: customers only had the footer link) | live |  |  | done 11-20 · Claude | 20261120-8f06b99-1 |
 | 47 | C18 · Shop: more photos per product and drafts. Admin uploads up to 6 photos per product, picks the main one (cover on the card), removes any; the product page shows thumbnails to switch. Edits to a product on sale (text, photos, variants, prices) stay a draft until “เผยแพร่การแก้ไข”, or are discarded; customers only see the published version. Needs migration 0006 (two columns) on live before the deploy | app | Shop is live | Nithi 11-20: more photos; drafts (“customer sees only the published version”) | done 11-20 · Claude | 20261120-3c64097-1 |
 | 48 | W14 · Content round D from Search Console: D1 Google titles (excess article + 12 model pages that still say เปรียบเทียบ), D2 two Lab articles (insurance types, both type 1 who pays) | live | Insurance copy: verify items for O8; no prices | Plan `docs/tasks/w14-content-plan.md` (Claude 11-23). D1 approved and live 11-23 (excess article title/summary, 12 model titles/descriptions). D2 (two Lab articles) not approved yet: gets its own row when Nithi approves | done 11-23 | 20261123-c71e119-1 |
-| 49 | W14 · Content round D2: two Lab articles, `insurance-types` (what type 1, 2+, 3+, 3 cover) and `both-type1-who-pays` | live | Insurance copy: verify items for O8; no prices | Nithi approved 11-23; written by Claude 11-23 (plan `docs/tasks/w14-content-plan.md`) | built | |
+| 49 | W14 · Content round D2: two Lab articles, `insurance-types` (what type 1, 2+, 3+, 3 cover) and `both-type1-who-pays` | live | Insurance copy: verify items for O8; no prices | Nithi approved 11-23; written by Claude 11-23 (plan `docs/tasks/w14-content-plan.md`) | done 11-23 | 20261123-b293e42-1 |
 Where: `mock` · `app` · `live`
 Status: `open` · `do` · `built` · `help` · `done` · `later` · `drop`. Date and builder: `done 11-17 · Claude`. Fit is advisory: `fit: Cursor`.
 Numbers are never reused. One line per row. At the start of a batch, `done` rows move to `DONE.md`.
