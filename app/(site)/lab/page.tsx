@@ -21,6 +21,8 @@ const cardMeta: Record<string, { photo?: PhotoSlot; tag: string }> = {
   "ev-insurance": { photo: "articleEv", tag: "EV" },
   "ev-claims": { tag: "EV" },
   "byd-ev-insurance": { tag: "EV" },
+  "insurance-types": { tag: "ความรู้" },
+  "both-type1-who-pays": { tag: "การเคลม" },
 };
 
 export default function LabIndexPage() {
