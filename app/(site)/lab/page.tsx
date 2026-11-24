@@ -7,22 +7,24 @@ import { LineButton } from "@/components/contact/ContactButtons";
 import { labToolIcon } from "@/components/home/InsuranceLabSection";
 import { PageHero } from "@/components/ui/PageHero";
 import { labArticles } from "@/content/lab";
+import { labPhotoSlot } from "@/lib/lab-photos";
 import { contact } from "@/content/contact";
 import { homeCopy } from "@/content/home";
 
 export const metadata: Metadata = seo("/lab");
 
-// Thumbnail photo (when a slot exists) and category chip per article, as in the homepage ContentRow.
-const cardMeta: Record<string, { photo?: PhotoSlot; tag: string }> = {
-  "type1-vs-2plus": { photo: "articleSteering", tag: "ความรู้" },
-  "dealer-vs-garage": { photo: "articleRepair", tag: "การซ่อม" },
-  "what-is-excess": { photo: "articleExcess", tag: "คำศัพท์" },
-  "flood-cover": { photo: "articleFlood", tag: "น้ำท่วม" },
-  "ev-insurance": { photo: "articleEv", tag: "EV" },
-  "ev-claims": { photo: "articleEvClaims", tag: "EV" },
-  "byd-ev-insurance": { photo: "articleBydEv", tag: "EV" },
-  "insurance-types": { photo: "articleTypes", tag: "ความรู้" },
-  "both-type1-who-pays": { photo: "articleWhoPays", tag: "การเคลม" },
+// Category chip per article, as in the homepage ContentRow. Thumbnail photos: lib/lab-photos.ts
+// (the same photo is the article's share image).
+const cardTag: Record<string, string> = {
+  "type1-vs-2plus": "ความรู้",
+  "dealer-vs-garage": "การซ่อม",
+  "what-is-excess": "คำศัพท์",
+  "flood-cover": "น้ำท่วม",
+  "ev-insurance": "EV",
+  "ev-claims": "EV",
+  "byd-ev-insurance": "EV",
+  "insurance-types": "ความรู้",
+  "both-type1-who-pays": "การเคลม",
 };
 
 export default function LabIndexPage() {
@@ -33,7 +35,7 @@ export default function LabIndexPage() {
         <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {labArticles.map((a) => {
             const Icon = labToolIcon[a.tool];
-            const meta = cardMeta[a.slug];
+            const meta: { photo?: PhotoSlot; tag?: string } = { photo: labPhotoSlot[a.slug], tag: cardTag[a.slug] };
             return (
               <li key={a.slug}>
                 <Link href={`/lab/${a.slug}`} className="card group flex h-full flex-col overflow-hidden rounded-xl2 transition-shadow hover:shadow-float">
@@ -53,7 +55,7 @@ export default function LabIndexPage() {
                   </span>
                   <span className="flex flex-1 flex-col p-5 sm:p-6">
                     <span className="flex items-center gap-2">
-                      {meta && <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700">{meta.tag}</span>}
+                      {meta.tag && <span className="rounded-full bg-brand-50 px-2.5 py-0.5 text-xs font-medium text-brand-700">{meta.tag}</span>}
                       <span className="inline-flex items-center gap-1 text-[13px] text-navy-400">
                         <Clock aria-hidden className="h-3.5 w-3.5" />
                         อ่าน {a.readMinutes} นาที

@@ -20,6 +20,7 @@
     "db:seed:remote": "wrangler d1 execute unlimit-insure --remote --file seed/mock-catalog.sql",
     "import:template": "tsx scripts/build-import-template.ts",
     "content:verify": "tsx scripts/build-verify-list.ts",
+    "og:lab": "tsx scripts/build-og-lab.ts",
     "e2e:journey": "node tests/e2e/journey.mjs",
     "e2e:admin-users": "node tests/e2e/admin-users.mjs",
     "e2e:import": "node tests/e2e/import.mjs",

@@ -11,6 +11,7 @@ import { buttonClass } from "@/components/ui/button";
 import { PageHero } from "@/components/ui/PageHero";
 import { glossary } from "@/content/glossary";
 import { labArticles } from "@/content/lab";
+import { LAB_SHARE_SIZE, labShareImage } from "@/lib/lab-photos";
 
 type Params = Promise<{ slug: string }>;
 
@@ -22,7 +23,26 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { slug } = await params;
   const a = labArticles.find((x) => x.slug === slug);
-  return a ? { title: a.title, description: a.summary, alternates: { canonical: `/lab/${a.slug}` } } : { title: "ไม่พบบทความ" };
+  if (!a) return { title: "ไม่พบบทความ" };
+  const path = `/lab/${a.slug}`;
+  // Own link preview per article (UNL#53). Setting openGraph here replaces the layout's whole
+  // object, so siteName and locale are repeated; no photo → the site-wide og-image.jpg.
+  const image = labShareImage(a.slug) ?? "/og-image.jpg";
+  return {
+    title: a.title,
+    description: a.summary,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "article",
+      siteName: "Unlimit Insure",
+      locale: "th_TH",
+      url: path,
+      title: a.title,
+      description: a.summary,
+      images: [{ url: image, ...LAB_SHARE_SIZE, alt: a.title }],
+    },
+    twitter: { card: "summary_large_image", title: a.title, description: a.summary, images: [image] },
+  };
 }
 
 export default async function LabArticlePage({ params }: { params: Params }) {
