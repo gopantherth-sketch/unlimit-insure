@@ -4,8 +4,8 @@ Process: `D:\core-process\AGENTS.md`
 
 Code:  UNL
 Usually: —
-Local: 20261125-3e10ec0-1 · http://127.0.0.1:8787
-Live:  20261125-3e10ec0-1 · 2026-11-25
+Local: 20261125-9aec0ad-1 · http://127.0.0.1:8787
+Live:  20261125-9aec0ad-1 · 2026-11-25
 
 Nithi marks by number: `do: 3, 5 · later: 4 · drop: 2`. Only `do` is work.
 
@@ -65,7 +65,7 @@ Rows came from the old backlog in `docs/agents.md` (adopt 2026-11-18); its ID is
 | 50 | Week 1 marketing 24–30 Nov (marketing agent, CORE#36; Nithi 11-24 "Yes, start week 1"): Facebook posts of the Lab articles (order for all 9; posts 1 `insurance-types` + 2 `both-type1-who-pays`), generic LINE renewal follow-up | live | site copy in `content/**`; no prices, claims, insurer names/logos; shop until O12 | `docs/marketing/WEEK-1-FB-2026-11-24.md` · Nithi posts on facebook.com/Unlimit.th and sends renewals · ฿0, no boost · posts repeat only live Lab text | done 11-25 | 20261125-3e10ec0-1 |
 | 51 | D11 · Photos for 4 Lab articles that show the placeholder tile (`ev-claims`, `byd-ev-insurance`, `insurance-types`, `both-type1-who-pays`) | live | No logos, plates, text or faces | Gemini brief `docs/tasks/gemini-lab-photos.md` (Claude 11-24). Nithi sent 4 Gemini images 11-24; placed as WebP 960×640 by Claude | done 11-25 | 20261125-3e10ec0-1 |
 | 52 | Week 2–5 Lab posts and renewals, 1–28 Dec (MONETIZE-PLAN §2.3): Facebook drafts of Lab posts 3–9, two a week, in the UNL#50 order; a second, softer generic renewal reminder; one shop post held until O12 | live | site copy in `content/**`; no claims, insurer logos or prices; `[รอข้อมูล]` for unknowns | owner: MKT · Claude · drafts only: Nithi posts and sends · ฿0 · posts repeat only live Lab text · drafts `docs/marketing/WEEKS-2-5-FB-2026-12.md` (Claude 11-25) | done 11-25 · Claude | |
-| 53 | Lab share image: each article gets its own `og:image` (the article photo, 1200×630) and `og:type` article; today all 9 share `og-image.jpg`, so every FB link post shows the same card | app | No wording changes | Highest lever for the UNL#52 posts; land before Wed 12-02 · built by Claude 11-25: `public/og/lab/<slug>.jpg` from the article photos (`npm run og:lab`), map in `lib/lab-photos.ts`, vitest checks every article | built | |
+| 53 | Lab share image: each article gets its own `og:image` (the article photo, 1200×630) and `og:type` article; today all 9 share `og-image.jpg`, so every FB link post shows the same card | app | No wording changes | Highest lever for the UNL#52 posts; land before Wed 12-02 · built by Claude 11-25: `public/og/lab/<slug>.jpg` from the article photos (`npm run og:lab`), map in `lib/lab-photos.ts`, vitest checks every article | done 11-25 | 20261125-9aec0ad-1 |
 | 54 | Lab article pages: show the article photo, a published/updated date, 2–3 related-article links (e.g. `insurance-types` names `type1-vs-2plus` but does not link it), and Article JSON-LD | app | Insurance copy unchanged | Found 11-25 recheck | open | |
 | 55 | `/lab` order: the starter articles `insurance-types` and `both-type1-who-pays` are last; put the basics first | app | | Found 11-25 recheck | open | |
 | 56 | FB page: no post visible after 28 Sep (logged-out view); week 1 post 1 (due 11-25) not seen | live | | Nithi posts (UNL#50 drafts) | open | |
