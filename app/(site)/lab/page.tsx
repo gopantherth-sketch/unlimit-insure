@@ -19,10 +19,10 @@ const cardMeta: Record<string, { photo?: PhotoSlot; tag: string }> = {
   "what-is-excess": { photo: "articleExcess", tag: "คำศัพท์" },
   "flood-cover": { photo: "articleFlood", tag: "น้ำท่วม" },
   "ev-insurance": { photo: "articleEv", tag: "EV" },
-  "ev-claims": { tag: "EV" },
-  "byd-ev-insurance": { tag: "EV" },
-  "insurance-types": { tag: "ความรู้" },
-  "both-type1-who-pays": { tag: "การเคลม" },
+  "ev-claims": { photo: "articleEvClaims", tag: "EV" },
+  "byd-ev-insurance": { photo: "articleBydEv", tag: "EV" },
+  "insurance-types": { photo: "articleTypes", tag: "ความรู้" },
+  "both-type1-who-pays": { photo: "articleWhoPays", tag: "การเคลม" },
 };
 
 export default function LabIndexPage() {

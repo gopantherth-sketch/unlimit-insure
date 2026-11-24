@@ -60,6 +60,30 @@ export const photos = {
     height: 640,
     alt: "",
   },
+  articleEvClaims: {
+    src: "/images/article-ev-claims.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
+  articleBydEv: {
+    src: "/images/article-byd-ev.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
+  articleTypes: {
+    src: "/images/article-types.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
+  articleWhoPays: {
+    src: "/images/article-who-pays.webp",
+    width: 960,
+    height: 640,
+    alt: "",
+  },
 } as const;
 
 export type PhotoSlot = keyof typeof photos;
